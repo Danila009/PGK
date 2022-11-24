@@ -1,0 +1,15 @@
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\PGK.Application.deps.json
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\PGK.Application.dll
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\ref\PGK.Application.dll
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\PGK.Application.pdb
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\PGK.Domain.dll
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\bin\Debug\net6.0\PGK.Domain.pdb
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.csproj.AssemblyReference.cache
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.AssemblyInfoInputs.cache
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.AssemblyInfo.cs
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.csproj.CoreCompileInputs.cache
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.csproj.CopyComplete
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.dll
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\ref\PGK.Application.dll
+C:\Users\danbe\source\repos\Market\PGK.Backend\PGK.Application\obj\Debug\net6.0\PGK.Application.pdb
