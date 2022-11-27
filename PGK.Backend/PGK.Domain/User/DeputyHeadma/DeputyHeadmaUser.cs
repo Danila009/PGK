@@ -6,7 +6,7 @@ namespace PGK.Domain.User.DeputyHeadma
     [Table("DeputyHeadmaUsers")]
     public class DeputyHeadmaUser : StudentUser
     {
-        public override UserRole Role => UserRole.DEPUTY_HEADMAN;
+        public override string Role => UserRole.DEPUTY_HEADMAN.ToString();
 
     }
 }

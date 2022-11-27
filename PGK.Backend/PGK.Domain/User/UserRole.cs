@@ -3,10 +3,10 @@
     public enum UserRole
     {
         STUDENT,
-        EDUCATIONAL_SECTOR,
         HEADMAN,
         DEPUTY_HEADMAN,
         TEACHER,
+        EDUCATIONAL_SECTOR,
         ADMIN
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {}
+    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
+    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
         "projectName": "PGK.Domain",
-        "projectPath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
+        "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
         "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\obj\\",
+        "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",

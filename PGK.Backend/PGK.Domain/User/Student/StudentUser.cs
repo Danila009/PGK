@@ -8,7 +8,7 @@ namespace PGK.Domain.User.Student
     [Table("StudentUsers")]
     public class StudentUser : User
     {
-        public override UserRole Role => UserRole.STUDENT;
+        public override string Role => UserRole.STUDENT.ToString();
 
         [Required] public Group.Group Group { get; set; }
 

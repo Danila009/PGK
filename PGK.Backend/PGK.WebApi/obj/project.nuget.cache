@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ojgNsOzXKTJoRhXFrwNks5t7e+imiaJNFhXdBOn+zWnC4r4kwAdNtY8hzGHVHqWbKpVvNwIkuGYLOKMQE6QpwA==",
+  "dgSpecHash": "9OnoK6VeSSWBMIyuS2E7eeQ2uf24wv2CU97zMd/hgI4kSlqiaVH8vKMNeIpOkr15mEAgLCT/3gIoi4qJrSf3IQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
+  "projectFilePath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danbe\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\danbe\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

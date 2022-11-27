@@ -13,7 +13,7 @@ namespace PGK.Application.Security
 
         public Auth(IConfiguration configuration) => _configuration = configuration;
 
-        public string GetRefreshToken()
+        public string CreateRefreshToken()
         {
             byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
             
@@ -25,9 +25,9 @@ namespace PGK.Application.Security
         }
 
         public string CreateToken(
-            string email, string userId, UserRole userRole)
+            int userId, string userRole)
         {
-            var claims = Claims(email: email, userRole: userRole,
+            var claims = Claims(userRole: userRole,
                 userId: userId);
 
             var key = GetSymmetricSecurityKey(_configuration["token:key"]);
@@ -54,16 +54,15 @@ namespace PGK.Application.Security
             return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         }
 
-        public Claim[] Claims(string email, string userId, UserRole userRole)
+        public Claim[] Claims(int userId, string userRole)
         {
             return new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["token:subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole.ToString()),
-                new Claim("user_id", userId),
-                new Claim("email", email)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole),
+                new Claim("user_id", userId.ToString())
             };
         }
     }

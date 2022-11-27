@@ -6,7 +6,7 @@ namespace PGK.Domain.User.Teacher
     [Table("TeacherUsers")]
     public class TeacherUser : User
     {
-        public override UserRole Role => UserRole.TEACHER;
+        public override string Role => UserRole.TEACHER.ToString();
 
         //Классный руководитель
         public virtual List<Group.Group> Groups { get; set; } = new List<Group.Group>();

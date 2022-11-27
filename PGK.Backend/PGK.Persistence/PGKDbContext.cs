@@ -3,6 +3,7 @@ using PGK.Application.Interfaces;
 using PGK.Domain.Journal;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
+using PGK.Domain.Subject;
 using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DeputyHeadma;
@@ -25,9 +26,12 @@ namespace PGK.Persistence
         public DbSet<User> Users { get; set; }
 
         public DbSet<Domain.Group.Group> Groups { get; set; }
+        
         public DbSet<Schedules> Schedules { get; set; }
         public DbSet<Raportichka> Raportichkas { get; set; }
         public DbSet<RaportichkaRow> RaportichkaRows { get; set; }
+
+        public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<Journal> Journals { get; set; }
         public DbSet<JournalSubject> JournalSubjects { get; set; }
@@ -42,6 +46,12 @@ namespace PGK.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserConfiguration());
+
+            builder.Entity<TeacherUser>()
+                .HasMany(u => u.Subjects).WithMany(u => u.Teachers);
+
+            builder.Entity<Subject>()
+                .HasMany(u => u.Teachers).WithMany(u => u.Subjects);
 
             base.OnModelCreating(builder);
         }

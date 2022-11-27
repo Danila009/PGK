@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xxt/NYMQfT3ZvHhpRakpX4IxS0q19aNzjj1EVtkFA37RsZvw2emhg6hMJag9fikhLk5zzv2QVm9u36yYlv94hg==",
+  "dgSpecHash": "eSMUeoshrc4SnAHCTNT19C0euThEZ2iZb3B2WuBreTqB2d/K/kCp5oG+OV3aeCPRdMm+fwA8CEO2jL5gDgICpQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
+  "projectFilePath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danbe\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\danbe\\.nuget\\packages\\fluentvalidation\\11.4.0\\fluentvalidation.11.4.0.nupkg.sha512",

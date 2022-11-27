@@ -6,7 +6,7 @@ namespace PGK.Domain.User.Headman
     [Table("HeadmanUsers")]
     public class HeadmanUser : StudentUser
     {
-        public override UserRole Role => UserRole.HEADMAN;
+        public override string Role => UserRole.HEADMAN.ToString();
 
     }
 }

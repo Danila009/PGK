@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace PGK.Application.Common
 {
@@ -22,7 +21,7 @@ namespace PGK.Application.Common
         public static string CreateHash(string password)
         {
             // Generate a random salt
-            RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider();
+            var csprng = new RNGCryptoServiceProvider();
             byte[] salt = new byte[SALT_BYTE_SIZE];
             csprng.GetBytes(salt);
 

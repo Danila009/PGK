@@ -1,14 +1,9 @@
-﻿namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
+﻿using PGK.Application.Common.Paged;
+
+namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
 {
-    public class StudentUserListVm
+    public class StudentUserListVm : PagedResult<StudentDto>
     {
-        public int Count
-        {
-            get
-            {
-                return Students.Count;
-            }
-        }
-        public IList<StudentDto> Students { get; set; } = new List<StudentDto>();
+        public override PagedList<StudentDto> Results { get; set; }
     }
 }

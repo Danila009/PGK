@@ -1238,11 +1238,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
+      "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
       "projectName": "PGK.Persistence",
-      "projectPath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
+      "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
       "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Persistence\\obj\\",
+      "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1259,8 +1259,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
-              "projectPath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
+            "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
+              "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
             }
           }
         }

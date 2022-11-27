@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "d2d16700-84e2-4f11-a737-ce78c0a6d17b": {
+      "ProjectGuid": "d2d16700-84e2-4f11-a737-ce78c0a6d17b",
+      "DisplayName": "PGK.Domain",
+      "ColorIndex": 0
+    },
+    "0446589e-cbc4-45f0-87e4-90c025c95d76": {
+      "ProjectGuid": "0446589e-cbc4-45f0-87e4-90c025c95d76",
+      "DisplayName": "PGK.WebApi",
+      "ColorIndex": 1
+    },
+    "24111448-61ac-4c9c-88cd-8f68d487520a": {
+      "ProjectGuid": "24111448-61ac-4c9c-88cd-8f68d487520a",
+      "DisplayName": "PGK.Application",
+      "ColorIndex": 2
+    },
+    "981397e1-129b-41cc-9ec6-61f76dfaaffc": {
+      "ProjectGuid": "981397e1-129b-41cc-9ec6-61f76dfaaffc",
+      "DisplayName": "PGK.Persistence",
+      "ColorIndex": 3
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 4
+}

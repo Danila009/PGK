@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
 using PGK.Domain.User.Student;
 
@@ -19,7 +20,9 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
         public async Task<StudentUserListVm> Handle(GetStudentUserListQuery request,
             CancellationToken cancellationToken)
         {
-            IQueryable<StudentUser> queries = _dbContext.StudentsUsers;
+            IQueryable<StudentUser> queries = _dbContext.StudentsUsers
+                .Include(u => u.Group)
+                    .ThenInclude(u => u.ClassroomTeacher);
 
             if (!string.IsNullOrEmpty(request.Search))
             {
@@ -30,12 +33,24 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
                 );
             }
 
-            var students = await queries
-                .ProjectTo<StudentDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            if(request.UserRoles != null && request.UserRoles.Count > 0)
+            {
+                queries = queries.Where(u => request.UserRoles.Contains(u.Role));
+            }
+
+            if(request.GroupIds != null && request.GroupIds.Count > 0)
+            {
+                queries = queries.Where(u => request.GroupIds.Contains(u.Group.Id));
+            }
+
+            var students = queries
+                .ProjectTo<StudentDto>(_mapper.ConfigurationProvider);
 
 
-            return new StudentUserListVm {  };
+            var studentPaged = await PagedList<StudentDto>.ToPagedList(students,
+                request.PageNumber, request.PageSize);
+
+            return new StudentUserListVm { Results = studentPaged };
         }
     }
 }

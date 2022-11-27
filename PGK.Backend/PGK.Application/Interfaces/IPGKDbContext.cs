@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PGK.Domain.Journal;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
+using PGK.Domain.Subject;
 using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DeputyHeadma;
@@ -30,11 +32,13 @@ namespace PGK.Application.Interfaces
 
         DbSet<Domain.Group.Group> Groups { get; set; }
 
+        DbSet<Subject> Subjects { get; set; }
+
         DbSet<Journal> Journals { get; set; }
         DbSet<JournalSubject> JournalSubjects { get; set; }
         DbSet<JournalSubjectColumn> JournalSubjectColumns { get; set; }
         DbSet<JournalSubjectRow> JournalSubjectRows { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-    }
+}
 }

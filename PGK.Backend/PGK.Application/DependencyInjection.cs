@@ -13,8 +13,7 @@ namespace Market.Application
         public static IServiceCollection AddApplication(
             this IServiceCollection service, IConfiguration configuration)
         {
-
-            service.AddScoped<IAuth>(provider => provider.GetService<Auth>());
+            service.AddSingleton<IAuth, Auth>();
 
             service.AddMediatR(Assembly.GetExecutingAssembly());
 

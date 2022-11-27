@@ -4,6 +4,12 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
 {
     public class GetStudentUserListQuery : IRequest<StudentUserListVm>
     {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+
         public string? Search { get; set; } = null;
+        public List<string> UserRoles { get; set; } = new List<string>();
+
+        public List<int> GroupIds { get; set; } = new List<int>();
     }
 }

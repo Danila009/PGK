@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\PGK.Backend",
+    "\\PGK.Backend\\PGK.Domain",
+    "\\PGK.Backend\\PGK.Domain\\Group",
+    "\\PGK.Backend\\PGK.Persistence",
+    "\\PGK.Backend\\PGK.WebApi",
+    "\\PGK.Backend\\PGK.WebApi\\Controllers"
+  ],
+  "SelectedNode": "\\PGK.Backend\\PGK.WebApi\\Controllers\\GroupController.cs",
+  "PreviewInSolutionExplorer": false
+}

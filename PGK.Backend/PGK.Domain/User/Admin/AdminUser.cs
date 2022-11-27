@@ -5,6 +5,6 @@ namespace PGK.Domain.User.Admin
     [Table("AdminUsers")]
     public class AdminUser : User
     {
-        public override UserRole Role => UserRole.ADMIN;
+        public override string Role => UserRole.ADMIN.ToString();
     }
 }

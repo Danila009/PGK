@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LxrHJtT0J3SrAiPrgHaG7KGI+LmbvfJStffFYFrd6A8qvyVkn5KcRRC1vvQNA89QZEVpYbNCpkZOXQ01oRqS+Q==",
+  "dgSpecHash": "f7avOJY5BPpw73U/wv7ypi1lGQnR1oTq3tZusXvK1mv7tV/dso4SXNS92mY1czhm/xRx1HI5x35DthJkluur9g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danbe\\source\\repos\\Market\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
+  "projectFilePath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

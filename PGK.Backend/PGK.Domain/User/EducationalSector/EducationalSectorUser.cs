@@ -5,7 +5,7 @@ namespace PGK.Domain.User.EducationalSector
     [Table("EducationalSectorUsers")]
     public class EducationalSectorUser : User
     {
-        public override UserRole Role => UserRole.EDUCATIONAL_SECTOR;
+        public override string Role => UserRole.EDUCATIONAL_SECTOR.ToString();
 
         public virtual List<Schedules.Schedules> Schedules { get; set; } = new List<Schedules.Schedules>();
     }
