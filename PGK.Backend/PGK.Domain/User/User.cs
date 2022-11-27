@@ -13,6 +13,8 @@ namespace PGK.Domain.User
 
         [Required, MaxLength(256)] public string Password { get; set; } = string.Empty;
 
+        [Required] public bool DrarkMode { get; set; } = false;
+
         public string? RefreshToken { get; set; } = null;
 
         public virtual string Role => UserRole.STUDENT.ToString();

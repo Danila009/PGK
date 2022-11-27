@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Domain.Raportichka;
+using PGK.Domain.User;
 using PGK.Domain.User.Student;
 using PGK.Domain.User.Teacher;
 
@@ -18,12 +20,52 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
         public async Task<CreateRaportichkaRowVm> Handle(CreateRaportichkaRowCommand request,
             CancellationToken cancellationToken)
         {
-            var raportichka = await _dbContext.Raportichkas.FindAsync(request.RaportichkaId);
+            var teacherId = request.Role == UserRole.TEACHER ? request.UserId : request.TeacherId;
+
+            var teacher = await _dbContext.TeacherUsers
+                .Include(u => u.RaportichkaRows)
+                    .ThenInclude(u => u.Raportichka)
+                .FirstOrDefaultAsync(u => u.Id == teacherId);
+
+            if (teacher == null)
+            {
+                throw new NotFoundException(nameof(TeacherUser), request.UserId);
+            }
+
+            if (
+                request.Role ==
+                UserRole.TEACHER && teacher.RaportichkaRows
+                .Any(u => u.Raportichka.Id != request.RaportichkaId)
+                )
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            var raportichka = await _dbContext.Raportichkas
+                .Include(u => u.Group)
+                .FirstOrDefaultAsync(u => u.Id == request.RaportichkaId);
 
             if (raportichka == null)
             {
                 throw new NotFoundException(nameof(Domain.Raportichka.Raportichka),
                     request.RaportichkaId);
+            }
+
+            if (request.Role == UserRole.HEADMAN || request.Role == UserRole.DEPUTY_HEADMAN)
+            {
+                var studentHeadman = await _dbContext.StudentsUsers
+                    .Include(u => u.Group)
+                    .FirstOrDefaultAsync(u => u.Id == request.UserId);
+
+                if (studentHeadman == null)
+                {
+                    throw new NotFoundException(nameof(StudentUser), request.RaportichkaId);
+                }
+
+                if(raportichka.Group.Id != studentHeadman.Group.Id)
+                {
+                    throw new UnauthorizedAccessException();
+                }
             }
 
             var subject = await _dbContext.Subjects.FindAsync(request.SubjectId);
@@ -34,7 +76,9 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
                     request.SubjectId);
             }
 
-            var student = await _dbContext.StudentsUsers.FindAsync(request.StudentId);
+            var student = await _dbContext.StudentsUsers
+                .Include(u => u.Group)
+                .FirstOrDefaultAsync(u => u.Id == request.StudentId);
 
             if (student == null)
             {
@@ -42,12 +86,9 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
                     request.StudentId);
             }
 
-            var teacher = await _dbContext.TeacherUsers.FindAsync(request.TeacherId);
-
-            if (teacher == null)
+            if(raportichka.Group != student.Group)
             {
-                throw new NotFoundException(nameof(TeacherUser),
-                    request.TeacherId);
+                throw new Exception();
             }
 
             var row = new RaportichkaRow

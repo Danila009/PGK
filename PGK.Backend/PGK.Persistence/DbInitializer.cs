@@ -4,7 +4,7 @@
     {
         public static void Initialize(PGKDbContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
     }

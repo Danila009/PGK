@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PGK.Domain.User;
 using System.ComponentModel.DataAnnotations;
 
 namespace PGK.Application.App.Raportichka.Row.Commands.UpdateRow
@@ -6,6 +7,9 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateRow
     public class UpdateRaportichkaRowCommand : IRequest
     {
         [Required] public int RowId { get; set; }
+        
+        public int UserId { get; set; }
+        public UserRole Role { get; set; }
 
         public int NumberLesson { get; set; }
         public bool Confirmation { get; set; }

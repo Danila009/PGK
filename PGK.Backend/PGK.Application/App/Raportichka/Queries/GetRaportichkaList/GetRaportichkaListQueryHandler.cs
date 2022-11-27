@@ -35,12 +35,17 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
                 query = query.Where(u => u.Rows.Any(u => u.Confirmation == request.Confirmation));
             }
 
-            if (request.StartDate != null)
+            if (request.OnlyDate != null)
+            {
+                query = query.Where(u => u.Date == request.OnlyDate);
+            }
+
+            if (request.StartDate != null && request.OnlyDate == null)
             {
                 query = query.Where(u => u.Date > request.StartDate);
             }
 
-            if (request.EndDate != null)
+            if (request.EndDate != null && request.OnlyDate == null)
             {
                 query = query.Where(u => u.Date < request.EndDate);
             }

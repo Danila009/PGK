@@ -8,6 +8,7 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
         public int PageSize { get; set; }
 
         public bool? Confirmation { get; set; }
+        public DateTime? OnlyDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
