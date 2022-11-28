@@ -44,6 +44,7 @@ namespace PGK.Application.App.User.Headman.Commands.Registration
                 LastName = student.LastName,
                 MiddleName = student.MiddleName,
                 Password = student.Password,
+                Email = student.Email,
                 RefreshToken = refreshToken,
                 Group = student.Group
             };

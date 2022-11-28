@@ -5,6 +5,8 @@ using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using PGK.Application.Security;
 using PGK.Application.Common.Behaviors;
+using PGK.Application.Repository.ImageRepository;
+using PGK.Application.Services.EmailService;
 
 namespace Market.Application
 {
@@ -14,6 +16,8 @@ namespace Market.Application
             this IServiceCollection service, IConfiguration configuration)
         {
             service.AddSingleton<IAuth, Auth>();
+            service.AddSingleton<IImageRepository, ImageRepository>();
+            service.AddSingleton<IEmailService, EmailService>();
 
             service.AddMediatR(Assembly.GetExecutingAssembly());
 

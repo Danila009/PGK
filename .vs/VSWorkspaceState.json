@@ -4,10 +4,12 @@
     "\\PGK.Backend",
     "\\PGK.Backend\\PGK.Domain",
     "\\PGK.Backend\\PGK.Domain\\Group",
+    "\\PGK.Backend\\PGK.Domain\\User",
+    "\\PGK.Backend\\PGK.Domain\\User\\Student",
     "\\PGK.Backend\\PGK.Persistence",
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.WebApi\\Controllers\\GroupController.cs",
+  "SelectedNode": "\\PGK.Backend\\PGK.Backend.sln",
   "PreviewInSolutionExplorer": false
 }

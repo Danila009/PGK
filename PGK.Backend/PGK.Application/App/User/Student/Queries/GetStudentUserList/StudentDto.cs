@@ -12,7 +12,8 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
         [Required, MaxLength(128)] public string FirstName { get; set; } = string.Empty;
         [Required, MaxLength(128)] public string LastName { get; set; } = string.Empty;
         [MaxLength(128)] public string? MiddleName { get; set; }
-        [Required] public string Role { get; set; } = string.Empty;
+        [MaxLength(256)] public string? Email { get; set; } = string.Empty;
+        public string? PhotoUrl { get; set; } = null;
 
         [Required] public GroupDetails Group { get; set; }
 

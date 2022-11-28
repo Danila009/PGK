@@ -110,3 +110,7 @@ C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\obj\Debug\net6.0\ref\PGK.WebAp
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\obj\Debug\net6.0\PGK.WebApi.xml
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\obj\Debug\net6.0\PGK.WebApi.pdb
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\obj\Debug\net6.0\PGK.WebApi.genruntimeconfig.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\SixLabors.ImageSharp.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\MailKit.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\MimeKit.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\BouncyCastle.Crypto.dll

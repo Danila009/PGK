@@ -27,6 +27,7 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Registration")]
         public async Task<ActionResult<RegistrationStudentVm>> Registration(
