@@ -2,6 +2,8 @@
 using PGK.Application.Interfaces;
 using PGK.Application.Common.Exceptions;
 using PGK.Domain.User.Teacher;
+using PGK.Domain.Speciality;
+using PGK.Domain.Department;
 
 namespace PGK.Application.App.Group.Commands.CreateGroup
 {
@@ -23,11 +25,25 @@ namespace PGK.Application.App.Group.Commands.CreateGroup
                 throw new NotFoundException(nameof(TeacherUser), request.ClassroomTeacherId);
             }
 
+            var speciality = await _dbContext.Specialties.FindAsync(request.SpecialityId);
+
+            if(speciality == null)
+            {
+                throw new NotFoundException(nameof(Speciality), request.SpecialityId);
+            }
+
+            var department = await _dbContext.Departments.FindAsync(request.DepartmentId);
+
+            if(department == null)
+            {
+                throw new NotFoundException(nameof(Department), request.DepartmentId);
+            }
+
             var group = new Domain.Group.Group
             {
                 Number = request.Number,
-                Speciality = request.Speciality,
-                SpecialityAbbreviation = request.SpecialityAbbreviation,
+                Speciality = speciality,
+                Department = department,
                 ClassroomTeacher = teacher
             };
 

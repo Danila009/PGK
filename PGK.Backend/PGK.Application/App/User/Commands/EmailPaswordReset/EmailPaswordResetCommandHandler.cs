@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
@@ -20,14 +21,14 @@ namespace PGK.Application.App.User.Commands.EmailPaswordReset
         {
             var htmlContent = string.Empty;
 
-            var user = await _dbContext.Users.FindAsync(request.UserId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
 
             if (user == null)
             {
                 throw new NotFoundException(nameof(Domain.User.User), request.UserId);
             }
 
-            if (user.SendEmailToken != request.Token)
+            if (user.SendEmailToken != request.Token || !request.Token.StartsWith("password_reset_"))
             {
                 throw new UnauthorizedAccessException();
             }

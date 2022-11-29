@@ -22,4 +22,10 @@
     <ProjectReference Include="..\PGK.Domain\PGK.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="App\Department\Commands\" />
+    <Folder Include="App\Schedule\Commands\" />
+    <Folder Include="App\Speciality\Commands\" />
+  </ItemGroup>
+
 </Project>

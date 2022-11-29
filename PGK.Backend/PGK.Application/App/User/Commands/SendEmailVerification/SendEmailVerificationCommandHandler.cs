@@ -30,7 +30,7 @@ namespace PGK.Application.App.User.Commands.SendEmailVerification
                 throw new Exception("user email null");
             }
 
-            var token = $"email_verification{Guid.NewGuid()}";
+            var token = $"email_verification_{Guid.NewGuid()}";
 
             user.SendEmailToken = token;
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -38,7 +38,7 @@ namespace PGK.Application.App.User.Commands.SendEmailVerification
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Подтверждение адреса электронной почты для входа в приложение ПГК",
-                message: $"<h1>https://localhost:7002/api/User/Email/Verification/{user.Id}_{token}</h1>");
+                message: $"<h1>https://localhost:7002/api/User/{user.Id}/Email/Verification/{token}</h1>");
 
             return Unit.Value;
         }

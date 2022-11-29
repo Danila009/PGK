@@ -18,11 +18,11 @@ namespace PGK.Application.App.User.Commands.SendEmailPaswordReset
         public async Task<Unit> Handle(SendEmailPaswordResetCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user == null)
             {
-                throw new NotFoundException(nameof(Domain.User.User), request.UserId);
+                throw new NotFoundException(nameof(Domain.User.User), request.Email);
             }
 
             if (user.Email == null)
@@ -38,7 +38,7 @@ namespace PGK.Application.App.User.Commands.SendEmailPaswordReset
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Изминить пароль в приложение пгк",
-                message: $"<h1>https://localhost:7002/api/User/Email/Passowrd/Reset/{user.Id}_{token}</h1>");
+                message: $"<h1>https://localhost:7002/api/User/{user.Id}/Email/Pasword/Reset/{token}</h1>");
 
             return Unit.Value;
         }

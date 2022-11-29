@@ -38,7 +38,7 @@ namespace PGK.Application.App.User.Commands.EmailVerification
                 };
             }
 
-            if (user.SendEmailToken != request.Token)
+            if (user.SendEmailToken != request.Token || user.SendEmailToken.StartsWith("email_verification_"))
             {
                 throw new UnauthorizedAccessException();
             }

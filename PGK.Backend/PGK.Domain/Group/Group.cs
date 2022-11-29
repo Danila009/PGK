@@ -11,11 +11,12 @@ namespace PGK.Domain.Group
         [Key] public int Id { get; set; }
         //[Required] public int Course { get; set; }
         [Required] public int Number { get; set; }
-        [Required] public string Speciality { get; set; } = string.Empty;
-        [Required] public string SpecialityAbbreviation { get; set; } = string.Empty;
+        [Required] public Speciality.Speciality Speciality { get; set; }
         [Required] public TeacherUser ClassroomTeacher { get; set; }
         public HeadmanUser? Headman { get; set; } = null;
         public DeputyHeadmaUser? DeputyHeadma { get; set; } = null;
+
+        [Required] public Department.Department Department { get; set; }
 
         public virtual List<StudentUser> Students { get; set; } = new List<StudentUser>();
         public virtual List<Raportichka.Raportichka> Raportichkas { get; set; } =

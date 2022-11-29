@@ -12,6 +12,8 @@ namespace PGK.Domain.User.Student
 
         [Required] public Group.Group Group { get; set; }
 
+        [Required] public Department.Department Department { get; set; }
+
         public virtual List<RaportichkaRow> RaportichkaRows { get; set; } = new List<RaportichkaRow>();
 
         public virtual List<JournalSubjectRow> JournalSubjectRows { get; set; } = new List<JournalSubjectRow>();

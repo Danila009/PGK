@@ -1,5 +1,4 @@
-﻿using PGK.Domain.User;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PGK.Application.App.User.Headman.Commands.Registration
 {

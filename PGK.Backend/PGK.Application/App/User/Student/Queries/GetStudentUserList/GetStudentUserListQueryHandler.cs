@@ -22,7 +22,11 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
         {
             IQueryable<StudentUser> queries = _dbContext.StudentsUsers
                 .Include(u => u.Group)
-                    .ThenInclude(u => u.ClassroomTeacher);
+                    .ThenInclude(u => u.ClassroomTeacher)
+                .Include(u => u.Group)
+                    .ThenInclude(u => u.Department)
+                .Include(u => u.Group)
+                    .ThenInclude(u => u.Speciality);
 
             if (!string.IsNullOrEmpty(request.Search))
             {

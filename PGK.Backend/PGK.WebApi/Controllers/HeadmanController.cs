@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.Raportichka.Commands.CreateRaportichka;
 using PGK.Application.App.Raportichka.Row.Commands.UpdateRow;
+using PGK.Application.App.User.Headman.Commands.DeputyRegistration;
 using PGK.Application.App.User.Headman.Commands.Registration;
 using PGK.WebApi.Models.Headman;
 using PGK.WebApi.Models.Raportichka;
@@ -16,6 +17,22 @@ namespace PGK.WebApi.Controllers
             RegistrationHeadmanModel model)
         {
             var command = new RegistrationHeadmanCommand
+            {
+                StudentId = model.StudentId,
+                TeacherId = UserId
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        [Authorize(Roles = "TEACHER")]
+        [HttpPost("Deputy/Registration")]
+        public async Task<ActionResult<RegistrationHeadmanVm>> RegistrationDeputy(
+            RegistrationHeadmanModel model)
+        {
+            var command = new RegistrationDeputyHeadmanCommand
             {
                 StudentId = model.StudentId,
                 TeacherId = UserId

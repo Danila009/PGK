@@ -7,6 +7,6 @@ namespace PGK.Domain.User.EducationalSector
     {
         public override string Role => UserRole.EDUCATIONAL_SECTOR.ToString();
 
-        public virtual List<Schedules.Schedules> Schedules { get; set; } = new List<Schedules.Schedules>();
+        public virtual List<Schedules.Schedule> Schedules { get; set; } = new List<Schedules.Schedule>();
     }
 }

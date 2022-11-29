@@ -19,7 +19,10 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
         public async Task<GroupListVm> Handle(GetGroupListQuery request,
             CancellationToken cancellationToken)
         {
-            IQueryable<Domain.Group.Group> query = _dbContext.Groups;
+            IQueryable<Domain.Group.Group> query = _dbContext.Groups
+                .Include(u => u.ClassroomTeacher)
+                .Include(u => u.Speciality)
+                .Include(u => u.Department);
 
             var groups = await query
                 .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider)

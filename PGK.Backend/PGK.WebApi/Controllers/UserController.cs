@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.User.Commands.AddPhoto;
 using PGK.Application.App.User.Commands.EmailPaswordReset;
 using PGK.Application.App.User.Commands.EmailVerification;
+using PGK.Application.App.User.Commands.SendEmailPaswordReset;
 using PGK.Application.App.User.Commands.SendEmailVerification;
+using PGK.Application.App.User.Commands.UpdateEmail;
 using PGK.Application.App.User.Queries.GetUserPhoto;
-using PGK.Application.Services;
 
 namespace PGK.WebApi.Controllers
 {
@@ -53,7 +53,7 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("Email/Verification/{userId}_{token}")]
+        [HttpGet("{userId}/Email/Verification/{token}")]
         public async Task<ActionResult> EmailVerification(int userId, string token)
         {
             var command = new EmailVerificationCommand
@@ -67,13 +67,12 @@ namespace PGK.WebApi.Controllers
             return Ok(contentResult);
         }
 
-        [Authorize]
         [HttpPost("Email/Pasword/Reset")]
-        public async Task<ActionResult> SendEmailPaswordReset()
+        public async Task<ActionResult> SendEmailPaswordReset(string email)
         {
-            var command = new SendEmailVerificationCommand
+            var command = new SendEmailPaswordResetCommand
             {
-                UserId = UserId
+                Email = email
             };
 
             await Mediator.Send(command);
@@ -81,7 +80,7 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("Email/Pasword/Reset/{userId}_{token}")]
+        [HttpGet("{userId}/Email/Pasword/Reset/{token}")]
         public async Task<ActionResult> PassowrdReset(int userId, string token)
         {
             var command = new EmailPaswordResetCommand
@@ -93,6 +92,21 @@ namespace PGK.WebApi.Controllers
             var contentResult = await Mediator.Send(command);
 
             return Ok(contentResult);
+        }
+
+        [Authorize]
+        [HttpPatch("Email")]
+        public async Task<ActionResult> UpdateEmail(string newEmail)
+        {
+            var coomand = new UserUpdateEmailCommand
+            {
+                UserId = UserId,
+                Email = newEmail
+            };
+
+            await Mediator.Send(coomand);
+
+            return Ok("Новая почта сохранен, мы отправили письмо для подтверждения почты");
         }
     }
 }

@@ -7,6 +7,7 @@
         DEPUTY_HEADMAN,
         TEACHER,
         EDUCATIONAL_SECTOR,
+        DEPARTMENT_HEAD,
         ADMIN
     }
 }

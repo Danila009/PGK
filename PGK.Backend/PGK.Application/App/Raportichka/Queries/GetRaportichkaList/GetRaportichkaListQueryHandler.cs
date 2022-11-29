@@ -22,6 +22,10 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
             IQueryable<Domain.Raportichka.Raportichka> query = _dbContext.Raportichkas
                 .Include(u => u.Group)
                     .ThenInclude(u => u.ClassroomTeacher)
+                .Include(u => u.Group)
+                    .ThenInclude(u => u.Department)
+                .Include(u => u.Group)
+                    .ThenInclude(u => u.Speciality)
                 .Include(u => u.Rows)
                     .ThenInclude(u => u.Subject)
                 .Include(u => u.Rows)

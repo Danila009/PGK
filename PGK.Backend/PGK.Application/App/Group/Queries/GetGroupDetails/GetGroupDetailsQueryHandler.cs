@@ -20,6 +20,8 @@ namespace PGK.Application.App.Group.Queries.GetGroupDetails
         {
             var group = await _dbContext.Groups
                 .Include(u => u.ClassroomTeacher)
+                .Include(u => u.Speciality)
+                .Include(u => u.Department)
                 .FirstOrDefaultAsync(u => u.Id == request.GroupId);
 
             if (group == null)

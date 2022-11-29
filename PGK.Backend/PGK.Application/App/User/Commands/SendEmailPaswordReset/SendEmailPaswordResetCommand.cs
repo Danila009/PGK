@@ -4,6 +4,6 @@ namespace PGK.Application.App.User.Commands.SendEmailPaswordReset
 {
     public class SendEmailPaswordResetCommand : IRequest
     {
-        public int UserId { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }
