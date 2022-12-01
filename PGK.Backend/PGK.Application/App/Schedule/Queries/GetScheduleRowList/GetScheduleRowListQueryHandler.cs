@@ -37,8 +37,8 @@ namespace PGK.Application.App.Schedule.Queries.GetScheduleRowList
             var scheduleRows = query
                 .ProjectTo<ScheduleRowDto>(_mapper.ConfigurationProvider);
 
-            var scheduleRowPaged = await PagedList<ScheduleRowDto>.ToPagedList(scheduleRows,
-                request.PageNumber, request.PageSize);
+            var scheduleRowPaged = await PagedList<ScheduleRowDto>
+                .ToPagedList(scheduleRows, request.PageNumber, request.PageSize);
 
             return new ScheduleRowListVm { Results = scheduleRowPaged };
         }

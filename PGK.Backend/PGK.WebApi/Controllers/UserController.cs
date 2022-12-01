@@ -53,7 +53,7 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("{userId}/Email/Verification/{token}")]
+        [HttpGet("{userId}/Email/Verification/{token}.html")]
         public async Task<ActionResult> EmailVerification(int userId, string token)
         {
             var command = new EmailVerificationCommand
@@ -80,7 +80,7 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
-        [HttpGet("{userId}/Email/Pasword/Reset/{token}")]
+        [HttpGet("{userId}/Email/Pasword/Reset/{token}.html")]
         public async Task<ActionResult> PassowrdReset(int userId, string token)
         {
             var command = new EmailPaswordResetCommand

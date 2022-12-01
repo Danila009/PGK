@@ -3,15 +3,14 @@
     "",
     "\\PGK.Backend",
     "\\PGK.Backend\\PGK.Application",
-    "\\PGK.Backend\\PGK.Application\\Services",
-    "\\PGK.Backend\\PGK.Application\\Services\\EmailService",
-    "\\PGK.Backend\\PGK.Domain",
-    "\\PGK.Backend\\PGK.Domain\\User",
-    "\\PGK.Backend\\PGK.Domain\\User\\Student",
+    "\\PGK.Backend\\PGK.Application\\App",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries\\GetScheduleRowList",
     "\\PGK.Backend\\PGK.Persistence",
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Application\\Services\\EmailService\\EmailService.cs",
+  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries\\GetScheduleRowList\\ScheduleRowDto.cs",
   "PreviewInSolutionExplorer": false
 }

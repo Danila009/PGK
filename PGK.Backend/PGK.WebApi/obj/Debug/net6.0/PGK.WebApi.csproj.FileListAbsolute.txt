@@ -114,3 +114,14 @@ C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\SixLabors.Ima
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\MailKit.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\MimeKit.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\EPPlus.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\EPPlus.Interfaces.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\EPPlus.System.Drawing.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\System.Drawing.Common.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.WebApi\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll

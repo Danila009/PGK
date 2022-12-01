@@ -5,7 +5,7 @@ namespace PGK.Domain.Schedules
     public class ScheduleColumn
     {
         [Key] public int Id { get; set; }
-        [Required] public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
         [Required] public string Time { get; set; } = string.Empty;
         public Group.Group? Group { get; set; }
 

@@ -10,7 +10,7 @@ namespace PGK.Application.App.Schedule.Queries.GetScheduleRowList
     public class ScheduleRowDto : IMapWith<ScheduleRow>
     {
         [Key] public int Id { get; set; }
-        [Required] public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
 
         public TeacherUserDetails? Teacher { get; set; }
         [Required] public ScheduleColumnDto Column { get; set; }

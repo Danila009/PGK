@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="EPPlus" Version="6.1.1" />
     <PackageReference Include="FluentValidation" Version="11.4.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
     <PackageReference Include="MailKit" Version="3.4.3" />
@@ -24,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="App\Department\Commands\" />
-    <Folder Include="App\Schedule\Commands\" />
     <Folder Include="App\Speciality\Commands\" />
   </ItemGroup>
 

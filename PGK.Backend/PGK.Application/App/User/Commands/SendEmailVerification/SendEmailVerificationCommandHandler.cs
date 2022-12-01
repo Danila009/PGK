@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PGK.Application.Interfaces;
 using PGK.Application.Services.EmailService;
 using PGK.Application.Common.Exceptions;
+using PGK.Application.Common;
 
 namespace PGK.Application.App.User.Commands.SendEmailVerification
 {
@@ -38,7 +39,7 @@ namespace PGK.Application.App.User.Commands.SendEmailVerification
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Подтверждение адреса электронной почты для входа в приложение ПГК",
-                message: $"<h1>https://localhost:7002/api/User/{user.Id}/Email/Verification/{token}</h1>");
+                message: $"<h1>{Constants.BASE_URL}/User/{user.Id}/Email/Verification/{token}.html</h1>");
 
             return Unit.Value;
         }

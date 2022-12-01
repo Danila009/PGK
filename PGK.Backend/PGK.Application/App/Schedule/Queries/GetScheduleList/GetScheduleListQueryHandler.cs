@@ -30,6 +30,34 @@ namespace PGK.Application.App.Schedule.GetScheduleList.Queries
                         .ThenInclude(u => u.Rows)
                             .ThenInclude(u => u.Teacher);
 
+
+            if(request.OnlyDate != null)
+            {
+                query = query.Where(u => u.Date == request.OnlyDate);
+            }
+
+            if(request.StartDate != null && request.OnlyDate == null)
+            {
+                query = query.Where(u => u.Date > request.StartDate);
+            }
+
+            if (request.EndDate != null && request.OnlyDate == null)
+            {
+                query = query.Where(u => u.Date < request.EndDate);
+            }
+
+            if(request.DepartmentIds != null && request.DepartmentIds.Count > 0)
+            {
+                query = query.Where(u => u.ScheduleDepartments
+                    .Any(u => request.DepartmentIds.Contains(u.Department.Id)));
+            }
+
+            if(request.GroupIds != null && request.GroupIds.Count > 0)
+            {
+                query = query.Where(u => u.ScheduleDepartments
+                    .Any(u => u.Columns.Any(u => request.GroupIds.Contains(u.Group.Id))));
+            }
+
             var schedules = query
                 .ProjectTo<ScheduleDto>(_mapper.ConfigurationProvider);
 

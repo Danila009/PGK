@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Application.Services.EmailService;
+using PGK.Application.Common;
 
 namespace PGK.Application.App.User.Commands.SendEmailPaswordReset
 {
@@ -38,7 +39,7 @@ namespace PGK.Application.App.User.Commands.SendEmailPaswordReset
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Изминить пароль в приложение пгк",
-                message: $"<h1>https://localhost:7002/api/User/{user.Id}/Email/Pasword/Reset/{token}</h1>");
+                message: $"<h1>{Constants.BASE_URL}/User/{user.Id}/Email/Pasword/Reset/{token}.html</h1>");
 
             return Unit.Value;
         }

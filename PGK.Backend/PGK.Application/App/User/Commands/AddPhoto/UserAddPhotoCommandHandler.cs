@@ -29,11 +29,11 @@ namespace PGK.Application.App.User.Commands.AddPhoto
             MemoryStream memoryStream = new MemoryStream();
             await request.Photo.CopyToAsync(memoryStream);
 
-            var imagePath = PathUrl.UserPhoto;
+            var imagePath = Constants.USER_PHOTO_PATH;
 
             _imageRepository.Save(memoryStream.ToArray(), imagePath, request.UserId.ToString());
 
-            var url = $"/Photo/{request.UserId}.jpg";
+            var url = $"{Constants.BASE_URL}/User/Photo/{request.UserId}.jpg";
 
             user.PhotoUrl = url;
             await _dbContext.SaveChangesAsync(cancellationToken);

@@ -71,7 +71,7 @@ void RegisterServices(IServiceCollection services)
             Contact = new OpenApiContact
             {
                 Name = "GitHub",
-                Url = new Uri("https://github.com/Danila009/market-backend.git")
+                Url = new Uri("https://github.com/Danila009/PGK")
             }
         });
 

@@ -15,7 +15,7 @@ namespace PGK.Application.App.User.Queries.GetUserPhoto
 
         public async Task<byte[]> Handle(GetUserPhotoQuery request, CancellationToken cancellationToken)
         {
-            var imagePath = PathUrl.UserPhoto;
+            var imagePath = Constants.USER_PHOTO_PATH;
 
             var image = _imageRepository.Get($"{imagePath}{request.UserId}.jpg");
 

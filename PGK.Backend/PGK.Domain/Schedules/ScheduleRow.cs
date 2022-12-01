@@ -6,7 +6,7 @@ namespace PGK.Domain.Schedules
     public class ScheduleRow
     {
         [Key] public int Id { get; set; }
-        [Required] public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
         
         public TeacherUser? Teacher { get; set; }
 
