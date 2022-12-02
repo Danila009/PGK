@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PGK.Application.App.User.Admin.Commands.Registration
 {
-    internal class RegistrationAdminVm
+    public class RegistrationAdminVm
     {
+        [Required] public string AccessToken { get; set; } = string.Empty;
+        [Required] public string RefreshToken { get; set; } = string.Empty;
+
+        [Required] public int UserId { get; set; }
+        [Required] public string Passowrd { get; set; } = string.Empty;
+        [Required] public string UserRole { get; set; }
     }
 }

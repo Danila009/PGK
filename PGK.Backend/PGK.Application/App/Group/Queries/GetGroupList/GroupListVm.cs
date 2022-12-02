@@ -1,18 +1,11 @@
 ﻿
 using PGK.Application.App.Group.Queries.GetGroupDetails;
+using PGK.Application.Common.Paged;
 
 namespace PGK.Application.App.Group.Queries.GetGroupList
 {
-    public class GroupListVm
+    public class GroupListVm : PagedResult<GroupDetails>
     {
-        public int Count
-        {
-            get
-            {
-                return Groups.Count;
-            }
-        }
-
-        public virtual List<GroupDetails> Groups { get; set; } = new List<GroupDetails>();
+        public override PagedList<GroupDetails> Results { get; set; }
     }
 }

@@ -89,6 +89,7 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("File")]
         public async Task<ActionResult> FileCreate(IFormFile file)
         {
@@ -102,7 +103,7 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost]
         public async Task<ActionResult<CreateScheduleVm>> Create(CreateScheduleCommand command)
         {
@@ -111,7 +112,7 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department")]
         public async Task<ActionResult<CreateScheduleDepartmentVm>> CreateDepartment(
             CreateScheduleDepartmentCommand command)
@@ -121,7 +122,7 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department/Column")]
         public async Task<ActionResult<CreateScheduleColumnVm>> CreateColumn(
             CreateScheduleColumnCommand command)
@@ -131,7 +132,7 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department/Column/Row")]
         public async Task<ActionResult<CreateScheduleRowVm>> CreateRow(
             CreateScheduleRowCommand command)

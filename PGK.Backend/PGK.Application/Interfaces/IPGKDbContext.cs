@@ -43,6 +43,7 @@ namespace PGK.Application.Interfaces
         DbSet<JournalSubject> JournalSubjects { get; set; }
         DbSet<JournalSubjectColumn> JournalSubjectColumns { get; set; }
         DbSet<JournalSubjectRow> JournalSubjectRows { get; set; }
+        DbSet<JournalTopic> JournalTopics { get; set; }
 
         DbSet<Department> Departments { get; set; }
         DbSet<Speciality> Specialties { get; set; }

@@ -4,13 +4,13 @@
     "\\PGK.Backend",
     "\\PGK.Backend\\PGK.Application",
     "\\PGK.Backend\\PGK.Application\\App",
-    "\\PGK.Backend\\PGK.Application\\App\\Schedule",
-    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries",
-    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries\\GetScheduleRowList",
+    "\\PGK.Backend\\PGK.Application\\App\\User",
+    "\\PGK.Backend\\PGK.Application\\App\\User\\Queries",
+    "\\PGK.Backend\\PGK.Application\\App\\User\\Queries\\GetUserPhoto",
     "\\PGK.Backend\\PGK.Persistence",
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Queries\\GetScheduleRowList\\ScheduleRowDto.cs",
+  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\User\\Queries\\GetUserPhoto\\GetUserPhotoQueryHandler.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -14,9 +14,17 @@ namespace PGK.WebApi.Controllers
     {
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<GroupListVm>> GetAll()
+        public async Task<ActionResult<GroupListVm>> GetAll(
+            string? search,
+            int pageNumber = 1, int pageSize = 20
+            )
         {
-            var query = new GetGroupListQuery();
+            var query = new GetGroupListQuery
+            {
+                Search = search,
+                PageNumber = pageNumber,
+                PageSize = pageNumber
+            };
 
             var vm = await Mediator.Send(query);
 

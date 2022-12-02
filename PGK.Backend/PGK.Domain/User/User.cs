@@ -19,6 +19,7 @@ namespace PGK.Domain.User
         [Required, MaxLength(256)] public string Password { get; set; } = string.Empty;
 
         [Required] public bool DrarkMode { get; set; } = false;
+        [Required] public SecondaryBackground SecondaryBackground { get; set; } = SecondaryBackground.BLUE;
 
         public string? PhotoUrl { get; set; } = null;
         public string? RefreshToken { get; set; } = null;

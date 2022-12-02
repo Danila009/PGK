@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="App\Department\Commands\" />
+    <Folder Include="App\Journal\Commands\" />
     <Folder Include="App\Speciality\Commands\" />
   </ItemGroup>
 

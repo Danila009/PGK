@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace PGK.Application.App.User.Admin.Commands.Registration
 {
-    internal class RegistrationAdminCommand
+    public class RegistrationAdminCommand : IRequest<RegistrationAdminVm>
     {
+        [Required, MaxLength(128)] public string FirstName { get; set; } = string.Empty;
+        [Required, MaxLength(128)] public string LastName { get; set; } = string.Empty;
+        [MaxLength(128)] public string? MiddleName { get; set; }
     }
 }

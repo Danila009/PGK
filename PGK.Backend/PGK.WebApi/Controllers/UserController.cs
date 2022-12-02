@@ -7,11 +7,26 @@ using PGK.Application.App.User.Commands.SendEmailPaswordReset;
 using PGK.Application.App.User.Commands.SendEmailVerification;
 using PGK.Application.App.User.Commands.UpdateEmail;
 using PGK.Application.App.User.Queries.GetUserPhoto;
+using PGK.Application.App.User.Queries.GetUserSettings;
 
 namespace PGK.WebApi.Controllers
 {
     public class UserController : Controller
     {
+
+        [Authorize]
+        [HttpGet("Settings")]
+        public async Task<ActionResult<UserSettingsDto>> GetSettings()
+        {
+            var query = new GetUserSettingsQuery
+            {
+                UserId = UserId
+            };
+
+            var dto = await Mediator.Send(query);
+
+            return dto;
+        }
 
         [Authorize]
         [HttpGet("Photo/{userId}.jpg")]

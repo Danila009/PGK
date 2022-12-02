@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PGK.Application.App.Group.Queries.GetGroupDetails;
+using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
 
 namespace PGK.Application.App.Group.Queries.GetGroupList
@@ -24,11 +25,22 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
                 .Include(u => u.Speciality)
                 .Include(u => u.Department);
 
-            var groups = await query
-                .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                var search = request.Search.ToLower();
 
-            return new GroupListVm { Groups = groups };
+                query = query.Where(u => u.Number.ToString().ToLower().Contains(search) ||
+                    u.Speciality.Name.ToLower().Contains(search));
+            }
+
+            var groups = query
+                .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider);
+
+
+            var groupsPaged = await PagedList<GroupDetails>.ToPagedList(groups, request.PageNumber, 
+                request.PageSize);
+
+            return new GroupListVm { Results =  groupsPaged };
         }
     }
 }

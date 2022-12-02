@@ -45,6 +45,7 @@ namespace PGK.Persistence
         public DbSet<JournalSubject> JournalSubjects { get; set; }
         public DbSet<JournalSubjectColumn> JournalSubjectColumns { get; set; }
         public DbSet<JournalSubjectRow> JournalSubjectRows { get; set; }
+        public DbSet<JournalTopic> JournalTopics { get; set; }
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Speciality> Specialties { get; set; }

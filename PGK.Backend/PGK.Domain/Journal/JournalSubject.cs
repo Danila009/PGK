@@ -11,6 +11,7 @@ namespace PGK.Domain.Journal
         [Required] public TeacherUser Teacher { get; set; }
         [Required] public Journal Journal { get; set; }
 
+        public virtual List<JournalTopic> Topics { get; set; } = new List<JournalTopic>();
         public virtual List<JournalSubjectRow> Rows { get; set; } = new List<JournalSubjectRow>();
     }
 }
