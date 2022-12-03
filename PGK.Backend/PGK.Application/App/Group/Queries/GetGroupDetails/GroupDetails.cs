@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using PGK.Application.App.Department.Queries.GetDepartmentList;
 using PGK.Application.App.Speciality.Queries.GetSpecialityList;
+using PGK.Application.App.User.Headman.Queries.GetDeputyHeadmanList;
+using PGK.Application.App.User.Headman.Queries.GetHeadmanList;
 using PGK.Application.App.User.Teacher.Queries.GetTeacherUserDetails;
 using PGK.Application.Common.Mappings;
 using System.ComponentModel.DataAnnotations;
@@ -14,8 +16,8 @@ namespace PGK.Application.App.Group.Queries.GetGroupDetails
         [Required] public SpecialityDto Speciality { get; set; }
         [Required] public DepartmentDto Department { get; set; }
         [Required] public TeacherUserDetails ClassroomTeacher { get; set; }
-        //public StudentDto? Headman { get; set; } = null;
-        //public StudentDto? DeputyHeadma { get; set; } = null;
+        public HeadmanDto? Headman { get; set; } = null;
+        public DeputyHeadmanDto? DeputyHeadma { get; set; } = null;
 
         public void Mapping(Profile profile)
         {

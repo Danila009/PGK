@@ -11,6 +11,6 @@
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\User\\Queries\\GetUserPhoto\\GetUserPhotoQueryHandler.cs",
+  "SelectedNode": "\\PGK.Backend\\PGK.Backend.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -5,9 +5,12 @@ using PGK.Application.App.User.Commands.EmailPaswordReset;
 using PGK.Application.App.User.Commands.EmailVerification;
 using PGK.Application.App.User.Commands.SendEmailPaswordReset;
 using PGK.Application.App.User.Commands.SendEmailVerification;
+using PGK.Application.App.User.Commands.UpdateDrarkMode;
 using PGK.Application.App.User.Commands.UpdateEmail;
+using PGK.Application.App.User.Commands.UpdateSecondaryBackground;
 using PGK.Application.App.User.Queries.GetUserPhoto;
 using PGK.Application.App.User.Queries.GetUserSettings;
+using PGK.Domain.User;
 
 namespace PGK.WebApi.Controllers
 {
@@ -26,6 +29,36 @@ namespace PGK.WebApi.Controllers
             var dto = await Mediator.Send(query);
 
             return dto;
+        }
+
+        [Authorize]
+        [HttpPatch("Settings/DrarkMode")]
+        public async Task<ActionResult<UpdateDrarkModeVm>> SettingsUpdateDrarkMode()
+        {
+            var command = new UpdateDrarkModeCommand
+            {
+                UserId = UserId
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        [Authorize]
+        [HttpPatch("Settings/SecondaryBackground")]
+        public async Task<ActionResult<UpdateSecondaryBackgroundVm>> SettingsUpdateSecondaryBackground(
+            SecondaryBackground secondaryBackground)
+        {
+            var command = new UpdateSecondaryBackgroundCommand
+            {
+                UserId = UserId,
+                SecondaryBackground = secondaryBackground
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
         }
 
         [Authorize]

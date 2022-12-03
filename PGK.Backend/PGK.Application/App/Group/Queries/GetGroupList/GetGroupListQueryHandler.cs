@@ -23,7 +23,9 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
             IQueryable<Domain.Group.Group> query = _dbContext.Groups
                 .Include(u => u.ClassroomTeacher)
                 .Include(u => u.Speciality)
-                .Include(u => u.Department);
+                .Include(u => u.Department)
+                .Include(u => u.DeputyHeadma)
+                .Include(u => u.Headman);
 
             if (!string.IsNullOrEmpty(request.Search))
             {

@@ -1,0 +1,17 @@
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Persistence.deps.json
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Persistence.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\ref\PGK.Persistence.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Persistence.pdb
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Application.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Domain.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Application.pdb
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Release\net6.0\PGK.Domain.pdb
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.csproj.AssemblyReference.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.AssemblyInfoInputs.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.AssemblyInfo.cs
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.csproj.CopyComplete
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\ref\PGK.Persistence.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Release\net6.0\PGK.Persistence.pdb

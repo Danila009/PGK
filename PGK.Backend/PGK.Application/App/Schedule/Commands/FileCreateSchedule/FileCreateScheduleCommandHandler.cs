@@ -2,18 +2,23 @@
 using MediatR;
 using PGK.Application.Interfaces;
 using PGK.Domain.Schedules;
+using Microsoft.EntityFrameworkCore;
+using PGK.Domain.User.Teacher;
+using PGK.Application.App.Schedule.GetScheduleList.Queries;
+using AutoMapper;
 
 namespace PGK.Application.App.Schedule.Commands.FileCreateSchedule
 {
     public class FileCreateScheduleCommandHandler
-        : IRequestHandler<FileCreateScheduleCommand>
+        : IRequestHandler<FileCreateScheduleCommand, ScheduleDto>
     {
         private readonly IPGKDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public FileCreateScheduleCommandHandler(IPGKDbContext dbContext) =>
-            _dbContext = dbContext;
+        public FileCreateScheduleCommandHandler(IPGKDbContext dbContext, IMapper mapper) =>
+            (_dbContext, _mapper) = (dbContext, mapper);
 
-        public async Task<Unit> Handle(FileCreateScheduleCommand request,
+        public async Task<ScheduleDto> Handle(FileCreateScheduleCommand request,
             CancellationToken cancellationToken)
         {
             MemoryStream memoryStream = new MemoryStream();
@@ -21,17 +26,15 @@ namespace PGK.Application.App.Schedule.Commands.FileCreateSchedule
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            var schedule = fromFileToEntity(memoryStream);
-
-            Console.WriteLine(schedule);
+            var schedule = await fromFileToEntity(memoryStream);
 
             await _dbContext.Schedules.AddAsync(schedule, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return _mapper.Map<ScheduleDto>(schedule);
         }
 
-        private Domain.Schedules.Schedule fromFileToEntity(MemoryStream memoryStream)
+        private async Task<Domain.Schedules.Schedule> fromFileToEntity(MemoryStream memoryStream)
         {
             using var package = new ExcelPackage(memoryStream);
 
@@ -61,9 +64,15 @@ namespace PGK.Application.App.Schedule.Commands.FileCreateSchedule
 
                     if (value.ToLower().Contains("отделение"))
                     {
+                        var departmentName = value.Replace("отделение", "").Trim();
+
+                        var department = await _dbContext.Departments.FirstOrDefaultAsync(
+                            u => u.Name == departmentName);
+
                         var scheduleDepartment = new ScheduleDepartment
                         {
-                            Text = value,
+                            Text = departmentName,
+                            Department = department,
                             Schedule = schedule
                         };
 
@@ -99,11 +108,18 @@ namespace PGK.Application.App.Schedule.Commands.FileCreateSchedule
 
                         var groupNumberAndSpeciality = group.Replace("(", string.Empty).Split("-");
 
+                        var groupDb = await _dbContext.Groups
+                            .Include(u => u.Speciality)
+                            .FirstOrDefaultAsync(u =>
+                                u.Number == int.Parse(groupNumberAndSpeciality[1]) &&
+                                u.Speciality.NameAbbreviation == groupNumberAndSpeciality[0]);
+
                         var scheduleColumn = new ScheduleColumn
                         {
                             Text = group.Replace("(", string.Empty),
                             Time = change,
-                            ScheduleDepartment = scheduleDepartments.Last()
+                            ScheduleDepartment = scheduleDepartments.Last(),
+                            Group = groupDb
                         };
 
                         scheduleDepartments.Last().Columns.Add(scheduleColumn);
@@ -123,21 +139,60 @@ namespace PGK.Application.App.Schedule.Commands.FileCreateSchedule
                             Column = scheduleColumns.Last()
                         };
 
-                        scheduleColumns.Last().Rows.Add(scheduleRow);
+                        if (officeTeacher.Length == 2)
+                        {
+                            var teacherName = officeTeacher[0].Split(" ");
 
-                        if (officeTeacher.Length == 1)
-                        {
-                            //strings.Add($"Кабинет: {officeTeacher[0]}");
+                            string? firstName = null;
+                            string lastName = officeTeacher[0];
+                            string? middleName = null;
+
+                            if (teacherName.Length == 1)
+                            {
+                                lastName = teacherName[0];
+                            }else if(teacherName.Length == 2)
+                            {
+                                lastName = teacherName[0];
+
+                                var firstNameMiddleName = teacherName[1].Split(".");
+
+                                firstName = firstNameMiddleName[0];
+                                middleName = firstNameMiddleName[1];
+                            }
+
+                            var query = _dbContext.TeacherUsers.Where(u => u.LastName == lastName);
+                            
+                            TeacherUser? teacher = null;
+
+                            if(firstName != null)
+                            {
+                                query = query.Where(u => u.FirstName.StartsWith(firstName));
+                            }
+
+                            if(middleName != null)
+                            {
+                                query = query.Where(u => u.LastName.StartsWith(lastName));
+                            }
+
+                            var teachers = await query.ToListAsync();
+
+                            if(teachers.Count > 1)
+                            {
+                                throw new Exception($"ряд: {row} Колонка: {col} приподаватель: " +
+                                    $"{firstName} найдено больше одного");
+
+                            }else if(teachers.Count == 1)
+                            {
+                                teacher = teachers.Last();
+                            }
+
+                            var text = teacher == null ? value : officeTeacher[1];
+
+                            scheduleRow.Teacher = teacher;
+                            scheduleRow.Text = text;
                         }
-                        else if (officeTeacher.Length == 2)
-                        {
-                          //  strings.Add($"Кабинет: {officeTeacher[1]}");
-                        //    strings.Add($"Преподаватель: {officeTeacher[0]}");
-                        }
-                        else
-                        {
-                            //strings.Add($"Кабинет: {value}");
-                        }
+
+                        scheduleColumns.Last().Rows.Add(scheduleRow);
                     }
                 }
             }

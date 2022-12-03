@@ -1,4 +1,5 @@
-﻿using PGK.Application.App.Department.Queries.GetDepartmentList;
+﻿using AutoMapper;
+using PGK.Application.App.Department.Queries.GetDepartmentList;
 using PGK.Application.App.Group.Queries.GetGroupDetails;
 using PGK.Application.Common.Mappings;
 using PGK.Domain.User.Headman;
@@ -16,5 +17,10 @@ namespace PGK.Application.App.User.Headman.Queries.GetHeadmanList
         [Required] public GroupDetails Group { get; set; }
 
         [Required] public DepartmentDto Department { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<HeadmanUser, HeadmanDto>();
+        }
     }
 }

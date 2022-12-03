@@ -22,6 +22,8 @@ namespace PGK.Application.App.Group.Queries.GetGroupDetails
                 .Include(u => u.ClassroomTeacher)
                 .Include(u => u.Speciality)
                 .Include(u => u.Department)
+                .Include(u => u.DeputyHeadma)
+                .Include(u => u.Headman)
                 .FirstOrDefaultAsync(u => u.Id == request.GroupId);
 
             if (group == null)

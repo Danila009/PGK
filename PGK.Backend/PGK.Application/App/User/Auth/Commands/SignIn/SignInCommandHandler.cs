@@ -20,8 +20,7 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
         {
             var users = await _dbContext.Users.Where(u =>
                 u.FirstName == request.FirstName &&
-                u.LastName == request.LastName &&
-                u.MiddleName == request.MiddleName
+                u.LastName == request.LastName
                 ).ToListAsync(cancellationToken);
 
             if (users == null || users.Count < 1)

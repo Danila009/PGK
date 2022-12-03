@@ -1,0 +1,12 @@
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\bin\Release\net6.0\PGK.Domain.deps.json
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\bin\Release\net6.0\PGK.Domain.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\bin\Release\net6.0\ref\PGK.Domain.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\bin\Release\net6.0\PGK.Domain.pdb
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.csproj.AssemblyReference.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.AssemblyInfoInputs.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.AssemblyInfo.cs
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.csproj.CoreCompileInputs.cache
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\ref\PGK.Domain.dll
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Release\net6.0\PGK.Domain.pdb

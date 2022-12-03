@@ -91,16 +91,16 @@ namespace PGK.WebApi.Controllers
 
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("File")]
-        public async Task<ActionResult> FileCreate(IFormFile file)
+        public async Task<ActionResult<ScheduleDto>> FileCreate(IFormFile file)
         {
             var command = new FileCreateScheduleCommand
             {
                 File = file
             };
 
-            await Mediator.Send(command);
+            var dto = await Mediator.Send(command);
 
-            return Ok();
+            return Ok(dto);
         }
 
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]

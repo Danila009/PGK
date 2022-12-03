@@ -5,6 +5,7 @@ using PGK.Application.App.Group.Commands.DeleteGroup;
 using PGK.Application.App.Group.Queries.GetClassroomTeacher;
 using PGK.Application.App.Group.Queries.GetGroupDetails;
 using PGK.Application.App.Group.Queries.GetGroupList;
+using PGK.Application.App.Group.Queries.GetGroupStudentList;
 using PGK.Application.App.Raportichka.Commands.CreateRaportichka;
 using PGK.Application.App.User.Teacher.Queries.GetTeacherUserDetails;
 
@@ -57,6 +58,24 @@ namespace PGK.WebApi.Controllers
             var details = await Mediator.Send(query);
 
             return Ok(details);
+        }
+
+        [Authorize]
+        [HttpGet("{id}/Students")]
+        public async Task<ActionResult<GroupStudentListVm>> GetStudentAll(
+            int id, int pageNumber = 1, int pageSize = 20
+            )
+        {
+            var query = new GetGroupStudentListQuery
+            {
+                GroupId = id,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            var vm = await Mediator.Send(query);
+
+            return Ok(vm);
         }
 
         [Authorize(Roles = "TEACHER,ADMIN")]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PGK.Application.App.User.Student.Commands.Delete;
 using PGK.Application.App.User.Student.Commands.Registration;
 using PGK.Application.App.User.Student.Queries.GetStudentUserList;
 
@@ -36,6 +37,20 @@ namespace PGK.WebApi.Controllers
            var vm = await Mediator.Send(command);
 
             return Ok(vm);
+        }
+
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var command = new DeleteStudentCommand
+            {
+                StudentId = id
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

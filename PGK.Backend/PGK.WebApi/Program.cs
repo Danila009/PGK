@@ -83,17 +83,27 @@ void RegisterServices(IServiceCollection services)
 
 void Configure(WebApplication app)
 {
-    if (app.Environment.IsDevelopment())
+    var basePath = "pgk63";
+
+    app.UsePathBase("/" + basePath);
     {
         app.UseDeveloperExceptionPage();
+
+        app.UseSwagger(c =>
+        {
+            c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+            {
+                swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer {
+                    Url = $"https://{httpReq.Host.Value}/{basePath}" } };
+            });
+        });
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint($"/{basePath}/swagger/v1/swagger.json", "PGK API v1");
+        });
     }
 
-    app.UseSwagger();
-    app.UseSwaggerUI(config =>
-    {
-        config.RoutePrefix = string.Empty;
-        config.SwaggerEndpoint("swagger/v1/swagger.json", "PGK API");
-    });
 
     app.UseCustomExceptionHandler();
 
