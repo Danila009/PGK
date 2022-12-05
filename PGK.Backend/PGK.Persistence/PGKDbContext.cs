@@ -14,6 +14,7 @@ using PGK.Domain.User.EducationalSector;
 using PGK.Domain.User.Headman;
 using PGK.Domain.User.Student;
 using PGK.Domain.User.Teacher;
+using PGK.Domain.Vedomost;
 using PGK.Persistence.EntityTypeConfiguration;
 
 namespace PGK.Persistence
@@ -49,6 +50,8 @@ namespace PGK.Persistence
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Speciality> Specialties { get; set; }
+
+        public DbSet<Vedomost> Vedomost { get; set; }
 
         public PGKDbContext(DbContextOptions<PGKDbContext> options) : base(options)
         {

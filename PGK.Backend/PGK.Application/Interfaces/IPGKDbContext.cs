@@ -13,6 +13,7 @@ using PGK.Domain.User.EducationalSector;
 using PGK.Domain.User.Headman;
 using PGK.Domain.User.Student;
 using PGK.Domain.User.Teacher;
+using PGK.Domain.Vedomost;
 
 namespace PGK.Application.Interfaces
 {
@@ -47,6 +48,8 @@ namespace PGK.Application.Interfaces
 
         DbSet<Department> Departments { get; set; }
         DbSet<Speciality> Specialties { get; set; }
+
+        DbSet<Vedomost> Vedomost { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

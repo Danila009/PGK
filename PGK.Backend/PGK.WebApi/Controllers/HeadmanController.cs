@@ -4,6 +4,8 @@ using PGK.Application.App.Raportichka.Commands.CreateRaportichka;
 using PGK.Application.App.Raportichka.Row.Commands.UpdateRow;
 using PGK.Application.App.User.Headman.Commands.DeputyRegistration;
 using PGK.Application.App.User.Headman.Commands.Registration;
+using PGK.Application.App.Vedomost.Commands.CreateVedomost;
+using PGK.Application.App.Vedomost.Commands.DeleteVedomost;
 using PGK.WebApi.Models.Headman;
 using PGK.WebApi.Models.Raportichka;
 
@@ -56,6 +58,39 @@ namespace PGK.WebApi.Controllers
             var vm = await Mediator.Send(command);
 
             return Ok(vm);
+        }
+
+        [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN")]
+        [HttpPost("Vedomost")]
+        public async Task<ActionResult<CreateVedomostVm>> CreateVedomost(DateTime date, FormFile file)
+        {
+            var command = new CreateVedomostCommand
+            {
+                UserId = UserId,
+                Role = UserRole.Value,
+                File = file,
+                Date = date
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN")]
+        [HttpDelete("{id}/Vedomost")]
+        public async Task<ActionResult> DeleteVedomost(int id)
+        {
+            var command = new DeleteVedomostCommand
+            {
+                UserId = UserId,
+                Role = UserRole.Value,
+                VedomostId = id
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN,ADMIN")]

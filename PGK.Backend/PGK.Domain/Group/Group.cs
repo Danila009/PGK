@@ -18,6 +18,8 @@ namespace PGK.Domain.Group
 
         [Required] public Department.Department Department { get; set; }
 
+
+        public virtual List<Vedomost.Vedomost> Vedomost { get; set; } = new List<Vedomost.Vedomost>();
         public virtual List<StudentUser> Students { get; set; } = new List<StudentUser>();
         public virtual List<Raportichka.Raportichka> Raportichkas { get; set; } =
             new List<Raportichka.Raportichka>();

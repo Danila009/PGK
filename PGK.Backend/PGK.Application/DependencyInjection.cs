@@ -7,6 +7,7 @@ using PGK.Application.Security;
 using PGK.Application.Common.Behaviors;
 using PGK.Application.Repository.ImageRepository;
 using PGK.Application.Services.EmailService;
+using PGK.Application.Repository.FileRepository;
 
 namespace Market.Application
 {
@@ -17,6 +18,7 @@ namespace Market.Application
         {
             service.AddSingleton<IAuth, Auth>();
             service.AddSingleton<IImageRepository, ImageRepository>();
+            service.AddSingleton<IFileRepository, FileRepository>();
             service.AddSingleton<IEmailService, EmailService>();
 
             service.AddMediatR(Assembly.GetExecutingAssembly());
