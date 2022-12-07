@@ -1,15 +1,10 @@
-﻿namespace PGK.Application.App.Subject.Queries.GetSubjectList
+﻿using PGK.Application.Common.Paged;
+
+namespace PGK.Application.App.Subject.Queries.GetSubjectList
 {
-    public class SubjectListVm
+    public class SubjectListVm : PagedResult<SubjectDto>
     {
-        public int Count
-        {
-            get
-            {
-                return Subjects.Count;
-            }
-        }
      
-        public virtual IList<SubjectDto> Subjects { get; set; } = new List<SubjectDto>();
+        public override PagedList<SubjectDto> Results { get; set; }
     }
 }

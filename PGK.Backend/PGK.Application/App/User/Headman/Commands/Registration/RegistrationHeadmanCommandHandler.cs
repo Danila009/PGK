@@ -35,7 +35,7 @@ namespace PGK.Application.App.User.Headman.Commands.Registration
                 throw new Exception("Группа может быть изменена только классным руководителям");
             }
 
-            var refreshToken = _auth.CreateRefreshToken();
+            var refreshToken = _auth.CreateToken();
 
             var headman = new HeadmanUser
             {
@@ -49,7 +49,7 @@ namespace PGK.Application.App.User.Headman.Commands.Registration
                 Group = student.Group
             };
 
-            var accessToken = _auth.CreateToken(userId: headman.Id, userRole: headman.Role);
+            var accessToken = _auth.CreateAccessToken(userId: headman.Id, userRole: headman.Role);
 
             _dbContext.StudentsUsers.Remove(student);
             await _dbContext.HeadmanUsers.AddAsync(headman, cancellationToken);

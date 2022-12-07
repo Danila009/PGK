@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PGK.Application.App.User.DepartmentHead.Queries.GetDepartmentHeadList;
 using PGK.Application.Common.Mappings;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +11,7 @@ namespace PGK.Application.App.Department.Queries.GetDepartmentList
 
         [Required] public string Name { get; set; } = string.Empty;
 
-        //[Required] public DepartmentHeadUser DepartmentHead { get; set; }
+        [Required] public DepartmentHeadDto DepartmentHead { get; set; }
 
         public void Mapping(Profile profile)
         {

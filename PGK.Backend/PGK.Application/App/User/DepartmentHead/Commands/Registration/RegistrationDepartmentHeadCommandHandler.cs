@@ -22,7 +22,7 @@ namespace PGK.Application.App.User.DepartmentHead.Commands.Registration
         {
             var password = Guid.NewGuid().ToString();
 
-            var refreshToken = _auth.CreateRefreshToken();
+            var refreshToken = _auth.CreateToken();
 
             var passwordHash = PasswordHash.CreateHash(password);
 
@@ -38,7 +38,7 @@ namespace PGK.Application.App.User.DepartmentHead.Commands.Registration
             await _dbContext.DeputyHeadmaUsers.AddAsync(user, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var accessToken = _auth.CreateToken(userId: user.Id, userRole: user.Role);
+            var accessToken = _auth.CreateAccessToken(userId: user.Id, userRole: user.Role);
 
             return new RegistrationDepartmentHeadVm
             {

@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.Group.Commands.CreateGroup;
 using PGK.Application.App.Group.Commands.DeleteGroup;
+using PGK.Application.App.Group.Commands.UpdateGroup;
 using PGK.Application.App.Group.Queries.GetClassroomTeacher;
 using PGK.Application.App.Group.Queries.GetGroupDetails;
 using PGK.Application.App.Group.Queries.GetGroupList;
 using PGK.Application.App.Group.Queries.GetGroupStudentList;
 using PGK.Application.App.Raportichka.Commands.CreateRaportichka;
 using PGK.Application.App.User.Teacher.Queries.GetTeacherUserDetails;
+using PGK.WebApi.Models.Group;
 
 namespace PGK.WebApi.Controllers
 {
@@ -101,6 +103,27 @@ namespace PGK.WebApi.Controllers
             var vm = await Mediator.Send(command);
 
             return Ok(vm);
+        }
+
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GroupDetails>> Update(
+            int id, [FromBody] UpdateGroupModel model)
+        {
+            var command = new UpdateGroupCommand
+            {
+                Id = id,
+                Number = model.Number,
+                SpecialityId = model.SpecialityId,
+                ClassroomTeacherId = model.ClassroomTeacherId,
+                HeadmanId = model.HeadmanId,
+                DeputyHeadmaId = model.DeputyHeadmaId,
+                DepartmentId = model.DepartmentId
+            };
+
+            var dto = await Mediator.Send(command);
+
+            return Ok(dto);
         }
 
         [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR")]

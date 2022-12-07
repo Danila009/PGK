@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
+using PGK.Application.Security;
 using PGK.Application.Services.EmailService;
 
 namespace PGK.Application.App.User.Commands.UpdateEmail
@@ -10,9 +11,11 @@ namespace PGK.Application.App.User.Commands.UpdateEmail
     {
         private readonly IPGKDbContext _dbContext;
         private readonly IEmailService _emailService;
+        private readonly IAuth _auth;
 
         public UserUpdateEmailCommandHandler(IPGKDbContext dbContext,
-            IEmailService emailService) => (_dbContext, _emailService) = (dbContext, emailService);
+            IEmailService emailService, IAuth auth) =>
+            (_dbContext, _emailService, _auth) = (dbContext, emailService, auth);
 
         public async Task<Unit> Handle(UserUpdateEmailCommand request,
             CancellationToken cancellationToken)
@@ -24,7 +27,7 @@ namespace PGK.Application.App.User.Commands.UpdateEmail
                 throw new NotFoundException(nameof(Domain.User.User), request.UserId);
             }
 
-            var sendEmailToken = $"update_email_{Guid.NewGuid()}";
+            var sendEmailToken = _auth.CreateToken();
 
             user.Email = request.Email;
             user.EmailVerification = false;
@@ -34,7 +37,7 @@ namespace PGK.Application.App.User.Commands.UpdateEmail
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Подтверждение адреса электронной почты для входа в приложение ПГК",
-                message: $"<h1>https://localhost:7002/api/User/{user.Id}/Email/Verification/{sendEmailToken}</h1>");
+                message: $"<h1>{Common.Constants.BASE_URL}/User/{user.Id}/Email/Verification/{sendEmailToken}.html</h1>");
 
 
 

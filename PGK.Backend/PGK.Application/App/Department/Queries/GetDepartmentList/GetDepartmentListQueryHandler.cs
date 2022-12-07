@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
 
@@ -18,7 +19,8 @@ namespace PGK.Application.App.Department.Queries.GetDepartmentList
         public async Task<DepartmentListVm> Handle(GetDepartmentListQuery request,
             CancellationToken cancellationToken)
         {
-            IQueryable<Domain.Department.Department> query = _dbContext.Departments;
+            IQueryable<Domain.Department.Department> query = _dbContext.Departments
+                .Include(u => u.DepartmentHead);
 
             if (!string.IsNullOrEmpty(request.Search))
             {

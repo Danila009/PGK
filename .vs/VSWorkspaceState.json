@@ -8,6 +8,6 @@
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Backend.sln",
+  "SelectedNode": "\\PGK.Backend\\PGK.WebApi\\Controllers\\HeadmanController.cs",
   "PreviewInSolutionExplorer": false
 }

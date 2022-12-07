@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using PGK.Domain.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,18 +12,43 @@ namespace PGK.Application.Security
 
         public Auth(IConfiguration configuration) => _configuration = configuration;
 
-        public string CreateRefreshToken()
+        public string CreateToken()
         {
             byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
-            
             byte[] key = Guid.NewGuid().ToByteArray();
-            
             string token = Convert.ToBase64String(time.Concat(key).ToArray());
 
             return token;
         }
 
-        public string CreateToken(
+        public bool TokenValidation(string token, TokenType type)
+        {
+            Console.WriteLine(token);
+
+            byte[] data = Convert.FromBase64String(token);
+
+            DateTime when = DateTime.FromBinary(BitConverter.ToInt64(data, 0));
+
+            var dateTimeUtc = DateTime.UtcNow;
+
+            DateTime? timeToken = type == TokenType.REFRESH_TOKEN ? dateTimeUtc.AddDays(-30)
+                : type == TokenType.EMAIL_SEND_TOKEN ? dateTimeUtc.AddMinutes(-10)
+                : null;
+
+            if(timeToken == null)
+            {
+                return true;
+            }
+
+            if (when < timeToken)
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        public string CreateAccessToken(
             int userId, string userRole)
         {
             var claims = Claims(userRole: userRole,
@@ -41,7 +65,8 @@ namespace PGK.Application.Security
                     issuer: _configuration["token:issuer"],
                     notBefore: now,
                     claims: claims,
-                    expires: now.Add(TimeSpan.FromMinutes(int.Parse(_configuration["token:accessTokenExpiryMinutes"]))),
+                    expires: now.Add(TimeSpan.FromMinutes(
+                        int.Parse(_configuration["token:accessTokenExpiryMinutes"]))),
                     signingCredentials: signIn);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

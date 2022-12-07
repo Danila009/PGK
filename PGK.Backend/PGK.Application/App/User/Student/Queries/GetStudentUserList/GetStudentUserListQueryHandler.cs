@@ -30,7 +30,7 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
 
             if (!string.IsNullOrEmpty(request.Search))
             {
-                var search = request.Search.ToLower();
+                var search = request.Search.ToLower().Trim();
                 queries = queries.Where(u => 
                     u.FirstName.ToLower().Contains(search) ||
                     u.LastName.ToLower().Contains(search)

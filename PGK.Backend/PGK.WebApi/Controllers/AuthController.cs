@@ -18,8 +18,13 @@ namespace PGK.WebApi.Controllers
 
         [HttpPost("Revoke")]
         public async Task<ActionResult> RevokeRefreshToken(
-            [FromBody] RevokeRefreshTokenCommand command)
+            [FromHeader] string refreshToken)
         {
+            var command = new RevokeRefreshTokenCommand
+            {
+                RefreshToken = refreshToken
+            };
+
             await Mediator.Send(command);
 
             return Ok("Refresh token is revoked");
@@ -27,9 +32,14 @@ namespace PGK.WebApi.Controllers
 
         [HttpPost("Refresh")]
         public async Task<ActionResult<RefreshTokenVm>> RefreshToken(
-            [FromBody] RefreshTokenCommand command
+            [FromHeader] string refreshToken
             )
         {
+            var command = new RefreshTokenCommand
+            {
+                RefreshToken = refreshToken
+            };
+
             var vm = await Mediator.Send(command);
 
             return Ok(vm);

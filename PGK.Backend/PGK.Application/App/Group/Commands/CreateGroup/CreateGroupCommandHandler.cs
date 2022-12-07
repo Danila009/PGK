@@ -29,14 +29,14 @@ namespace PGK.Application.App.Group.Commands.CreateGroup
 
             if(speciality == null)
             {
-                throw new NotFoundException(nameof(Speciality), request.SpecialityId);
+                throw new NotFoundException(nameof(Domain.Speciality.Speciality), request.SpecialityId);
             }
 
             var department = await _dbContext.Departments.FindAsync(request.DepartmentId);
 
             if(department == null)
             {
-                throw new NotFoundException(nameof(Department), request.DepartmentId);
+                throw new NotFoundException(nameof(Domain.Department.Department), request.DepartmentId);
             }
 
             var group = new Domain.Group.Group

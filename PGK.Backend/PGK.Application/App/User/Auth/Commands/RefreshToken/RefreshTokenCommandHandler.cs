@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Application.Security;
 
@@ -23,10 +22,15 @@ namespace PGK.Application.App.User.Auth.Commands.RefreshToken
 
             if (user == null)
             {
-                throw new NotFoundException(nameof(User), request.RefreshToken);
+                throw new UnauthorizedAccessException($"Invalid token ({request.RefreshToken})");
             }
 
-            var jwtToken = _auth.CreateToken(userId: user.Id, userRole: user.Role);
+            if(!_auth.TokenValidation(token: request.RefreshToken, type: TokenType.REFRESH_TOKEN))
+            {
+                throw new UnauthorizedAccessException("The token has expired");
+            }
+
+            var jwtToken = _auth.CreateAccessToken(userId: user.Id, userRole: user.Role);
 
             return new RefreshTokenVm { AccessToken = jwtToken };
         }

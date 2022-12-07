@@ -4,17 +4,21 @@ using PGK.Application.Interfaces;
 using PGK.Application.Services.EmailService;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Common;
+using PGK.Application.Security;
 
 namespace PGK.Application.App.User.Commands.SendEmailVerification
 {
     public class SendEmailVerificationCommandHandler
         :IRequestHandler<SendEmailVerificationCommand>
     {
+
         private readonly IPGKDbContext _dbContext;
         private readonly IEmailService _emailService;
+        private readonly IAuth _auth;
 
         public SendEmailVerificationCommandHandler(IPGKDbContext dbContext,
-            IEmailService emailService) => (_dbContext, _emailService) = (dbContext, emailService);
+            IEmailService emailService, IAuth auth) =>
+            (_dbContext, _emailService, _auth) = (dbContext, emailService, auth);
 
         public async Task<Unit> Handle(SendEmailVerificationCommand request,
             CancellationToken cancellationToken)
@@ -31,7 +35,7 @@ namespace PGK.Application.App.User.Commands.SendEmailVerification
                 throw new Exception("user email null");
             }
 
-            var token = $"email_verification_{Guid.NewGuid()}";
+            var token = _auth.CreateToken();
 
             user.SendEmailToken = token;
             await _dbContext.SaveChangesAsync(cancellationToken);

@@ -48,8 +48,14 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
                 throw new Exception("Не верный пароль");
             }
 
-            var refreshToken = _auth.CreateRefreshToken();
-            var accessToken = _auth.CreateToken(userId: user.Id, userRole: user.Role);
+            var refreshToken = user.RefreshToken;
+
+            if (refreshToken == null || !_auth.TokenValidation(refreshToken, TokenType.REFRESH_TOKEN))
+            {
+                refreshToken = _auth.CreateToken();
+            }
+
+            var accessToken = _auth.CreateAccessToken(userId: user.Id, userRole: user.Role);
 
             user.RefreshToken = refreshToken;
             await _dbContext.SaveChangesAsync(cancellationToken);

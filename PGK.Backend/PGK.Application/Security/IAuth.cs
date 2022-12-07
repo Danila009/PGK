@@ -5,9 +5,11 @@ namespace PGK.Application.Security
     public interface IAuth
     {
 
-        public string CreateRefreshToken();
+        public string CreateToken();
 
-        public string CreateToken(int userId,
+        public bool TokenValidation(string token, TokenType type);
+
+        public string CreateAccessToken(int userId,
             string userRole);
 
         public Claim[] Claims(int userId,

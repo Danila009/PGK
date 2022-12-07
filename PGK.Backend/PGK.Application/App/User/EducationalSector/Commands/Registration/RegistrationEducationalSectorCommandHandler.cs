@@ -21,7 +21,7 @@ namespace PGK.Application.App.User.EducationalSector.Commands.Registration
         {
             var password = Guid.NewGuid().ToString();
 
-            var refreshToken = _auth.CreateRefreshToken();
+            var refreshToken = _auth.CreateToken();
 
             var passwordHash = PasswordHash.CreateHash(password);
 
@@ -37,7 +37,7 @@ namespace PGK.Application.App.User.EducationalSector.Commands.Registration
             await _dbContext.EducationalSectorUsers.AddAsync(user, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var accessToken = _auth.CreateToken(userId: user.Id, userRole: user.Role);
+            var accessToken = _auth.CreateAccessToken(userId: user.Id, userRole: user.Role);
 
             return new RegistrationEducationalSectorVm
             {

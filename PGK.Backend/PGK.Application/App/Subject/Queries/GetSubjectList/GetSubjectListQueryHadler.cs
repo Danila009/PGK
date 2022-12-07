@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
 
 namespace PGK.Application.App.Subject.Queries.GetSubjectList
@@ -26,11 +27,13 @@ namespace PGK.Application.App.Subject.Queries.GetSubjectList
                     .Contains(request.Search.ToLower()));
             }
 
-            var subjects = await query
-                .ProjectTo<SubjectDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            var subjects = query
+                .ProjectTo<SubjectDto>(_mapper.ConfigurationProvider);
 
-            return new SubjectListVm { Subjects = subjects };
+            var subjectsPaged = await PagedList<SubjectDto>.ToPagedList(subjects,
+                request.PageNumber, request.PageSize);
+
+            return new SubjectListVm { Results = subjectsPaged };
         }
     }
 }

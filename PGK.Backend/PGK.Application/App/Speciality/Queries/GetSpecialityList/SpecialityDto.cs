@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PGK.Application.App.Department.Queries.GetDepartmentList;
 using PGK.Application.Common.Mappings;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +13,7 @@ namespace PGK.Application.App.Speciality.Queries.GetSpecialityList
         [Required] public string NameAbbreviation { get; set; } = string.Empty;
         [Required] public string Qualification { get; set; } = string.Empty;
 
-        //[Required] public Department.Department Department { get; set; }
+        [Required] public DepartmentDto Department { get; set; }
 
         public void Mapping(Profile profile)
         {
