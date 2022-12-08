@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Interfaces;
 
 namespace PGK.Application.App.Schedule.Commands.CreateSchedule
@@ -14,6 +15,12 @@ namespace PGK.Application.App.Schedule.Commands.CreateSchedule
         public async Task<CreateScheduleVm> Handle(CreateScheduleCommand request,
             CancellationToken cancellationToken)
         {
+            var schedules = await _dbContext.Schedules.FirstOrDefaultAsync(u => u.Date.Date == request.Date.Date);
+
+            if (schedules != null)
+            {
+                throw new Exception("Расписания за этот день уже создана.");
+            }
 
             var schedule = new Domain.Schedules.Schedule
             {

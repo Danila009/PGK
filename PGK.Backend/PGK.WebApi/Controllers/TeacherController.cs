@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.Raportichka.Row.Commands.CreateRow;
+using PGK.Application.App.User.Teacher.Commands.DeleteTeacher;
 using PGK.Application.App.User.Teacher.Commands.Registration;
 using PGK.Application.App.User.Teacher.Commands.TeacherAddSubject;
+using PGK.Application.App.User.Teacher.Queries.GetTeacherUserDetails;
 using PGK.Application.App.User.Teacher.Queries.GetTeacherUserList;
 using PGK.WebApi.Models.Teacher;
 
@@ -29,6 +31,20 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TeacherUserDetails>> GetById(int id)
+        {
+            var query = new GetTeacherUserDetailsQuery
+            {
+                Id = id
+            };
+
+            var dto = Mediator.Send(query);
+
+            return Ok(dto);
+        }
+
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Registration")]
         public async Task<ActionResult<RegistrationTeacherVm>> Registration(
@@ -37,6 +53,20 @@ namespace PGK.WebApi.Controllers
             var vm = await Mediator.Send(command);
 
             return Ok(vm);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var command = new DeleteTeacherCommand
+            {
+                Id = id
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Authorize(Roles = "TEACHER,ADMIN")]

@@ -8,14 +8,32 @@ using PGK.Application.App.User.Commands.SendEmailVerification;
 using PGK.Application.App.User.Commands.UpdateDrarkMode;
 using PGK.Application.App.User.Commands.UpdateEmail;
 using PGK.Application.App.User.Commands.UpdateSecondaryBackground;
+using PGK.Application.App.User.Commands.UpdateUser;
 using PGK.Application.App.User.Queries.GetUserPhoto;
 using PGK.Application.App.User.Queries.GetUserSettings;
 using PGK.Domain.User;
+using PGK.WebApi.Models.User;
 
 namespace PGK.WebApi.Controllers
 {
     public class UserController : Controller
     {
+        [Authorize]
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateUserModel model)
+        {
+            var command = new UpdateUserCommand
+            {
+                Id = UserId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                MiddleName = model.MiddleName
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
+        }
 
         [Authorize]
         [HttpGet("Settings")]

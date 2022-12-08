@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.User.Student.Commands.Delete;
 using PGK.Application.App.User.Student.Commands.Registration;
+using PGK.Application.App.User.Student.Queries.GetStudentUserDetails;
 using PGK.Application.App.User.Student.Queries.GetStudentUserList;
 
 namespace PGK.WebApi.Controllers
@@ -28,6 +29,19 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<StudentDto>> GetById(int id)
+        {
+            var query = new GetStudentUserDetailsQuery
+            {
+                Id = id
+            };
+
+            var dto = await Mediator.Send(query);
+
+            return Ok(dto);
+        }
 
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Registration")]

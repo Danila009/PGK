@@ -7,6 +7,8 @@ namespace PGK.Domain.User
     public class User
     {
         [Key] public int Id { get; set; }
+        public int? TelegramId { get; set; }
+
         [Required, MaxLength(256)] public string FirstName { get; set; } = string.Empty;
         [Required, MaxLength(256)] public string LastName { get; set; } = string.Empty;
         [MaxLength(256)] public string? MiddleName { get; set; }

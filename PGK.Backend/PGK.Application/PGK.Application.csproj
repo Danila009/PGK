@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="App\Department\Commands\UpdateDepartmentHead\" />
-    <Folder Include="App\Journal\Commands\" />
     <Folder Include="App\User\Headman\Commands\DeleteHeadman\" />
     <Folder Include="App\User\Headman\Commands\DeleteHeadmanDeputy\" />
     <Folder Include="App\User\Headman\Commands\Update\" />

@@ -1,4 +1,5 @@
-﻿using PGK.Domain.Raportichka;
+﻿using PGK.Domain.Journal;
+using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +18,7 @@ namespace PGK.Domain.User.Teacher
         public virtual List<Subject.Subject> Subjects { get; set; } = new List<Subject.Subject>();
 
         public virtual List<ScheduleRow> ScheduleRows { get; set; } = new List<ScheduleRow>();
+
+        public virtual List<JournalSubject> JournalSubjects { get; set; } = new List<JournalSubject>();
     }
 }
