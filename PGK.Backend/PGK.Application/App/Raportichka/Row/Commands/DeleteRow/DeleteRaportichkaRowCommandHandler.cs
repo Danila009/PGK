@@ -36,7 +36,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.DeleteRow
             {
                 if(raportichkaRow.Teacher.Id != request.UserId)
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
                 }
             }
             else if (request.UserRole == UserRole.HEADMAN || request.UserRole == UserRole.DEPUTY_HEADMAN)
@@ -46,12 +46,12 @@ namespace PGK.Application.App.Raportichka.Row.Commands.DeleteRow
                     raportichkaRow.Raportichka.Group.DeputyHeadma.Id != request.UserId
                     )
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
                 }
             }
             else if (request.UserRole != UserRole.ADMIN)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
             }
 
             _dbContext.RaportichkaRows.Remove(raportichkaRow);

@@ -58,6 +58,21 @@ namespace PGK.Application.App.Journal.Queries.GetJournalSubjectColumnList
                     .ThenInclude(u => u.JournalSubject)
                         .ThenInclude(u => u.Topics);
 
+            if(request.JournalRowId != null)
+            {
+                query = query.Where(u => u.Row.Id == request.JournalRowId);
+            }
+
+            if (request.StudentIds != null && request.StudentIds.Count > 0)
+            {
+                query = query.Where(u => request.StudentIds.Contains(u.Row.Student.Id));
+            }
+
+            if (request.Evaluation != null)
+            {
+                query = query.Where(u => u.Evaluation == request.Evaluation);
+            }
+
             var journalSubjectColumn = query
                 .ProjectTo<JournalSubjectColumnDto>(_mapper.ConfigurationProvider);
 

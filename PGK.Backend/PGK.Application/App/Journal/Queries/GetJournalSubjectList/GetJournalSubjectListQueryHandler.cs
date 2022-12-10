@@ -48,6 +48,11 @@ namespace PGK.Application.App.Journal.Queries.GetJournalSubjectList
                 .Include(u => u.Rows)
                     .ThenInclude(u => u.Columns);
 
+            if(request.JournalId != null)
+            {
+                query = query.Where(u => u.Journal.Id == request.JournalId);
+            }
+
             var journalSubject = query
                 .ProjectTo<JournalSubjectDto>(_mapper.ConfigurationProvider);
 

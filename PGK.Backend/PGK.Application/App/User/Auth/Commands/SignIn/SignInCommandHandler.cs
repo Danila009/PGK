@@ -64,6 +64,8 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
             {
                 UserId = user.Id,
                 UserRole = user.Role,
+                DrarkMode = user.DrarkMode,
+                SecondaryBackground = user.SecondaryBackground,
                 RefreshToken = refreshToken,
                 AccessToken = accessToken
             };

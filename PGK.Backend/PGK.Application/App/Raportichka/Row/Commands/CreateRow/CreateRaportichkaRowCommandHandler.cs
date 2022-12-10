@@ -29,17 +29,16 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
 
             if (teacher == null)
             {
-                throw new NotFoundException(nameof(TeacherUser), request.UserId);
+                throw new NotFoundException(nameof(TeacherUser), teacherId ?? 0);
             }
 
-            if (
-                request.Role ==
-                UserRole.TEACHER && teacher.RaportichkaRows
-                .Any(u => u.Raportichka.Id != request.RaportichkaId)
-                )
-            {
-                throw new UnauthorizedAccessException();
-            }
+            //if (
+            //    request.Role == UserRole.TEACHER && !teacher.RaportichkaRows
+            //    .Any(u => u.Raportichka.Id == request.RaportichkaId)
+            //    )
+            //{
+            //    throw new UnauthorizedAccessException("");
+            //}
 
             var raportichka = await _dbContext.Raportichkas
                 .Include(u => u.Group)
@@ -64,7 +63,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
 
                 if(raportichka.Group.Id != studentHeadman.Group.Id)
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("Вы пытаетесь изменить не свою группу");
                 }
             }
 
@@ -88,7 +87,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
 
             if(raportichka.Group != student.Group)
             {
-                throw new Exception();
+                throw new Exception("У студент и рапортички разные группы");
             }
 
             var row = new RaportichkaRow

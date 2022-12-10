@@ -23,11 +23,27 @@ namespace PGK.WebApi.Controllers
 {
     public class ScheduleController : Controller
     {
+        /// <summary>
+        /// Получить распичания
+        /// </summary>
+        /// <param name="onlyDate">Только за эту дату</param>
+        /// <param name="startDate">Минимальный дата</param>
+        /// <param name="endDate">Максимальный дата</param>
+        /// <param name="groupIds">Список id групп разделенные запятой. Например groupIds=1,2,3</param>
+        /// <param name="teacherIds">Список id преподавателей разделенные запятой. Например teacherIds=1,2,3</param>
+        /// <param name="departmentIds">Список id отделов разделенные запятой. Например departmentIds=1,2,3</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>ScheduleListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<ScheduleListVm>> GetAll(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleListVm))]
+        public async Task<ActionResult> GetAll(
             DateTime? onlyDate, DateTime? startDate, DateTime? endDate,
             [FromQuery] List<int> departmentIds, [FromQuery] List<int> groupIds,
+            [FromQuery] List<int> teacherIds,
             int pageNumber = 1, int pageSize = 20
             )
         {
@@ -39,7 +55,8 @@ namespace PGK.WebApi.Controllers
                 StartDate = startDate,
                 EndDate = endDate,
                 DepartmentIds = departmentIds,
-                GroupIds = groupIds
+                GroupIds = groupIds,
+                TeacherIds = teacherIds
             };
 
             var vm = await Mediator.Send(query);
@@ -47,9 +64,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить распичание по отделу
+        /// </summary>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>ScheduleDepartmentListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("Departments")]
-        public async Task<ActionResult<ScheduleDepartmentListVm>> GetDepartments(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleDepartmentListVm))]
+        public async Task<ActionResult> GetDepartments(
             int pageNumber = 1, int pageSize = 20
             )
         {
@@ -64,9 +90,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить столбцы расписания
+        /// </summary>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>ScheduleColumnListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("Columns")]
-        public async Task<ActionResult<ScheduleColumnListVm>> GetColumns(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleColumnListVm))]
+        public async Task<ActionResult> GetColumns(
             int pageNumber = 1, int pageSize = 20
             )
         {
@@ -81,9 +116,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить строки расписания
+        /// </summary>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>ScheduleRowListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("Rows")]
-        public async Task<ActionResult<ScheduleRowListVm>> GetRows(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleRowListVm))]
+        public async Task<ActionResult> GetRows(
             int pageNumber = 1, int pageSize = 20
             )
         {
@@ -98,9 +142,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить расписания. Преобразования файла
+        /// </summary>
+        /// <param name="file">Файл</param>
+        /// <returns>ScheduleDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("File")]
-        public async Task<ActionResult<ScheduleDto>> FileCreate(IFormFile file)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleDto))]
+        public async Task<ActionResult> FileCreate(IFormFile file)
         {
             var command = new FileCreateScheduleCommand
             {
@@ -112,18 +165,36 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Добавить расписания
+        /// </summary>
+        /// <param name="command">CreateScheduleCommand object</param>
+        /// <returns>CreateScheduleVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost]
-        public async Task<ActionResult<CreateScheduleVm>> Create(CreateScheduleCommand command)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateScheduleVm))]
+        public async Task<ActionResult> Create(CreateScheduleCommand command)
         {
             var vm = await Mediator.Send(command);
 
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить отделения в распичание
+        /// </summary>
+        /// <param name="command">CreateScheduleDepartmentCommand object</param>
+        /// <returns>CreateScheduleDepartmentVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department")]
-        public async Task<ActionResult<CreateScheduleDepartmentVm>> CreateDepartment(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateScheduleDepartmentVm))]
+        public async Task<ActionResult> CreateDepartment(
             CreateScheduleDepartmentCommand command)
         {
             var vm = await Mediator.Send(command);
@@ -131,9 +202,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить колонку в распичание
+        /// </summary>
+        /// <param name="command">CreateScheduleColumnCommand object</param>
+        /// <returns>CreateScheduleColumnVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department/Column")]
-        public async Task<ActionResult<CreateScheduleColumnVm>> CreateColumn(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateScheduleColumnVm))]
+        public async Task<ActionResult> CreateColumn(
             CreateScheduleColumnCommand command)
         {
             var vm = await Mediator.Send(command);
@@ -141,9 +221,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить страку в распичание
+        /// </summary>
+        /// <param name="command">CreateScheduleRowCommand object</param>
+        /// <returns>CreateScheduleRowVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Department/Column/Row")]
-        public async Task<ActionResult<CreateScheduleRowVm>> CreateRow(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateScheduleRowVm))]
+        public async Task<ActionResult> CreateRow(
             CreateScheduleRowCommand command)
         {
             var vm = await Mediator.Send(command);
@@ -151,9 +240,19 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Изменить расписания
+        /// </summary>
+        /// <param name="id">Индификатор расписания</param>
+        /// <param name="model">UpdateScheduleModel object</param>
+        /// <returns>ScheduleDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<ScheduleDto>> Update(int id, UpdateScheduleModel model)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleDto))]
+        public async Task<ActionResult> Update(int id, UpdateScheduleModel model)
         {
             var command = new UpdateScheduleCommand
             {
@@ -166,9 +265,19 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Изменить отдел в расписании
+        /// </summary>
+        /// <param name="id">Индификатор отделв в расписании</param>
+        /// <param name="model">UpdateScheduleDepartmentModel object</param>
+        /// <returns>ScheduleDepartmentDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPut("Department/{id}")]
-        public async Task<ActionResult<ScheduleDepartmentDto>> UpdateDepartment(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleDepartmentDto))]
+        public async Task<ActionResult> UpdateDepartment(
             int id, UpdateScheduleDepartmentModel model)
         {
             var command = new UpdateScheduleDepartmentCommand
@@ -183,9 +292,19 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Изменить колонку
+        /// </summary>
+        /// <param name="id">Индификатор колонки</param>
+        /// <param name="model">UpdateScheduleColumnModel object</param>
+        /// <returns>ScheduleColumnDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPut("Department/Column/{id}")]
-        public async Task<ActionResult<ScheduleColumnDto>> UpdateColumn(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleColumnDto))]
+        public async Task<ActionResult> UpdateColumn(
             int id, UpdateScheduleColumnModel model)
         {
             var command = new UpdateScheduleColumnCommand
@@ -200,9 +319,19 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Изменить строку
+        /// </summary>
+        /// <param name="id">Индификатор строки</param>
+        /// <param name="model">UpdateScheduleColumnModel object</param>
+        /// <returns>UpdateScheduleRowModel object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPut("Department/Column/Row/{id}")]
-        public async Task<ActionResult<ScheduleRowDto>> UpdateRow(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ScheduleRowDto))]
+        public async Task<ActionResult> UpdateRow(
             int id, UpdateScheduleRowModel model)
         {
             var command = new UpdateScheduleRowCommand
@@ -217,6 +346,14 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Удалить расписания
+        /// </summary>
+        /// <param name="id">Индификатор расписания</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -231,6 +368,14 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Удалить отдел в расписание
+        /// </summary>
+        /// <param name="id">Индификатор отделения в расписание</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpDelete("Department/{id}")]
         public async Task<ActionResult> DeleteDepartment(
@@ -246,6 +391,14 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Удалить колонку в расписание
+        /// </summary>
+        /// <param name="id">Индификатор колонки в расписание</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpDelete("Department/Column/{id}")]
         public async Task<ActionResult> DeleteColumn(
@@ -261,6 +414,15 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Удалить строку в расписание
+        /// </summary>
+        /// <param name="id">Индификатор стрки в расписание</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,ADMIN")]
         [HttpDelete("Department/Column/Row/{id}")]
         public async Task<ActionResult> CreateRow(

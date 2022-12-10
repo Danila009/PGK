@@ -46,7 +46,7 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectColumn
 
                 if(journalSubjectRow.JournalSubject.Teacher.Id != teacher.Id)
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("Преподаватель может взаимодействовать только со своим предметом");
                 }
             }
 

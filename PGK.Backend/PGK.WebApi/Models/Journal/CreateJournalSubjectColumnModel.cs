@@ -7,6 +7,5 @@ namespace PGK.WebApi.Models.Journal
     {
         [Required] public JournalEvaluation Evaluation { get; set; }
         [Required] public DateTime Date { get; set; }
-        [Required] public int JournalSubjectRowId { get; set; }
     }
 }

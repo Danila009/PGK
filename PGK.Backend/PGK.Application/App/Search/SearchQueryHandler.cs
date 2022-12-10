@@ -65,7 +65,7 @@ namespace PGK.Application.App.Search
 
             if (request.Type == SearchType.ALL || request.Type == SearchType.DEPUTY_HEADMAN)
             {
-                var deputyHeadman = _dbContext.HeadmanUsers
+                var deputyHeadman = _dbContext.DeputyHeadmaUsers
                     .Where(u =>
                         u.FirstName.ToLower().Contains(search) ||
                         u.LastName.ToLower().Contains(search) ||

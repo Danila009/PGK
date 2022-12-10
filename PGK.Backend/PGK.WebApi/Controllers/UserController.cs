@@ -18,6 +18,13 @@ namespace PGK.WebApi.Controllers
 {
     public class UserController : Controller
     {
+        /// <summary>
+        /// Изменить пользователя
+        /// </summary>
+        /// <param name="model">UpdateUserModel object</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPut]
         public async Task<ActionResult> Update(UpdateUserModel model)
@@ -35,9 +42,17 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Получить настройки пользователя
+        /// </summary>
+        /// <returns>UserSettingsDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("Settings")]
-        public async Task<ActionResult<UserSettingsDto>> GetSettings()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> GetSettings()
         {
             var query = new GetUserSettingsQuery
             {
@@ -46,12 +61,19 @@ namespace PGK.WebApi.Controllers
 
             var dto = await Mediator.Send(query);
 
-            return dto;
+            return Ok(dto);
         }
 
+        /// <summary>
+        /// Изменить "Drark Mode"
+        /// </summary>
+        /// <returns>UpdateDrarkModeVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPatch("Settings/DrarkMode")]
-        public async Task<ActionResult<UpdateDrarkModeVm>> SettingsUpdateDrarkMode()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDrarkModeVm))]
+        public async Task<ActionResult> SettingsUpdateDrarkMode()
         {
             var command = new UpdateDrarkModeCommand
             {
@@ -63,9 +85,16 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Изменить "Secondary Background"
+        /// </summary>
+        /// <returns>UpdateSecondaryBackgroundVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPatch("Settings/SecondaryBackground")]
-        public async Task<ActionResult<UpdateSecondaryBackgroundVm>> SettingsUpdateSecondaryBackground(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateSecondaryBackgroundVm))]
+        public async Task<ActionResult> SettingsUpdateSecondaryBackground(
             SecondaryBackground secondaryBackground)
         {
             var command = new UpdateSecondaryBackgroundCommand
@@ -79,6 +108,12 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить фото профеля пользователя
+        /// </summary>
+        /// <param name="userId">Индификатор пользователя</param>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("Photo/{userId}.jpg")]
         public async Task<ActionResult> GetPhoto(int userId)
@@ -90,9 +125,17 @@ namespace PGK.WebApi.Controllers
             return File(image, "image/jpeg");
         }
 
+        /// <summary>
+        /// Добавить или изменить фото пользователя
+        /// </summary>
+        /// <param name="photo">Фото пользователя</param>
+        /// <returns>UserPhotoVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPost("Photo")]
-        public async Task<ActionResult<UserPhotoVm>> AddPhoto(IFormFile photo)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserPhotoVm))]
+        public async Task<ActionResult> AddPhoto(IFormFile photo)
         {
             var command = new UserAddPhotoCommand
             {
@@ -105,6 +148,11 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Отправить письмо на почту для подверждения почты
+        /// </summary>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPost("Email/Verification")]
         public async Task<ActionResult> SendEmailVerification()
@@ -119,6 +167,13 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Подвердить почту пользователя
+        /// </summary>
+        /// <returns>HTML страница</returns>
+        /// <param name="userId">Индификатор пользователя</param>
+        /// <param name="token">Токен электронный почты</param>
+        /// <response code="200">Запрос выполнен успешно</response>
         [HttpGet("{userId}/Email/Verification/{token}.html")]
         public async Task<ActionResult> EmailVerification(int userId, string token)
         {
@@ -133,6 +188,11 @@ namespace PGK.WebApi.Controllers
             return Ok(contentResult);
         }
 
+        /// <summary>
+        /// Отправить письмо на почту для сброса пароля
+        /// </summary>
+        /// <param name="email">Электроная почта пользователя</param>
+        /// <response code="200">Запрос выполнен успешно</response>
         [HttpPost("Email/Pasword/Reset")]
         public async Task<ActionResult> SendEmailPaswordReset(string email)
         {
@@ -146,6 +206,13 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Сбросить пароль
+        /// </summary>
+        /// <returns>HTML страница</returns>
+        /// <param name="userId">Индификатор пользователя</param>
+        /// <param name="token">Токен электронный почты</param>
+        /// <response code="200">Запрос выполнен успешно</response>
         [HttpGet("{userId}/Email/Pasword/Reset/{token}.html")]
         public async Task<ActionResult> PassowrdReset(int userId, string token)
         {
@@ -160,6 +227,12 @@ namespace PGK.WebApi.Controllers
             return Ok(contentResult);
         }
 
+        /// <summary>
+        /// Добавить или сменить электронную почту пользователя
+        /// </summary>
+        /// <param name="newEmail">Электроная почта пользователя</param>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPatch("Email")]
         public async Task<ActionResult> UpdateEmail(string newEmail)

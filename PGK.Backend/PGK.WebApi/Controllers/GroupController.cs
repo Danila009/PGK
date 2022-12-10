@@ -15,28 +15,36 @@ namespace PGK.WebApi.Controllers
 {
     public class GroupController : Controller
     {
+        /// <summary>
+        /// Получить список групп
+        /// </summary>
+        /// <param name="query">GetGroupListQuery object</param>
+        /// <returns>GroupListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<GroupListVm>> GetAll(
-            string? search,
-            int pageNumber = 1, int pageSize = 20
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GroupListVm))]
+        public async Task<ActionResult> GetAll(
+            [FromQuery] GetGroupListQuery query
             )
         {
-            var query = new GetGroupListQuery
-            {
-                Search = search,
-                PageNumber = pageNumber,
-                PageSize = pageNumber
-            };
-
             var vm = await Mediator.Send(query);
 
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить группу по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <returns>GroupDetails object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<GroupDetails>> GetDetails(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GroupDetails))]
+        public async Task<ActionResult> GetDetails(int id)
         {
             var query = new GetGroupDetailsQuery
             {
@@ -48,9 +56,17 @@ namespace PGK.WebApi.Controllers
             return Ok(details);
         }
 
+        /// <summary>
+        /// Получить классного руководителя по идентификатору группы
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <returns>TeacherUserDetails object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("{id}/ClassroomTeacher")]
-        public async Task<ActionResult<TeacherUserDetails>> GetClassroomTeacher(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeacherUserDetails))]
+        public async Task<ActionResult> GetClassroomTeacher(int id)
         {
             var query = new GetClassroomTeacherQuery
             {
@@ -62,9 +78,19 @@ namespace PGK.WebApi.Controllers
             return Ok(details);
         }
 
+        /// <summary>
+        /// Получить студентов по идентификатору группы
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>GroupStudentListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("{id}/Students")]
-        public async Task<ActionResult<GroupStudentListVm>> GetStudentAll(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GroupStudentListVm))]
+        public async Task<ActionResult> GetStudentAll(
             int id, int pageNumber = 1, int pageSize = 20
             )
         {
@@ -80,18 +106,36 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Создать новую группу
+        /// </summary>
+        /// <param name="command">CreateGroupCommand object</param>
+        /// <returns>CreateGroupVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost]
-        public async Task<ActionResult<CreateGroupVm>> Create(CreateGroupCommand command)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateGroupVm))]
+        public async Task<ActionResult> Create(CreateGroupCommand command)
         {
             var vm = await Mediator.Send(command);
 
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить рапортичку группе
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <returns>CreateRaportichkaVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("{id}/Raportichka")]
-        public async Task<ActionResult<CreateRaportichkaVm>> CreateRaportichka(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateRaportichkaVm))]
+        public async Task<ActionResult> CreateRaportichka(int id)
         {
             var command = new CreateRaportichkaCommand
             {
@@ -105,9 +149,19 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR")]
+        /// <summary>
+        /// Обновить группу
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <param name="model">UpdateGroupModel object</param>
+        /// <returns>GroupDetails object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<GroupDetails>> Update(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GroupDetails))]
+        public async Task<ActionResult> Update(
             int id, [FromBody] UpdateGroupModel model)
         {
             var command = new UpdateGroupCommand
@@ -126,8 +180,17 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
-        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR")]
+        /// <summary>
+        /// Удалить группу
+        /// </summary>
+        /// <param name="id">идентификатор группы</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR,ADMIN")]
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Delete(int id)
         {
             var command = new DeleteGroupCommand { GroupId = id };

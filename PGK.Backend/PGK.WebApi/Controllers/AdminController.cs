@@ -12,20 +12,37 @@ namespace PGK.WebApi.Controllers
     public class AdminController : Controller
     {
 
+        /// <summary>
+        /// Получить список пользователей-администраторов
+        /// </summary>
+        /// <param name="query">GetAdminListQuery object</param>
+        /// <returns>AdminListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
         [HttpGet]
-        public async Task<ActionResult<AdminListVm>> GetAll(
-            [FromQuery] GetAdminListQuery query
-            )
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminListVm))]
+        public async Task<ActionResult> GetAll(
+            [FromQuery] GetAdminListQuery query)
         {
             var vm = await Mediator.Send(query);
 
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить пользователя-администратора по идентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор администратора пользователя</param>
+        /// <returns>AdminDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdminDto>> GetById(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdminDto))]
+        public async Task<ActionResult> GetById(
             int id
             )
         {
@@ -39,8 +56,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Удалить администратора
+        /// </summary>
+        /// <param name="id">Идентификатор администратора пользователя</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteById(
             int id
             )
@@ -55,9 +81,18 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Зарегистрировать администратора
+        /// </summary>
+        /// <param name="command">RegistrationAdminCommand object</param>
+        /// <returns>RegistrationAdminVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
         [HttpPost("Registration")]
-        public async Task<ActionResult<RegistrationAdminVm>> Registration(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationAdminVm))]
+        public async Task<ActionResult> Registration(
             RegistrationAdminCommand command
             )
         {
@@ -66,9 +101,20 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Создать ведомость за месяц
+        /// </summary>
+        /// <param name="date">Дата</param>
+        /// <param name="groupId">Индификатор группы</param>
+        /// <param name="file">Электронная таблица</param>
+        /// <returns>CreateVedomostVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
         [HttpPost("Vedomost")]
-        public async Task<ActionResult<CreateVedomostVm>> CreateStatement(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateVedomostVm))]
+        public async Task<ActionResult> CreateStatement(
             DateTime date,int groupId, IFormFile file)
         {
             var command = new CreateVedomostCommand
@@ -85,8 +131,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Удалить ведомость за месяц
+        /// </summary>
+        /// <param name="id">Идентификатор ведомасти</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль ADMIN</response>
         [Authorize(Roles = "ADMIN")]
-        [HttpDelete("{id}/Vedomost")]
+        [HttpDelete("Vedomost/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteVedomost(
             int id)
         {

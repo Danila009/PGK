@@ -35,6 +35,41 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
                     u.Speciality.Name.ToLower().Contains(search));
             }
 
+            if (request.Courses != null && request.Courses.Count > 0)
+            {
+                query = query.Where(u => request.Courses.Contains(u.Course));
+            }
+
+            if (request.Number != null && request.Number.Count > 0)
+            {
+                query = query.Where(u => request.Number.Contains(u.Number));
+            }
+
+            if (request.SpecialityIds != null && request.SpecialityIds.Count > 0)
+            {
+                query = query.Where(u => request.SpecialityIds.Contains(u.Speciality.Id));
+            }
+
+            if (request.DepartmentIds != null && request.DepartmentIds.Count > 0)
+            {
+                query = query.Where(u => request.DepartmentIds.Contains(u.Department.Id));
+            }
+
+            if (request.ClassroomTeacherIds != null && request.ClassroomTeacherIds.Count > 0)
+            {
+                query = query.Where(u => request.ClassroomTeacherIds.Contains(u.ClassroomTeacher.Id));
+            }
+
+            if (request.DeputyHeadmaIds != null && request.DeputyHeadmaIds.Count > 0)
+            {
+                query = query.Where(u => request.DeputyHeadmaIds.Contains(u.DeputyHeadma.Id));
+            }
+
+            if (request.HeadmanIds != null && request.HeadmanIds.Count > 0)
+            {
+                query = query.Where(u => request.HeadmanIds.Contains(u.Headman.Id));
+            }
+
             var groups = query
                 .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider);
 

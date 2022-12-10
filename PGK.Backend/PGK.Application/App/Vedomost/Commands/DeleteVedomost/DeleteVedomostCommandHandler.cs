@@ -41,12 +41,12 @@ namespace PGK.Application.App.Vedomost.Commands.DeleteVedomost
 
                 if(student.Group.Id != vedomost.Group.Id)
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("У вас нет доступа к этой ведомасти");
                 }
             }
             else if(request.Role != UserRole.ADMIN)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("У вас нет доступа к далению ведомасти");
             }
 
             _dbContext.Vedomost.Remove(vedomost);

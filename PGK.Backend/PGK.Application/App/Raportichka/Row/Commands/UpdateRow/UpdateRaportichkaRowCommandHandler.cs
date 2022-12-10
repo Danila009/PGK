@@ -50,7 +50,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateRow
 
                 if (raportichka.Group.Id != studentHeadman.Group.Id)
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
                 }
             }
 
@@ -74,7 +74,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateRow
 
             if (raportichka.Group != student.Group)
             {
-                throw new Exception();
+                throw new Exception("У вас нет доступа к этой рапортичке");
             }
 
             if (request.Role != UserRole.TEACHER)

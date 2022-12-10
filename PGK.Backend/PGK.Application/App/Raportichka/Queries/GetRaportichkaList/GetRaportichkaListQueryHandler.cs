@@ -41,17 +41,17 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
 
             if (request.OnlyDate != null)
             {
-                query = query.Where(u => u.Date == request.OnlyDate);
+                query = query.Where(u => u.Date.Date == request.OnlyDate.Value.Date);
             }
 
             if (request.StartDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date > request.StartDate);
+                query = query.Where(u => u.Date.Date > request.StartDate.Value.Date);
             }
 
             if (request.EndDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date < request.EndDate);
+                query = query.Where(u => u.Date.Date < request.EndDate.Value.Date);
             }
 
             if(request.GroupIds != null && request.GroupIds.Count > 0)

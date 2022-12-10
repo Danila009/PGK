@@ -37,14 +37,14 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubject
 
                 if(!teacherUser.Subjects.Any(u => u.Id == subject.Id))
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("Преподаватель может взаимодействовать только со своим предметом");
                 }
             }
             else
             {
                 if(request.TeacherId == null)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("TeacherId not found");
                 }
 
                 teacherUser = await _dbContext.TeacherUsers.FindAsync(request.TeacherId) ??

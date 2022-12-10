@@ -4,10 +4,13 @@
     "\\PGK.Backend",
     "\\PGK.Backend\\PGK.Application",
     "\\PGK.Backend\\PGK.Application\\App",
-    "\\PGK.Backend\\PGK.Persistence",
+    "\\PGK.Backend\\PGK.Application\\App\\User",
+    "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector",
+    "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector\\Queries",
+    "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector\\Queries\\GetEducationalSectorList",
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Backend.sln",
+  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector\\Queries\\GetEducationalSectorList\\EducationalSectorDto.cs",
   "PreviewInSolutionExplorer": false
 }

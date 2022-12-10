@@ -9,9 +9,18 @@ namespace PGK.WebApi.Controllers
 {
     public class EducationalSectorController : Controller
     {
-        [Authorize]
+        /// <summary>
+        /// Получить список пользователей из учебной части
+        /// </summary>
+        /// <param name="query">GetEducationalSectorListQuery object</param>
+        /// <returns>EducationalSectorListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpGet]
-        public async Task<ActionResult<EducationalSectorListVm>> GetAll(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EducationalSectorListVm))]
+        public async Task<ActionResult> GetAll(
             [FromQuery] GetEducationalSectorListQuery query)
         {
             var vm = await Mediator.Send(query);
@@ -19,9 +28,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Получить пользователя из учебной части по идентификатору
+        /// </summary>
+        /// <param name="id">>Идентификатор пользователя из учебной части</param>
+        /// <returns>DepartmentHeadDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<EducationalSectorDto>> GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EducationalSectorDto))]
+        public async Task<ActionResult> GetById(int id)
         {
             var query = new GetEducationalSectorDetailsQuery
             {
@@ -33,8 +51,17 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Удалить пользователя из учебной части
+        /// </summary>
+        /// <param name="id">>Идентификатор пользователя из учебной части</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteById(int id)
         {
             var command = new DeleteEducationalSectorCommand
@@ -47,9 +74,19 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Зарегестрировать пользователя из учебной части
+        /// </summary>
+        /// <param name="command">RegistrationEducationalSectorCommand object</param>
+        /// <returns>RegistrationEducationalSectorVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+
         [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpPost("Registration")]
-        public async Task<ActionResult<RegistrationEducationalSectorVm>> Registration(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationEducationalSectorVm))]
+        public async Task<ActionResult> Registration(
             RegistrationEducationalSectorCommand command
             )
         {

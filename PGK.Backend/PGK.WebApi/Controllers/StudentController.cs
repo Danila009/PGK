@@ -9,9 +9,21 @@ namespace PGK.WebApi.Controllers
 {
     public class StudentController : Controller
     {
+        /// <summary>
+        /// Получить список студентов
+        /// </summary>
+        /// <param name="search">Ключивые слова для поиска</param>
+        /// <param name="userRoles">список пользовательских ролей разделенные запятой. Например userRoles=HEADMAN,DEPUTY_HEADMAN</param>
+        /// <param name="groupIds">список id групп разделенные запятой. Например groupIds=1,2,3</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>StudentUserListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<StudentUserListVm>> GetAll(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(StudentUserListVm))]
+        public async Task<ActionResult> GetAll(
             string? search,[FromQuery] List<string> userRoles,
             [FromQuery] List<int> groupIds,
             int pageNumber = 1, int pageSize = 20)
@@ -29,9 +41,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получить пстудента по идентификатору
+        /// </summary>
+        /// <param name="id">Идентификатор студента</param>
+        /// <returns>StudentDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDto>> GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(StudentDto))]
+        public async Task<ActionResult> GetById(int id)
         {
             var query = new GetStudentUserDetailsQuery
             {
@@ -43,9 +63,18 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
-        [Authorize(Roles = "TEACHER,ADMIN")]
+        /// <summary>
+        /// Зарегистрировать студента
+        /// </summary>
+        /// <param name="command">RegistrationStudentCommand object</param>
+        /// <returns>RegistrationStudentVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        [Authorize(Roles = "TEACHER,EDUCATIONAL_SECTOR,ADMIN")]
         [HttpPost("Registration")]
-        public async Task<ActionResult<RegistrationStudentVm>> Registration(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationStudentVm))]
+        public async Task<ActionResult> Registration(
             RegistrationStudentCommand command)
         {
            var vm = await Mediator.Send(command);
@@ -53,6 +82,15 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+
+        /// <summary>
+        /// Удалить студента
+        /// </summary>
+        /// <param name="id">Идентификатор студента</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
         [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

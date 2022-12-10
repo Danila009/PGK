@@ -1,9 +1,5 @@
 ﻿using MediatR;
 using FluentValidation;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PGK.Application.Common.Behaviors
 {

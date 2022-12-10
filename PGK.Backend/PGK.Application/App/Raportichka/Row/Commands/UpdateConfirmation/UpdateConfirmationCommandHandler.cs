@@ -20,7 +20,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateConfirmation
         {
             if(request.Role != UserRole.TEACHER || request.Role != UserRole.ADMIN)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
             }
 
             var row = await _dbContext.RaportichkaRows.FindAsync(request.RaportichkaRowId);
@@ -45,7 +45,7 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateConfirmation
 
                 if (!teacher.RaportichkaRows.Any(u => u.Id == request.RaportichkaRowId))
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("У вас нет доступа к этой рапортичке");
                 }
             }
 

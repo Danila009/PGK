@@ -11,8 +11,9 @@ namespace PGK.Application.App.Schedule.GetScheduleList.Queries
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public List<int> DepartmentIds { get; set; } = new List<int>();
-        public List<int> GroupIds { get; set; } = new List<int>();
+        public List<int>? DepartmentIds { get; set; } = new List<int>();
+        public List<int>? GroupIds { get; set; } = new List<int>();
+        public List<int>? TeacherIds { get; set; } = new List<int>();
 
     }
 }

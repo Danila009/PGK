@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Application.Security;
@@ -20,6 +21,13 @@ namespace PGK.Application.App.User.Commands.UpdateEmail
         public async Task<Unit> Handle(UserUpdateEmailCommand request,
             CancellationToken cancellationToken)
         {
+            var userByEmail = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if(userByEmail != null)
+            {
+                throw new Exception("Пользователь с таким email уже сущестует");
+            }
+
             var user = await _dbContext.Users.FindAsync(request.UserId);
 
             if(user == null)

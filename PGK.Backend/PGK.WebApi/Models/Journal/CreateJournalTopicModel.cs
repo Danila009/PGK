@@ -8,7 +8,5 @@ namespace PGK.WebApi.Models.Journal
         public string? HomeWork { get; set; }
         [Required] public int Hours { get; set; }
         [Required] public DateTime Date { get; set; }
-       
-        [Required] public int JournalSubjectId { get; set; }
     }
 }

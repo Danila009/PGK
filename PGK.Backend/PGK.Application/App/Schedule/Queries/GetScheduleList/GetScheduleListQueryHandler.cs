@@ -33,17 +33,17 @@ namespace PGK.Application.App.Schedule.GetScheduleList.Queries
 
             if(request.OnlyDate != null)
             {
-                query = query.Where(u => u.Date == request.OnlyDate);
+                query = query.Where(u => u.Date.Date == request.OnlyDate.Value.Date);
             }
 
             if(request.StartDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date > request.StartDate);
+                query = query.Where(u => u.Date.Date > request.StartDate.Value.Date);
             }
 
             if (request.EndDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date < request.EndDate);
+                query = query.Where(u => u.Date.Date < request.EndDate.Value.Date);
             }
 
             if(request.DepartmentIds != null && request.DepartmentIds.Count > 0)
@@ -56,6 +56,12 @@ namespace PGK.Application.App.Schedule.GetScheduleList.Queries
             {
                 query = query.Where(u => u.ScheduleDepartments
                     .Any(u => u.Columns.Any(u => request.GroupIds.Contains(u.Group.Id))));
+            }
+
+            if (request.TeacherIds != null && request.TeacherIds.Count > 0)
+            {
+                query = query.Where(u => u.ScheduleDepartments
+                    .Any(u => u.Columns.Any(u => u.Rows.Any(u => request.TeacherIds.Contains(u.Teacher.Id)))));
             }
 
             var schedules = query

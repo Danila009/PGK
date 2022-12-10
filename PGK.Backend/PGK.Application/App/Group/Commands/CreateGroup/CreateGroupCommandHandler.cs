@@ -41,6 +41,7 @@ namespace PGK.Application.App.Group.Commands.CreateGroup
 
             var group = new Domain.Group.Group
             {
+                Course = request.Course,
                 Number = request.Number,
                 Speciality = speciality,
                 Department = department,

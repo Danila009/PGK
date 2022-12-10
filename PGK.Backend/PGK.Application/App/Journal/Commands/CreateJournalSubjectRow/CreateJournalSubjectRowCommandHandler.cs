@@ -35,12 +35,12 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectRow
 
                 if(teacher == null)
                 {
-                    throw new NotFoundException(nameof(TeacherUser), request.JournalSubjectId);
+                    throw new NotFoundException(nameof(TeacherUser), request.UserId);
                 }
 
-                if(!teacher.JournalSubjects.Any(u => u.Id == journalSubject.Id))
+                if(teacher.Id != journalSubject.Teacher.Id)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("Преподаватель может взаимодействовать только со своим предметом");
                 }
             }
 

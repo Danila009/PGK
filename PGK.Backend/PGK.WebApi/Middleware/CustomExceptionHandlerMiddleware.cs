@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using PGK.Application.Common.Exceptions;
+using PGK.WebApi.Models;
 using System.Net;
 using System.Text.Json;
 
@@ -44,7 +45,12 @@ namespace PGK.WebApi.Middleware
 
             if(result == string.Empty)
             {
-                result = JsonSerializer.Serialize(new { error = exception.Message });
+                result = JsonSerializer.Serialize(new ErrorDetails
+                {
+                    Message = exception.Message,
+                    Date = exception.Data,
+                    Code = (int)code
+                });
             }
 
             return context.Response.WriteAsync(result);

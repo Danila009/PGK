@@ -51,6 +51,31 @@ namespace PGK.Application.App.Journal.Queries.GetJournalList
                     .ThenInclude(u => u.Rows)
                         .ThenInclude(u => u.Columns);
 
+            if(request.Courses != null && request.Courses.Count > 0)
+            {
+                query = query.Where(u => request.Courses.Contains(u.Course));
+            }
+
+            if (request.Semesters != null && request.Semesters.Count > 0)
+            {
+                query = query.Where(u => request.Semesters.Contains(u.Semester));
+            }
+
+            if (request.GroupIds != null && request.GroupIds.Count > 0)
+            {
+                query = query.Where(u => request.GroupIds.Contains(u.Group.Id));
+            }
+
+            if (request.SpecialityIds != null && request.SpecialityIds.Count > 0)
+            {
+                query = query.Where(u => request.SpecialityIds.Contains(u.Group.Speciality.Id));
+            }
+
+            if (request.DepartmentIds != null && request.DepartmentIds.Count > 0)
+            {
+                query = query.Where(u => request.DepartmentIds.Contains(u.Group.Department.Id));
+            }
+
             var journal = query
                 .ProjectTo<JournalDto>(_mapper.ConfigurationProvider);
 

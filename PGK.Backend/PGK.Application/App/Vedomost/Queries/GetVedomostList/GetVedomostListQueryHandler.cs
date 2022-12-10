@@ -27,6 +27,26 @@ namespace PGK.Application.App.Vedomost.Queries.GetVedomostList
                 .Include(u => u.Group)
                     .ThenInclude(u => u.Speciality);
 
+            if (request.OnlyDate != null)
+            {
+                query = query.Where(u => u.Date.Date == request.OnlyDate.Value.Date);
+            }
+
+            if (request.StartDate != null && request.OnlyDate == null)
+            {
+                query = query.Where(u => u.Date.Date > request.StartDate.Value.Date);
+            }
+
+            if (request.EndDate != null && request.OnlyDate == null)
+            {
+                query = query.Where(u => u.Date.Date < request.EndDate.Value.Date);
+            }
+
+            if(request.GroupIds != null && request.GroupIds.Count > 0)
+            {
+                query = query.Where(u => request.GroupIds.Contains(u.Group.Id));
+            }
+
             var statements = query
                 .ProjectTo<VedomostDto>(_mapper.ConfigurationProvider);
 

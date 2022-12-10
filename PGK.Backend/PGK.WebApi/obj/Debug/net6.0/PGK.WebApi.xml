@@ -4,5 +4,1130 @@
         <name>PGK.WebApi</name>
     </assembly>
     <members>
+        <member name="M:PGK.WebApi.Controllers.AdminController.GetAll(PGK.Application.App.User.Admin.Queries.GetAdminList.GetAdminListQuery)">
+            <summary>
+            Получить список пользователей-администраторов
+            </summary>
+            <param name="query">GetAdminListQuery object</param>
+            <returns>AdminListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AdminController.GetById(System.Int32)">
+            <summary>
+            Получить пользователя-администратора по идентификатору
+            </summary>
+            <param name="id">Идентификатор администратора пользователя</param>
+            <returns>AdminDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AdminController.DeleteById(System.Int32)">
+            <summary>
+            Удалить администратора
+            </summary>
+            <param name="id">Идентификатор администратора пользователя</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AdminController.Registration(PGK.Application.App.User.Admin.Commands.Registration.RegistrationAdminCommand)">
+            <summary>
+            Зарегистрировать администратора
+            </summary>
+            <param name="command">RegistrationAdminCommand object</param>
+            <returns>RegistrationAdminVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AdminController.CreateStatement(System.DateTime,System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Создать ведомость за месяц
+            </summary>
+            <param name="date">Дата</param>
+            <param name="groupId">Индификатор группы</param>
+            <param name="file">Электронная таблица</param>
+            <returns>CreateVedomostVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AdminController.DeleteVedomost(System.Int32)">
+            <summary>
+            Удалить ведомость за месяц
+            </summary>
+            <param name="id">Идентификатор ведомасти</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AuthController.SignIn(PGK.Application.App.User.Auth.Commands.SignIn.SignInCommand)">
+            <summary>
+            Авторизация пользователя
+            </summary>
+            <param name="command">SignInCommand object</param>
+            <returns>SignInVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AuthController.RevokeRefreshToken(System.String)">
+            <summary>
+            Отозвать токен
+            </summary>
+            <param name="refreshToken">Refresh token</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.AuthController.RefreshToken(System.String)">
+            <summary>
+            Обновить токен
+            </summary>
+            <param name="refreshToken">Refresh token</param>
+            <returns>RefreshTokenVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Получите список отделов
+            </summary>
+            <param name="search">Ключивые слова для поиска</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>DepartmentListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.GetById(System.Int32)">
+            <summary>
+            Получите отдел по идентификатору
+            </summary>
+            <param name="id">Индификатор отдела</param>
+            <returns>DepartmentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.Create(PGK.Application.App.Department.Commands.CreateDepartment.CreateDepartmentCommand)">
+            <summary>
+            Добавить отдел
+            </summary>
+            <param name="command">CreateDepartmentCommand object</param>
+            <returns>DepartmentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.Update(System.Int32,PGK.WebApi.Models.Department.UpdateDepartmentModel)">
+            <summary>
+            Изменить отдел
+            </summary>
+            <param name="id">Индификатор отдела</param>
+            <returns>DepartmentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.Delete(System.Int32)">
+            <summary>
+            Удалить отдел
+            </summary>
+            <param name="id">Индификатор отдела</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentHeadController.GetAll(PGK.Application.App.User.DepartmentHead.Queries.GetDepartmentHeadList.GetDepartmentHeadListQuery)">
+            <summary>
+            Получить список заведующих отделением
+            </summary>
+            <param name="query">GetDepartmentHeadListQuery object</param>
+            <returns>DepartmentHeadListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentHeadController.GetById(System.Int32)">
+            <summary>
+            Получить заведующего отделениям по идентификатору
+            </summary>
+            <param name="id">>Идентификатор пользователя из учебной части</param>
+            <returns>DepartmentHeadDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentHeadController.Delete(System.Int32)">
+            <summary>
+            Удалить заведующего отделениям
+            </summary>
+            <param name="id">>Идентификатор пользователя из учебной части</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentHeadController.Registration(PGK.Application.App.User.DepartmentHead.Commands.Registration.RegistrationDepartmentHeadCommand)">
+            <summary>
+            Зарегестрировать заведующего отделением
+            </summary>
+            <param name="command">RegistrationDepartmentHeadCommand object</param>
+            <returns>RegistrationDepartmentHeadVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.EducationalSectorController.GetAll(PGK.Application.App.User.EducationalSector.Queries.GetEducationalSectorList.GetEducationalSectorListQuery)">
+            <summary>
+            Получить список пользователей из учебной части
+            </summary>
+            <param name="query">GetEducationalSectorListQuery object</param>
+            <returns>EducationalSectorListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.EducationalSectorController.GetById(System.Int32)">
+            <summary>
+            Получить пользователя из учебной части по идентификатору
+            </summary>
+            <param name="id">>Идентификатор пользователя из учебной части</param>
+            <returns>DepartmentHeadDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.EducationalSectorController.DeleteById(System.Int32)">
+            <summary>
+            Удалить пользователя из учебной части
+            </summary>
+            <param name="id">>Идентификатор пользователя из учебной части</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.EducationalSectorController.Registration(PGK.Application.App.User.EducationalSector.Commands.Registration.RegistrationEducationalSectorCommand)">
+            <summary>
+            Зарегестрировать пользователя из учебной части
+            </summary>
+            <param name="command">RegistrationEducationalSectorCommand object</param>
+            <returns>RegistrationEducationalSectorVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.GetAll(PGK.Application.App.Group.Queries.GetGroupList.GetGroupListQuery)">
+            <summary>
+            Получить список групп
+            </summary>
+            <param name="query">GetGroupListQuery object</param>
+            <returns>GroupListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.GetDetails(System.Int32)">
+            <summary>
+            Получить группу по идентификатору
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <returns>GroupDetails object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.GetClassroomTeacher(System.Int32)">
+            <summary>
+            Получить классного руководителя по идентификатору группы
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <returns>TeacherUserDetails object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.GetStudentAll(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Получить студентов по идентификатору группы
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>GroupStudentListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.Create(PGK.Application.App.Group.Commands.CreateGroup.CreateGroupCommand)">
+            <summary>
+            Создать новую группу
+            </summary>
+            <param name="command">CreateGroupCommand object</param>
+            <returns>CreateGroupVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.CreateRaportichka(System.Int32)">
+            <summary>
+            Добавить рапортичку группе
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <returns>CreateRaportichkaVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.Update(System.Int32,PGK.WebApi.Models.Group.UpdateGroupModel)">
+            <summary>
+            Обновить группу
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <param name="model">UpdateGroupModel object</param>
+            <returns>GroupDetails object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.GroupController.Delete(System.Int32)">
+            <summary>
+            Удалить группу
+            </summary>
+            <param name="id">идентификатор группы</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.Registration(PGK.WebApi.Models.Headman.RegistrationHeadmanModel)">
+            <summary>
+            Регестрация старосты
+            </summary>
+            <param name="model">RegistrationHeadmanModel object</param>
+            <returns>RegistrationHeadmanVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.RegistrationDeputy(PGK.WebApi.Models.Headman.RegistrationHeadmanModel)">
+            <summary>
+            Регестрация зам старосты
+            </summary>
+            <param name="model">RegistrationHeadmanModel object</param>
+            <returns>RegistrationHeadmanVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.CreateRaportichka">
+            <summary>
+            Создания рапортички
+            </summary>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.CreateVedomost(System.DateTime,Microsoft.AspNetCore.Http.FormFile)">
+            <summary>
+            Добавить ведомасть
+            </summary>
+            <param name="date">Дата</param>
+            <param name="file">Электронная таблица</param>
+            <returns>CreateVedomostVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.DeleteVedomost(System.Int32)">
+            <summary>
+            Удалить ведомасть
+            </summary>
+            <param name="id">Индификатор ведомасти</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.HeadmanController.HeadmanUpdateRow(System.Int32,PGK.WebApi.Models.Raportichka.UpdateRaportichkaRowModel)">
+            <summary>
+            Обнавить ряд у рапортички
+            </summary>
+            <param name="id">Индификатор ряда</param>
+            <param name="model">UpdateRaportichkaRowModel object</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.GetAll(PGK.Application.App.Journal.Queries.GetJournalList.GetJournalListQuery)">
+            <summary>
+            Получить список журналов
+            </summary>
+            <param name="query">GetJournalListQuery object</param>
+            <returns>JournalListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.Create(PGK.WebApi.Models.Journal.CreateJournalModel)">
+            <summary>
+            Создать журнал
+            </summary>
+            <param name="model">CreateJournalModel object</param>
+            <returns>JournalDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.Delete(System.Int32)">
+            <summary>
+            Удалить журнал
+            </summary>
+            <param name="id">Индификатор журнала</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.GetSubjectAll(PGK.Application.App.Journal.Queries.GetJournalSubjectList.GetJournalSubjectListQuery)">
+            <summary>
+            Получить список предметов из журнала
+            </summary>
+            <param name="query">GetJournalSubjectListQuery object</param>
+            <returns>JournalSubjectListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.CreateSubject(System.Int32,PGK.WebApi.Models.Journal.CreateJournalSubjectModel)">
+            <summary>
+            Создать предмет в журнале
+            </summary>
+            <param name="id">Индификатор журнала</param>
+            <param name="model">CreateJournalSubjectModel object</param>
+            <returns>JournalSubjectDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.DeleteSubject(System.Int32)">
+            <summary>
+            Удалить предмет из журнала
+            </summary>
+            <param name="id">Индификатор предмет из журнала</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.GetTopicAll(PGK.Application.App.Journal.Queries.GetJournalTopicList.GetJournalTopicListQuery)">
+            <summary>
+            Получить список тем из журнала
+            </summary>
+            <param name="query">GetJournalTopicListQuery object</param>
+            <returns>JournalTopicListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.CreateTopic(System.Int32,PGK.WebApi.Models.Journal.CreateJournalTopicModel)">
+            <summary>
+            Создать тему в журнале
+            </summary>
+            <param name="id">Индификатор предмета из журнала</param>
+            <param name="model">CreateJournalTopicModel object</param>
+            <returns>JournalTopicDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.DeleteTopic(System.Int32)">
+            <summary>
+            Удалить тему из журнала
+            </summary>
+            <param name="id">Индификатор темы</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.GetRowAll(PGK.Application.App.Journal.Queries.GetJournalSubjectRowList.GetJournalSubjectRowListQuery)">
+            <summary>
+            Получить список рядов из журнала
+            </summary>
+            <param name="query">GetJournalSubjectRowListQuery object</param>
+            <returns>JournalSubjectRowListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.CreateRow(System.Int32,PGK.WebApi.Models.Journal.CreateJournalSubjectRowModel)">
+            <summary>
+            Создать ряд в журнале
+            </summary>
+            <param name="id">Индификатор предмета из журнала</param>
+            <param name="model">CreateJournalSubjectRowModel object</param>
+            <returns>JournalSubjectRowDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.DeleteRow(System.Int32)">
+            <summary>
+            Удалить ряд из журнала
+            </summary>
+            <param name="id">Индификатор ряда</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.GetColumnAll(PGK.Application.App.Journal.Queries.GetJournalSubjectColumnList.GetJournalSubjectColumnListQuery)">
+            <summary>
+            Получить список колонкок из журнала
+            </summary>
+            <param name="query">GetJournalSubjectColumnListQuery object</param>
+            <returns>JournalSubjectColumnListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.UpdateEvaluation(System.Int32,PGK.Domain.Journal.JournalEvaluation)">
+            <summary>
+            Обновить оценку в журнале
+            </summary>
+            <param name="id">Индификатор колонки из журнала</param>
+            <param name="evaluation">Новая оценка</param>
+            <returns>JournalSubjectColumnDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.CreateColumn(System.Int32,PGK.WebApi.Models.Journal.CreateJournalSubjectColumnModel)">
+            <summary>
+            Создать колонку в журнале
+            </summary>
+            <param name="id">Индификатор ряда из журнала</param>
+            <param name="model">CreateJournalSubjectColumnModel object</param>
+            <returns>JournalSubjectColumnDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.JournalController.DeleteColumn(System.Int32)">
+            <summary>
+            Удалить колонку из журнала
+            </summary>
+            <param name="id">Индификатор колонки</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.GetAll(System.Nullable{System.Boolean},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Получить список рапортичик
+            </summary>
+            <param name="confirmation">Подверждение преподавателя</param>
+            <param name="onlyDate">Только за эту дату</param>
+            <param name="startDate">Минимальный дата</param>
+            <param name="endDate">Максимальный дата</param>
+            <param name="groupIds">Список id групп разделенные запятой. Например groupIds=1,2,3</param>
+            <param name="subjectIds">Список id предметов разделенные запятой. Например subjectIds=1,2,3</param>
+            <param name="classroomTeacherIds">Список id классного руковаделя разделенные запятой. Например classroomTeacherIds=1,2,3</param>
+            <param name="numberLessons">Список номер пары разделенные предметов запятой. Например numberLessons=1,2,3</param>
+            <param name="teacherIds">Список id преподавателей разделенные запятой. Например teacherIds=1,2,3</param>
+            <param name="studentIds">Список id студентов разделенные запятой. Например studentIds=1,2,3</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>RaportichkaListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.GetRowsAll(System.Int32,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Получить список строк из рапортички
+            </summary>
+            <param name="id">Индификатор рапортички</param>
+            <param name="subjectIds">Список id предметов разделенные запятой. Например subjectIds=1,2,3</param>
+            <param name="numberLessons">Список номер пары разделенные предметов запятой. Например numberLessons=1,2,3</param>
+            <param name="teacherIds">Список id преподавателей разделенные запятой. Например teacherIds=1,2,3</param>
+            <param name="studentIds">Список id студентов разделенные запятой. Например studentIds=1,2,3</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>RaportichkaRowListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.AddRow(System.Int32,PGK.WebApi.Models.Raportichka.CreateRaportichkaRowModel)">
+            <summary>
+            Добавить струку к рапортички
+            </summary>
+            <param name="id">Индификатор рапортички</param>
+            <param name="model">CreateRaportichkaRowModel object</param>
+            <returns>CreateRaportichkaRowVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.Update(System.Int32,PGK.WebApi.Models.Raportichka.UpdateRaportichkaModel)">
+            <summary>
+            Изменить рапортичку
+            </summary>
+            <param name="id">Индификатор рапортички</param>
+            <param name="model">UpdateRaportichkaModel object</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.UpdateRow(System.Int32,PGK.WebApi.Models.Teacher.TeacherUpdateRaportichkaRowModel)">
+            <summary>
+            Изменить строку из рапортички
+            </summary>
+            <param name="id">Индификатор строки</param>
+            <param name="model">TeacherUpdateRaportichkaRowModel object</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.UpdateConfirmation(System.Int32)">
+            <summary>
+            Изменить подверждения преподпвателя
+            </summary>
+            <param name="id">Индификатор строки</param>
+            <returns>UpdateConfirmationVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.DeleteById(System.Int32)">
+            <summary>
+            Удалить рапортичку
+            </summary>
+            <param name="id">Индифиувтор рапортички</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN,TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.DeleteRowById(System.Int32)">
+            <summary>
+            Удалить строку в рапортички
+            </summary>
+            <param name="id">Индификатор строки</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN,TEACHER,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.GetAll(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Получить распичания
+            </summary>
+            <param name="onlyDate">Только за эту дату</param>
+            <param name="startDate">Минимальный дата</param>
+            <param name="endDate">Максимальный дата</param>
+            <param name="groupIds">Список id групп разделенные запятой. Например groupIds=1,2,3</param>
+            <param name="teacherIds">Список id преподавателей разделенные запятой. Например teacherIds=1,2,3</param>
+            <param name="departmentIds">Список id отделов разделенные запятой. Например departmentIds=1,2,3</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>ScheduleListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.GetDepartments(System.Int32,System.Int32)">
+            <summary>
+            Получить распичание по отделу
+            </summary>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>ScheduleDepartmentListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.GetColumns(System.Int32,System.Int32)">
+            <summary>
+            Получить столбцы расписания
+            </summary>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>ScheduleColumnListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.GetRows(System.Int32,System.Int32)">
+            <summary>
+            Получить строки расписания
+            </summary>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>ScheduleRowListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.FileCreate(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Добавить расписания. Преобразования файла
+            </summary>
+            <param name="file">Файл</param>
+            <returns>ScheduleDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.Create(PGK.Application.App.Schedule.Commands.CreateSchedule.CreateScheduleCommand)">
+            <summary>
+            Добавить расписания
+            </summary>
+            <param name="command">CreateScheduleCommand object</param>
+            <returns>CreateScheduleVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.CreateDepartment(PGK.Application.App.Schedule.Commands.CreateScheduleDepartment.CreateScheduleDepartmentCommand)">
+            <summary>
+            Добавить отделения в распичание
+            </summary>
+            <param name="command">CreateScheduleDepartmentCommand object</param>
+            <returns>CreateScheduleDepartmentVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.CreateColumn(PGK.Application.App.Schedule.Commands.CreateScheduleColumn.CreateScheduleColumnCommand)">
+            <summary>
+            Добавить колонку в распичание
+            </summary>
+            <param name="command">CreateScheduleColumnCommand object</param>
+            <returns>CreateScheduleColumnVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.CreateRow(PGK.Application.App.Schedule.Commands.CreateScheduleRow.CreateScheduleRowCommand)">
+            <summary>
+            Добавить страку в распичание
+            </summary>
+            <param name="command">CreateScheduleRowCommand object</param>
+            <returns>CreateScheduleRowVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.Update(System.Int32,PGK.WebApi.Models.Schedule.UpdateScheduleModel)">
+            <summary>
+            Изменить расписания
+            </summary>
+            <param name="id">Индификатор расписания</param>
+            <param name="model">UpdateScheduleModel object</param>
+            <returns>ScheduleDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.UpdateDepartment(System.Int32,PGK.WebApi.Models.Schedule.UpdateScheduleDepartmentModel)">
+            <summary>
+            Изменить отдел в расписании
+            </summary>
+            <param name="id">Индификатор отделв в расписании</param>
+            <param name="model">UpdateScheduleDepartmentModel object</param>
+            <returns>ScheduleDepartmentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.UpdateColumn(System.Int32,PGK.WebApi.Models.Schedule.UpdateScheduleColumnModel)">
+            <summary>
+            Изменить колонку
+            </summary>
+            <param name="id">Индификатор колонки</param>
+            <param name="model">UpdateScheduleColumnModel object</param>
+            <returns>ScheduleColumnDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.UpdateRow(System.Int32,PGK.WebApi.Models.Schedule.UpdateScheduleRowModel)">
+            <summary>
+            Изменить строку
+            </summary>
+            <param name="id">Индификатор строки</param>
+            <param name="model">UpdateScheduleColumnModel object</param>
+            <returns>UpdateScheduleRowModel object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.Delete(System.Int32)">
+            <summary>
+            Удалить расписания
+            </summary>
+            <param name="id">Индификатор расписания</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.DeleteDepartment(System.Int32)">
+            <summary>
+            Удалить отдел в расписание
+            </summary>
+            <param name="id">Индификатор отделения в расписание</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.DeleteColumn(System.Int32)">
+            <summary>
+            Удалить колонку в расписание
+            </summary>
+            <param name="id">Индификатор колонки в расписание</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.ScheduleController.CreateRow(System.Int32)">
+            <summary>
+            Удалить строку в расписание
+            </summary>
+            <param name="id">Индификатор стрки в расписание</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SearchController.Search(System.String,PGK.Application.App.Search.Enums.SearchType,System.Int32,System.Int32)">
+            <summary>
+            Получить по ключевым словам
+            </summary>
+            <param name="search">Ключивые слова для поиска</param>
+            <param name="type">Тип поиска</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>SearchVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Получить список спицальностей
+            </summary>
+            <param name="search">Ключивые слова для поиска</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>SpecialityListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.GetById(System.Int32)">
+            <summary>
+            Получите спецальность по идентификатору
+            </summary>
+            <param name="id">Индификатор спецальности</param>
+            <returns>SpecialityDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.Create(PGK.Application.App.Speciality.Commands.CreateSpeciality.CreateSpecialityCommand)">
+            <summary>
+            Добавить спецальность
+            </summary>
+            <param name="command">CreateSpecialityCommand object</param>
+            <returns>SpecialityDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.Update(System.Int32,PGK.WebApi.Models.Speciality.UpdateSpecialityModel)">
+            <summary>
+            Изменить спецальность
+            </summary>
+            <param name="id">Индификатор спецальности</param>
+            <param name="model">UpdateSpecialityModel object</param>
+            <returns>SpecialityDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.Delete(System.Int32)">
+            <summary>
+            Удалить спецальность
+            </summary>
+            <param name="id">Индификатор спецальности</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.StudentController.GetAll(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Получить список студентов
+            </summary>
+            <param name="search">Ключивые слова для поиска</param>
+            <param name="userRoles">список пользовательских ролей разделенные запятой. Например userRoles=HEADMAN,DEPUTY_HEADMAN</param>
+            <param name="groupIds">список id групп разделенные запятой. Например groupIds=1,2,3</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>StudentUserListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.StudentController.GetById(System.Int32)">
+            <summary>
+            Получить пстудента по идентификатору
+            </summary>
+            <param name="id">Идентификатор студента</param>
+            <returns>StudentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.StudentController.Registration(PGK.Application.App.User.Student.Commands.Registration.RegistrationStudentCommand)">
+            <summary>
+            Зарегистрировать студента
+            </summary>
+            <param name="command">RegistrationStudentCommand object</param>
+            <returns>RegistrationStudentVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.StudentController.Delete(System.Int32)">
+            <summary>
+            Удалить студента
+            </summary>
+            <param name="id">Идентификатор студента</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SubjectController.GetAll(PGK.Application.App.Subject.Queries.GetSubjectList.GetSubjectListQuery)">
+            <summary>
+            Получить список предметов
+            </summary>
+            <param name="query">GetSubjectListQuery object</param>
+            <returns>SubjectListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SubjectController.GetById(System.Int32)">
+            <summary>
+            Получите предмет по идентификатору
+            </summary>
+            <param name="id">Индификатор предмета</param>
+            <returns>SubjectDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SubjectController.Create(PGK.Application.App.Subject.Commands.CreateSubject.CreateSubjectCommand)">
+            <summary>
+            Добавить предмет
+            </summary>
+            <param name="command">CreateSubjectCommand object</param>
+            <returns>CreateSubjectVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SubjectController.Update(System.Int32,PGK.WebApi.Models.Subject.UpdateSubjectModel)">
+            <summary>
+            Изменить предмет
+            </summary>
+            <param name="id">Индификаатор предмета</param>
+            <param name="model">UpdateSubjectModel object</param>
+            <returns>SubjectDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.SubjectController.Delete(System.Int32)">
+            <summary>
+            Удалить предмет
+            </summary>
+            <param name="id">Индификатор предмета</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>
+            Получите список прподавателей
+            </summary>
+            <param name="search">Ключивые слова для поиска</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество результатов для возврата на страницу</param>
+            <returns>TeacherUserListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.GetById(System.Int32)">
+            <summary>
+            Получите прподавателя по индификатору
+            </summary>
+            <param name="id">Индификатор преподавателя</param>
+            <returns>TeacherUserDetails object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.Registration(PGK.Application.App.User.Teacher.Commands.Registration.RegistrationTeacherCommand)">
+            <summary>
+            Зарегистрировать преподавателя
+            </summary>
+            <param name="command">RegistrationTeacherCommand object</param>
+            <returns>RegistrationTeacherVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.Delete(System.Int32)">
+            <summary>
+            Удалить преподавателя
+            </summary>
+            <param name="id">Идентификатор преподавателя</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.AddSubject(System.Int32,System.Int32)">
+            <summary>
+            Добавить к природавателю предмет
+            </summary>
+            <param name="id">Идентификатор преподавателя</param>
+            <param name="subjectId">Идентификатор предмета</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TeacherController.TeacherAddRow(System.Int32,PGK.WebApi.Models.Teacher.TeacherCreateRaportichkaRowModel)">
+            <summary>
+            Добавить ряд в рапортички
+            </summary>
+            <param name="id">Идентификатор рапортички</param>
+            <param name="model">TeacherCreateRaportichkaRowModel object</param>
+            <returns>CreateRaportichkaRowVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.Update(PGK.WebApi.Models.User.UpdateUserModel)">
+            <summary>
+            Изменить пользователя
+            </summary>
+            <param name="model">UpdateUserModel object</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.GetSettings">
+            <summary>
+            Получить настройки пользователя
+            </summary>
+            <returns>UserSettingsDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateDrarkMode">
+            <summary>
+            Изменить "Drark Mode"
+            </summary>
+            <returns>UpdateDrarkModeVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateSecondaryBackground(PGK.Domain.User.SecondaryBackground)">
+            <summary>
+            Изменить "Secondary Background"
+            </summary>
+            <returns>UpdateSecondaryBackgroundVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.GetPhoto(System.Int32)">
+            <summary>
+            Получить фото профеля пользователя
+            </summary>
+            <param name="userId">Индификатор пользователя</param>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.AddPhoto(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Добавить или изменить фото пользователя
+            </summary>
+            <param name="photo">Фото пользователя</param>
+            <returns>UserPhotoVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SendEmailVerification">
+            <summary>
+            Отправить письмо на почту для подверждения почты
+            </summary>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.EmailVerification(System.Int32,System.String)">
+            <summary>
+            Подвердить почту пользователя
+            </summary>
+            <returns>HTML страница</returns>
+            <param name="userId">Индификатор пользователя</param>
+            <param name="token">Токен электронный почты</param>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SendEmailPaswordReset(System.String)">
+            <summary>
+            Отправить письмо на почту для сброса пароля
+            </summary>
+            <param name="email">Электроная почта пользователя</param>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.PassowrdReset(System.Int32,System.String)">
+            <summary>
+            Сбросить пароль
+            </summary>
+            <returns>HTML страница</returns>
+            <param name="userId">Индификатор пользователя</param>
+            <param name="token">Токен электронный почты</param>
+            <response code="200">Запрос выполнен успешно</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.UpdateEmail(System.String)">
+            <summary>
+            Добавить или сменить электронную почту пользователя
+            </summary>
+            <param name="newEmail">Электроная почта пользователя</param>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.VedomostController.GetAll(PGK.Application.App.Vedomost.Queries.GetVedomostList.GetVedomostListQuery)">
+            <summary>
+            Получить список из ведомастей
+            </summary>
+            <param name="query">GetVedomostListQuery object</param>
+            <returns>VedomostListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.VedomostController.GetById(System.Int32)">
+            <summary>
+            Получить ведомость по индификатору
+            </summary>
+            <param name="id">индификатор ведомости</param>
+            <returns>VedomostDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.VedomostController.GetFile(System.String)">
+            <summary>
+            Получить файл ведомости
+            </summary>
+            <param name="fileId">индификатор файла</param>
+            <returns>File</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
     </members>
 </doc>

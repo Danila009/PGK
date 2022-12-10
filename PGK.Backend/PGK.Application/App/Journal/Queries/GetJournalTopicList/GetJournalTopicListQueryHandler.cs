@@ -56,6 +56,11 @@ namespace PGK.Application.App.Journal.Queries.GetJournalTopicList
                     .ThenInclude(u => u.Rows)
                         .ThenInclude(u => u.Columns);
 
+            if (request.JournalSubjectId != null)
+            {
+                query = query.Where(u => u.JournalSubject.Id == request.JournalSubjectId);
+            }
+
             var journalTopic = query
                 .ProjectTo<JournalTopicDto>(_mapper.ConfigurationProvider);
 

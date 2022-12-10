@@ -38,7 +38,7 @@ namespace PGK.Application.App.Journal.Commands.CreateJournal
 
                 if(!teacher.Groups.Any(u => u.Id == group.Id))
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("Классный руковадитель может создать журнал только для своей группы");
                 }
             }
 

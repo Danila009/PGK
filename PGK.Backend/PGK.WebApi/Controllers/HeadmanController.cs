@@ -13,9 +13,18 @@ namespace PGK.WebApi.Controllers
 {
     public class HeadmanController : Controller
     {
-        [Authorize(Roles = "TEACHER")]
+        /// <summary>
+        /// Регестрация старосты
+        /// </summary>
+        /// <param name="model">RegistrationHeadmanModel object</param>
+        /// <returns>RegistrationHeadmanVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Registration")]
-        public async Task<ActionResult<RegistrationHeadmanVm>> Registration(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationHeadmanVm))]
+        public async Task<ActionResult> Registration(
             RegistrationHeadmanModel model)
         {
             var command = new RegistrationHeadmanCommand
@@ -29,9 +38,18 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
-        [Authorize(Roles = "TEACHER")]
+        /// <summary>
+        /// Регестрация зам старосты
+        /// </summary>
+        /// <param name="model">RegistrationHeadmanModel object</param>
+        /// <returns>RegistrationHeadmanVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
+        [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Deputy/Registration")]
-        public async Task<ActionResult<RegistrationHeadmanVm>> RegistrationDeputy(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationHeadmanVm))]
+        public async Task<ActionResult> RegistrationDeputy(
             RegistrationHeadmanModel model)
         {
             var command = new RegistrationDeputyHeadmanCommand
@@ -45,9 +63,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Создания рапортички
+        /// </summary>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
         [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN")]
         [HttpPost("Raportichka")]
-        public async Task<ActionResult<CreateRaportichkaVm>> CreateRaportichka()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateRaportichkaVm))]
+        public async Task<ActionResult> CreateRaportichka()
         {
             var command = new CreateRaportichkaCommand
             {
@@ -60,9 +86,19 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Добавить ведомасть
+        /// </summary>
+        /// <param name="date">Дата</param>
+        /// <param name="file">Электронная таблица</param>
+        /// <returns>CreateVedomostVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
         [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN")]
         [HttpPost("Vedomost")]
-        public async Task<ActionResult<CreateVedomostVm>> CreateVedomost(DateTime date, FormFile file)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateVedomostVm))]
+        public async Task<ActionResult> CreateVedomost(DateTime date, FormFile file)
         {
             var command = new CreateVedomostCommand
             {
@@ -77,8 +113,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Удалить ведомасть
+        /// </summary>
+        /// <param name="id">Индификатор ведомасти</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN</response>
         [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN")]
-        [HttpDelete("{id}/Vedomost")]
+        [HttpDelete("Vedomost/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteVedomost(int id)
         {
             var command = new DeleteVedomostCommand
@@ -93,8 +138,18 @@ namespace PGK.WebApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Обнавить ряд у рапортички
+        /// </summary>
+        /// <param name="id">Индификатор ряда</param>
+        /// <param name="model">UpdateRaportichkaRowModel object</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль HEADMAN,DEPUTY_HEADMAN,ADMIN</response>
         [Authorize(Roles = "HEADMAN,DEPUTY_HEADMAN,ADMIN")]
         [HttpPut("Raportichka/Row/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> HeadmanUpdateRow(int id, UpdateRaportichkaRowModel model)
         {
             var command = new UpdateRaportichkaRowCommand

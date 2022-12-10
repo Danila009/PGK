@@ -5,14 +5,25 @@ using PGK.Application.App.Speciality.Commands.DeleteSpeciality;
 using PGK.Application.App.Speciality.Commands.UpdateSpeciality;
 using PGK.Application.App.Speciality.Queries.GetSpecialityDetails;
 using PGK.Application.App.Speciality.Queries.GetSpecialityList;
+using PGK.WebApi.Models.Speciality;
 
 namespace PGK.WebApi.Controllers
 {
     public class SpecialityController : Controller
     {
+        /// <summary>
+        /// Получить список спицальностей
+        /// </summary>
+        /// <param name="search">Ключивые слова для поиска</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>SpecialityListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<SpecialityListVm>> GetAll(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SpecialityListVm))]
+        public async Task<ActionResult> GetAll(
             string? search, int pageNumber = 1, int pageSize = 20
             )
         {
@@ -28,9 +39,17 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Получите спецальность по идентификатору
+        /// </summary>
+        /// <param name="id">Индификатор спецальности</param>
+        /// <returns>SpecialityDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<SpecialityDto>> GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SpecialityDto))]
+        public async Task<ActionResult> GetById(int id)
         {
             var query = new GetSpecialityDetailsQuery
             {
@@ -42,25 +61,62 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Добавить спецальность
+        /// </summary>
+        /// <param name="command">CreateSpecialityCommand object</param>
+        /// <returns>SpecialityDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpPost]
-        public async Task<ActionResult<SpecialityDto>> Create(CreateSpecialityCommand command)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SpecialityDto))]
+        public async Task<ActionResult> Create(CreateSpecialityCommand command)
         {
             var dto = await Mediator.Send(command);
 
             return Ok(dto);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Изменить спецальность
+        /// </summary>
+        /// <param name="id">Индификатор спецальности</param>
+        /// <param name="model">UpdateSpecialityModel object</param>
+        /// <returns>SpecialityDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<SpecialityDto>> Update(int id, UpdateSpecialityCommand command)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SpecialityDto))]
+        public async Task<ActionResult> Update(int id, UpdateSpecialityModel model)
         {
+            var command = new UpdateSpecialityCommand
+            {
+                Id = id,
+                Number = model.Number,
+                Name = model.Name,
+                NameAbbreviation = model.NameAbbreviation,
+                Qualification = model.Qualification,
+                DepartmentId = model.DepartmentId
+            };
+
             var dto = await Mediator.Send(command);
 
             return Ok(dto);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Удалить спецальность
+        /// </summary>
+        /// <param name="id">Индификатор спецальности</param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

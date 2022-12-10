@@ -39,7 +39,7 @@ namespace PGK.Application.App.Vedomost.Commands.CreateVedomost
             {
                 if(request.GroupId == null)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("GroupId not found");
                 }
 
                 var adminGroup = await _dbContext.Groups.FindAsync(request.GroupId);
@@ -53,7 +53,7 @@ namespace PGK.Application.App.Vedomost.Commands.CreateVedomost
                 group = adminGroup;
             } else
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("У вас нет доступа к создании ведомасти");
             }
 
             var fileId = await _fileRepository.UploadFile(

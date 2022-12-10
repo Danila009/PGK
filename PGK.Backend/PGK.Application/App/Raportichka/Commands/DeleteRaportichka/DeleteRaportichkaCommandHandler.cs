@@ -39,7 +39,7 @@ namespace PGK.Application.App.Raportichka.Commands.DeleteRaportichka
 
                 if (student.Group.Raportichkas.Any(u => u.Id != request.Id))
                 {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedAccessException("Вы пытаетесь удалить рапортичку другой группы");
                 }
             }
 

@@ -7,9 +7,20 @@ namespace PGK.WebApi.Controllers
 {
     public class SearchController : Controller
     {
+        /// <summary>
+        /// Поиск по ключевым словам
+        /// </summary>
+        /// <param name="search">Ключивые слова для поиска</param>
+        /// <param name="type">Тип поиска</param>
+        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="pageSize">Количество результатов для возврата на страницу</param>
+        /// <returns>SearchVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<SearchVm>> Search(
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SearchVm))]
+        public async Task<ActionResult> Search(
             string search, SearchType type = SearchType.ALL,
             int pageNumber = 1, int pageSize = 20
             )
