@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PGK.Domain.Department;
 using PGK.Domain.Journal;
+using PGK.Domain.Notification;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
 using PGK.Domain.Speciality;
 using PGK.Domain.Subject;
+using PGK.Domain.TechnicalSupport;
 using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DepartmentHead;
@@ -50,6 +52,12 @@ namespace PGK.Application.Interfaces
         DbSet<Speciality> Specialties { get; set; }
 
         DbSet<Vedomost> Vedomost { get; set; }
+
+        DbSet<Chat> Chats { get; set; }
+        DbSet<Message> Messages { get; set; }
+        DbSet<MessageContent> MessageContents { get; set; }
+
+        DbSet<Notification> Notifications { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

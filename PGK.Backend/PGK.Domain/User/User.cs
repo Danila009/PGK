@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PGK.Domain.TechnicalSupport;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PGK.Domain.User
@@ -26,6 +27,11 @@ namespace PGK.Domain.User
         public string? PhotoUrl { get; set; } = null;
         public string? RefreshToken { get; set; } = null;
 
-        public virtual string Role => UserRole.STUDENT.ToString();
+        public Chat? TechnicalSupportChat { get; set; }
+        public virtual List<Message> TechnicalSupportMessages { get; set; } = new List<Message>();
+
+        public virtual List<Notification.Notification> Notifications { get; set; } = new List<Notification.Notification>();
+
+        public virtual string Role => "USER";
     }
 }

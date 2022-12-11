@@ -20,8 +20,8 @@ namespace PGK.WebApi.Controllers
         /// <returns>RegistrationHeadmanVm object</returns>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
-        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
-        [Authorize(Roles = "TEACHER,ADMIN")]
+        /// <response code="403">Авторизация роль TEACHER</response>
+        [Authorize(Roles = "TEACHER")]
         [HttpPost("Registration")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationHeadmanVm))]
         public async Task<ActionResult> Registration(
@@ -45,8 +45,8 @@ namespace PGK.WebApi.Controllers
         /// <returns>RegistrationHeadmanVm object</returns>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
-        /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
-        [Authorize(Roles = "TEACHER,ADMIN")]
+        /// <response code="403">Авторизация роль TEACHER</response>
+        [Authorize(Roles = "TEACHER")]
         [HttpPost("Deputy/Registration")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrationHeadmanVm))]
         public async Task<ActionResult> RegistrationDeputy(

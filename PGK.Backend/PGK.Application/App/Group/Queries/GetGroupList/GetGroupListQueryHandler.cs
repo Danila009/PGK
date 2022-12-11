@@ -62,12 +62,16 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
 
             if (request.DeputyHeadmaIds != null && request.DeputyHeadmaIds.Count > 0)
             {
-                query = query.Where(u => request.DeputyHeadmaIds.Contains(u.DeputyHeadma.Id));
+                query = query
+                    .Where(u => u.DeputyHeadma != null)
+                    .Where(u => request.DeputyHeadmaIds.Contains(u.DeputyHeadma.Id));
             }
 
             if (request.HeadmanIds != null && request.HeadmanIds.Count > 0)
             {
-                query = query.Where(u => request.HeadmanIds.Contains(u.Headman.Id));
+                query = query
+                    .Where(u => u.Headman != null)
+                    .Where(u => request.HeadmanIds.Contains(u.Headman.Id));
             }
 
             var groups = query

@@ -305,7 +305,7 @@
             <returns>RegistrationHeadmanVm object</returns>
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
-            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+            <response code="403">Авторизация роль TEACHER</response>
         </member>
         <member name="M:PGK.WebApi.Controllers.HeadmanController.RegistrationDeputy(PGK.WebApi.Models.Headman.RegistrationHeadmanModel)">
             <summary>
@@ -315,7 +315,7 @@
             <returns>RegistrationHeadmanVm object</returns>
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
-            <response code="403">Авторизация роль TEACHER,ADMIN</response>
+            <response code="403">Авторизация роль TEACHER</response>
         </member>
         <member name="M:PGK.WebApi.Controllers.HeadmanController.CreateRaportichka">
             <summary>
@@ -798,7 +798,7 @@
         </member>
         <member name="M:PGK.WebApi.Controllers.SearchController.Search(System.String,PGK.Application.App.Search.Enums.SearchType,System.Int32,System.Int32)">
             <summary>
-            Получить по ключевым словам
+            Поиск по ключевым словам
             </summary>
             <param name="search">Ключивые слова для поиска</param>
             <param name="type">Тип поиска</param>
@@ -1012,9 +1012,162 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль TEACHER</response>
         </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.Get">
+            <summary>
+            Получить список сообщения (WebSocket)
+            </summary>
+            <remarks>
+                <para>
+                     Url : wss://localhost:7002/pgk63/ws/Chat/Message     
+                </para>
+                <para>
+                    Send message: json string GetMessageListQuery object
+                </para>
+                <para>
+                    Returns: json string MessageListVm object
+                </para>
+            </remarks>
+            <returns>MessageListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="400">Не является запросом WebSocket</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.GetChat(PGK.Application.App.TechnicalSupport.Queries.GetChatList.GetChatListQuery)">
+            <summary>
+            Получить список чатов
+            </summary>
+            <param name="query">GetChatListQuery object</param>
+            <returns>ChatListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.GetChatById(System.Int32)">
+            <summary>
+            Получить чат по индификатору
+            </summary>
+            <param name="id">Идентификатор чата</param>
+            <returns>ChatDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.GetMessageAll(PGK.Application.App.TechnicalSupport.Queries.GetMessageList.GetMessageListQuery)">
+            <summary>
+            Получить список сообщений
+            </summary>
+            <param name="query">GetMessageListQuery object</param>
+            <returns>MessageListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.GetMessageContentAll(PGK.Application.App.TechnicalSupport.Queries.GetMessageContentList.GetMessageContentListQuery)">
+            <summary>
+            Получить лист контета из сообщений
+            </summary>
+            <param name="query">GetMessageContentListQuery object</param>
+            <returns>MessageContentListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.GetMessageContentFile(System.String,PGK.Domain.TechnicalSupport.Enums.MessageContentType)">
+            <summary>
+            Получить файл контент сообщение
+            </summary>
+            <param name="fileId">Идентификатор файла</param>
+            <param name="type">Тип файла</param>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.CreateMessageContentFile(System.Int32,PGK.Domain.TechnicalSupport.Enums.MessageContentType,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Добавить к сообщению контент
+            </summary>
+            <param name="id">Идентификатор сообщения</param>
+            <param name="type">Тип файла</param>
+            <param name="file">Файл</param>
+            <returns>MessageContentDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.DeleteMessageContent(System.Int32)">
+            <summary>
+            Удалить контент в сообщение
+            </summary>
+            <param name="id">Идентификатор контента</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.SendMessage(PGK.WebApi.Models.TechnicalSupport.SendMessageModel)">
+            <summary>
+            Отправить сообщение
+            </summary>
+            <remarks>
+            Параметр ChatId нужно указывать только администратору
+            </remarks>
+            <param name="model">SendMessageModel object</param>
+            <returns>MessageDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.UpdateMessage(System.Int32,PGK.WebApi.Models.TechnicalSupport.UpdateMessageModel)">
+            <summary>
+            Обновить сообщение
+            </summary>
+            <param name="id">Идентификатор сообщения</param>
+            <param name="model">UpdateMessageModel object</param>
+            <returns>MessageDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.UpdateMessageUserVisible(System.Int32)">
+            <summary>
+            Пользователь прочитал сообщение
+            </summary>
+            <param name="id">Идентификатор сообщения</param>
+            <returns>MessageDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.UpdateMessagePin(System.Int32)">
+            <summary>
+            Закрепить сообщение
+            </summary>
+            <param name="id">Идентификатор сообщения</param>
+            <returns>MessageDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.TechnicalSupportController.DeleteMessage(System.Int32)">
+            <summary>
+            Удалить сообщение
+            </summary>
+            <param name="id">Идентификатор сообщения</param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.GetAllNotification(PGK.WebApi.Models.User.GetUserNotificationModel)">
+            <summary>
+            Получить уведомления пользователя
+            </summary>
+            <param name="model">GetUserNotificationModel object</param>
+            <returns>NotificationListVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.UpdateTelegramId(System.Int32)">
+            <summary>
+            Обновить или добавить TelegramId
+            </summary>
+            <param name="telegramId"></param>
+            <returns>Returns NoContend</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
         <member name="M:PGK.WebApi.Controllers.UserController.Update(PGK.WebApi.Models.User.UpdateUserModel)">
             <summary>
-            Изменить пользователя
+            Изменить данные пользователя
             </summary>
             <param name="model">UpdateUserModel object</param>
             <returns>Returns NoContend</returns>

@@ -48,20 +48,23 @@ namespace PGK.Application.App.Schedule.GetScheduleList.Queries
 
             if(request.DepartmentIds != null && request.DepartmentIds.Count > 0)
             {
-                query = query.Where(u => u.ScheduleDepartments
-                    .Any(u => request.DepartmentIds.Contains(u.Department.Id)));
+                query = query
+                    .Where(u => u.ScheduleDepartments.Any(u => u.Department != null))
+                    .Where(u => u.ScheduleDepartments.Any(u => request.DepartmentIds.Contains(u.Department.Id)));
             }
 
             if(request.GroupIds != null && request.GroupIds.Count > 0)
             {
-                query = query.Where(u => u.ScheduleDepartments
-                    .Any(u => u.Columns.Any(u => request.GroupIds.Contains(u.Group.Id))));
+                query = query
+                    .Where(u => u.ScheduleDepartments.Any(u => u.Columns.Any(u => u.Group != null)))
+                    .Where(u => u.ScheduleDepartments.Any(u => u.Columns.Any(u => request.GroupIds.Contains(u.Group.Id))));
             }
 
             if (request.TeacherIds != null && request.TeacherIds.Count > 0)
             {
-                query = query.Where(u => u.ScheduleDepartments
-                    .Any(u => u.Columns.Any(u => u.Rows.Any(u => request.TeacherIds.Contains(u.Teacher.Id)))));
+                query = query
+                    .Where(u => u.ScheduleDepartments.Any(u => u.Columns.Any(u => u.Rows.Any(u => u.Teacher != null))))
+                    .Where(u => u.ScheduleDepartments.Any(u => u.Columns.Any(u => u.Rows.Any(u => request.TeacherIds.Contains(u.Teacher.Id)))));
             }
 
             var schedules = query

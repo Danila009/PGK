@@ -34,7 +34,7 @@ namespace PGK.Application.App.Speciality.Commands.CreateSpeciality
                 Department = department
             };
 
-            await _dbContext.Departments.AddAsync(department, cancellationToken);
+            await _dbContext.Specialties.AddAsync(speciality, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<SpecialityDto>(speciality);

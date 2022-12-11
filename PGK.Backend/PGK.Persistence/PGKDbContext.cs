@@ -2,10 +2,12 @@
 using PGK.Application.Interfaces;
 using PGK.Domain.Department;
 using PGK.Domain.Journal;
+using PGK.Domain.Notification;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
 using PGK.Domain.Speciality;
 using PGK.Domain.Subject;
+using PGK.Domain.TechnicalSupport;
 using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DepartmentHead;
@@ -53,6 +55,11 @@ namespace PGK.Persistence
 
         public DbSet<Vedomost> Vedomost { get; set; }
 
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageContent> MessageContents { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
         public PGKDbContext(DbContextOptions<PGKDbContext> options) : base(options)
         {
 
@@ -65,8 +72,8 @@ namespace PGK.Persistence
             builder.Entity<TeacherUser>()
                 .HasMany(u => u.Subjects).WithMany(u => u.Teachers);
 
-            builder.Entity<Subject>()
-                .HasMany(u => u.Teachers).WithMany(u => u.Subjects);
+            builder.Entity<User>()
+                .HasMany(u => u.Notifications).WithMany(u => u.Users);
 
             base.OnModelCreating(builder);
         }

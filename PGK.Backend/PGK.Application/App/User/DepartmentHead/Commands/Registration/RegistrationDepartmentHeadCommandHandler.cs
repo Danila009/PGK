@@ -2,7 +2,7 @@
 using PGK.Application.Common;
 using PGK.Application.Interfaces;
 using PGK.Application.Security;
-using PGK.Domain.User.DeputyHeadma;
+using PGK.Domain.User.DepartmentHead;
 
 namespace PGK.Application.App.User.DepartmentHead.Commands.Registration
 {
@@ -26,7 +26,7 @@ namespace PGK.Application.App.User.DepartmentHead.Commands.Registration
 
             var passwordHash = PasswordHash.CreateHash(password);
 
-            var user = new DeputyHeadmaUser
+            var user = new DepartmentHeadUser
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -35,7 +35,7 @@ namespace PGK.Application.App.User.DepartmentHead.Commands.Registration
                 RefreshToken = refreshToken
             };
 
-            await _dbContext.DeputyHeadmaUsers.AddAsync(user, cancellationToken);
+            await _dbContext.DepartmentHeadUsers.AddAsync(user, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             var accessToken = _auth.CreateAccessToken(userId: user.Id, userRole: user.Role);

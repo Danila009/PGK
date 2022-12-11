@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using PGK.Application.Common.Exceptions;
 using PGK.Application.Common;
 using PGK.Application.Repository.ImageRepository;
 

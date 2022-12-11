@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
@@ -19,7 +20,9 @@ namespace PGK.Application.App.User.Student.Commands.Registration
         public async Task<RegistrationStudentVm> Handle(RegistrationStudentCommand request,
             CancellationToken cancellationToken)
         {
-            var group = await _dbContext.Groups.FindAsync(request.GroupId);
+            var group = await _dbContext.Groups
+                .Include(u => u.Department)
+                .FirstOrDefaultAsync(u => u.Id == request.GroupId);
 
             if (group == null)
             {
@@ -38,8 +41,9 @@ namespace PGK.Application.App.User.Student.Commands.Registration
                 LastName = request.LastName,
                 MiddleName = request.MiddleName,
                 Password = passwordHash,
+                RefreshToken = refreshToken,
                 Group = group,
-                RefreshToken = refreshToken
+                Department = group.Department
             };
 
             await _dbContext.StudentsUsers.AddAsync(user, cancellationToken);

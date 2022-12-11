@@ -4,6 +4,9 @@
     "\\PGK.Backend",
     "\\PGK.Backend\\PGK.Application",
     "\\PGK.Backend\\PGK.Application\\App",
+    "\\PGK.Backend\\PGK.Application\\App\\Group",
+    "\\PGK.Backend\\PGK.Application\\App\\Group\\Queries",
+    "\\PGK.Backend\\PGK.Application\\App\\Group\\Queries\\GetGroupList",
     "\\PGK.Backend\\PGK.Application\\App\\User",
     "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector",
     "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector\\Queries",
@@ -11,6 +14,6 @@
     "\\PGK.Backend\\PGK.WebApi",
     "\\PGK.Backend\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\User\\EducationalSector\\Queries\\GetEducationalSectorList\\EducationalSectorDto.cs",
+  "SelectedNode": "\\PGK.Backend\\PGK.Application\\App\\Group\\Queries\\GetGroupList\\GetGroupListQuery.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -8,7 +8,9 @@ using PGK.Application.App.User.Commands.SendEmailVerification;
 using PGK.Application.App.User.Commands.UpdateDrarkMode;
 using PGK.Application.App.User.Commands.UpdateEmail;
 using PGK.Application.App.User.Commands.UpdateSecondaryBackground;
+using PGK.Application.App.User.Commands.UpdateTelegramId;
 using PGK.Application.App.User.Commands.UpdateUser;
+using PGK.Application.App.User.Queries.GetUserNotification;
 using PGK.Application.App.User.Queries.GetUserPhoto;
 using PGK.Application.App.User.Queries.GetUserSettings;
 using PGK.Domain.User;
@@ -19,7 +21,55 @@ namespace PGK.WebApi.Controllers
     public class UserController : Controller
     {
         /// <summary>
-        /// Изменить пользователя
+        /// Получить уведомления пользователя
+        /// </summary>
+        /// <param name="model">GetUserNotificationModel object</param>
+        /// <returns>NotificationListVm object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpGet("Notification")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NotificationListVm))]
+        public async Task<ActionResult> GetAllNotification(
+            [FromQuery] GetUserNotificationModel model)
+        {
+            var query = new GetUserNotificationQuery
+            {
+                Search = model.Search,
+                PageNumber = model.PageNumber,
+                PageSize = model.PageSize,
+                UserId = UserId
+            };
+
+            var vm = await Mediator.Send(query);
+
+            return Ok(vm);
+        }
+
+        /// <summary>
+        /// Обновить или добавить TelegramId
+        /// </summary>
+        /// <param name="telegramId"></param>
+        /// <returns>Returns NoContend</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpPatch("TelegramId")]
+        public async Task<ActionResult> UpdateTelegramId(int telegramId)
+        {
+            var command = new UpdateTelegramIdCommand
+            {
+                TelegramId = telegramId,
+                UserId = UserId
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Изменить данные пользователя
         /// </summary>
         /// <param name="model">UpdateUserModel object</param>
         /// <returns>Returns NoContend</returns>

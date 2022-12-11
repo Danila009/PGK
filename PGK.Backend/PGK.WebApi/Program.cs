@@ -67,7 +67,7 @@ void RegisterServices(IServiceCollection services)
         config.SwaggerDoc("v1", new OpenApiInfo
         {
             Version = "v1.0",
-            Title = "PGK Web Api",
+            Title = "PGK API",
             Contact = new OpenApiContact
             {
                 Name = "GitHub",
@@ -104,7 +104,6 @@ void Configure(WebApplication app)
         });
     }
 
-
     app.UseCustomExceptionHandler();
 
     app.UseRouting();
@@ -113,6 +112,12 @@ void Configure(WebApplication app)
     app.UseAuthentication();
     app.UseAuthorization();
 
+    var webSocketOptions = new WebSocketOptions
+    {
+        KeepAliveInterval = TimeSpan.FromMinutes(2)
+    };
+
+    app.UseWebSockets(webSocketOptions);
 
     app.UseEndpoints(endpoints =>
     {
