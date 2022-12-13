@@ -1,0 +1,10 @@
+<resources>
+    <string name="profile">Профиль</string>
+    <string name="schedule">Расписание</string>
+    <string name="guide">Руководство</string>
+    <string name="groups">Группы</string>
+    <string name="journal">Журнал</string>
+    <string name="raportichka">Рапортички</string>
+    <string name="settings">Настройки</string>
+    <string name="help">Помощь</string>
+</resources>

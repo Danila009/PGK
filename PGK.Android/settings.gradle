@@ -15,3 +15,8 @@ dependencyResolutionManagement {
 rootProject.name = "PGK"
 include ':app'
 include ':core:core-network'
+include ':core:core-common'
+include ':core:core-database'
+include ':core:core-ui'
+include ':core:core-navigation'
+include ':features:feature-main'
