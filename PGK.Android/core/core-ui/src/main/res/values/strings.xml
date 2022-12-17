@@ -7,4 +7,14 @@
     <string name="raportichka">Рапортички</string>
     <string name="settings">Настройки</string>
     <string name="help">Помощь</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="firstName">Имя</string>
+    <string name="lastName">Фамилия</string>
+    <string name="middleName">Отчество</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="entrance">Вход</string>
+    <string name="error">Ошибка</string>
+    <string name="authorization_error">Ошибка авторизации</string>
+    <string name="field_required">Это поле является обязательным</string>
 </resources>

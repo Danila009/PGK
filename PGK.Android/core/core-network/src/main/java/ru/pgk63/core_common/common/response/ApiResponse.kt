@@ -10,6 +10,7 @@ abstract class ApiResponse {
                 val body = response.body()
                 return Result.Success(body)
             }
+
             return Result.Error("${response.code()} ${response.message()}")
         } catch (e: Exception) {
             return Result.Error(e.message.toString())

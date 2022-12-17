@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="field_required">Это поле является обязательным</string>
+    <string name="incorrect_email">Некорректный email адрес</string>
+    <string name="incorrect_password">Минимум 4 символа</string>
+</resources>

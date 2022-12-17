@@ -15,5 +15,9 @@ data class SignInResponse(
     val userRole:String,
     @SerializedName("drarkMode")
     val darkMode: Boolean,
-    val secondaryBackground:String
+    val secondaryBackground:String,
+    @SerializedName("Message")
+    val errorMessage:String? = null,
+    @SerializedName("Code")
+    val errorCode: Int? = null
 )

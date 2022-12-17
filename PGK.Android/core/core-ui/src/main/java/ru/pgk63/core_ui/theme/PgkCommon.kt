@@ -8,7 +8,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 
-data class JetHabitColors(
+data class PgkColors(
     val primaryText: Color,
     val primaryBackground: Color,
     val secondaryText: Color,
@@ -19,65 +19,65 @@ data class JetHabitColors(
     val errorColor: Color
 )
 
-data class JetHabitTypography(
+data class PgkTypography(
     val heading: TextStyle,
     val body: TextStyle,
     val toolbar: TextStyle,
     val caption: TextStyle
 )
 
-data class JetHabitShape(
+data class PgkShape(
     val padding: Dp,
     val cornersStyle: Shape
 )
 
-data class JetHabitFontFamily(
+data class PgkFontFamily(
     val fontFamily: FontFamily
 )
 
 object PgkTheme {
-    val colors: JetHabitColors
+    val colors: PgkColors
         @Composable
-        get() = LocalJetHabitColors.current
-    val typography: JetHabitTypography
+        get() = LocalPgkHabitColors.current
+    val typography: PgkTypography
         @Composable
-        get() = LocalJetHabitTypography.current
-    val shapes: JetHabitShape
+        get() = LocalPgkHabitTypography.current
+    val shapes: PgkShape
         @Composable
-        get() = LocalJetHabitShape.current
-    val fontFamily:JetHabitFontFamily
+        get() = LocalPgkHabitShape.current
+    val fontFamily:PgkFontFamily
         @Composable
-        get() = LocalJetFontFamily.current
+        get() = LocalPgkFontFamily.current
 }
 
-enum class JetHabitStyle {
+enum class PgkStyle {
     Purple, Orange, Blue, Red, Green, Yellow
 }
 
-enum class JetHabitSize {
+enum class PgkSize {
     Small, Medium, Big
 }
 
-enum class JetHabitCorners {
+enum class PgkCorners {
     Flat, Rounded
 }
 
-enum class JetHabitFont {
+enum class PgkFont {
     Cursive, Serif, Default, Monospace, SansSerif
 }
 
-val LocalJetHabitColors = staticCompositionLocalOf<JetHabitColors> {
+val LocalPgkHabitColors = staticCompositionLocalOf<PgkColors> {
     error("No colors provided")
 }
 
-val LocalJetHabitTypography = staticCompositionLocalOf<JetHabitTypography> {
+val LocalPgkHabitTypography = staticCompositionLocalOf<PgkTypography> {
     error("No font provided")
 }
 
-val LocalJetHabitShape = staticCompositionLocalOf<JetHabitShape> {
+val LocalPgkHabitShape = staticCompositionLocalOf<PgkShape> {
     error("No shapes provided")
 }
 
-val LocalJetFontFamily = staticCompositionLocalOf<JetHabitFontFamily> {
+val LocalPgkFontFamily = staticCompositionLocalOf<PgkFontFamily> {
     error("No font family provided")
 }

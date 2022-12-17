@@ -13,98 +13,98 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MainTheme(
-    style: JetHabitStyle = JetHabitStyle.Green,
-    textSize: JetHabitSize = JetHabitSize.Medium,
-    paddingSize: JetHabitSize = JetHabitSize.Medium,
-    corners: JetHabitCorners = JetHabitCorners.Rounded,
-    fontFamily: JetHabitFont = JetHabitFont.Default,
+    style: PgkStyle = PgkStyle.Green,
+    textSize: PgkSize = PgkSize.Medium,
+    paddingSize: PgkSize = PgkSize.Medium,
+    corners: PgkCorners = PgkCorners.Rounded,
+    fontFamily: PgkFont = PgkFont.Default,
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colors = when (darkTheme) {
         true -> {
             when (style) {
-                JetHabitStyle.Purple -> purpleDarkPalette
-                JetHabitStyle.Blue -> blueDarkPalette
-                JetHabitStyle.Orange -> orangeDarkPalette
-                JetHabitStyle.Red -> redDarkPalette
-                JetHabitStyle.Green -> greenDarkPalette
-                JetHabitStyle.Yellow -> yellowDarkPalette
+                PgkStyle.Purple -> purpleDarkPalette
+                PgkStyle.Blue -> blueDarkPalette
+                PgkStyle.Orange -> orangeDarkPalette
+                PgkStyle.Red -> redDarkPalette
+                PgkStyle.Green -> greenDarkPalette
+                PgkStyle.Yellow -> yellowDarkPalette
             }
         }
         false -> {
             when (style) {
-                JetHabitStyle.Purple -> purpleLightPalette
-                JetHabitStyle.Blue -> blueLightPalette
-                JetHabitStyle.Orange -> orangeLightPalette
-                JetHabitStyle.Red -> redLightPalette
-                JetHabitStyle.Green -> greenLightPalette
-                JetHabitStyle.Yellow -> yellowLightPalette
+                PgkStyle.Purple -> purpleLightPalette
+                PgkStyle.Blue -> blueLightPalette
+                PgkStyle.Orange -> orangeLightPalette
+                PgkStyle.Red -> redLightPalette
+                PgkStyle.Green -> greenLightPalette
+                PgkStyle.Yellow -> yellowLightPalette
             }
         }
     }
 
-    val typography = JetHabitTypography(
+    val typography = PgkTypography(
         heading = TextStyle(
             fontSize = when (textSize) {
-                JetHabitSize.Small -> 20.sp
-                JetHabitSize.Medium -> 24.sp
-                JetHabitSize.Big -> 28.sp
+                PgkSize.Small -> 20.sp
+                PgkSize.Medium -> 24.sp
+                PgkSize.Big -> 28.sp
             },
             fontWeight = FontWeight.Bold
         ),
         body = TextStyle(
             fontSize = when (textSize) {
-                JetHabitSize.Small -> 14.sp
-                JetHabitSize.Medium -> 16.sp
-                JetHabitSize.Big -> 18.sp
+                PgkSize.Small -> 14.sp
+                PgkSize.Medium -> 16.sp
+                PgkSize.Big -> 18.sp
             },
             fontWeight = FontWeight.Normal
         ),
         toolbar = TextStyle(
             fontSize = when (textSize) {
-                JetHabitSize.Small -> 14.sp
-                JetHabitSize.Medium -> 16.sp
-                JetHabitSize.Big -> 18.sp
+                PgkSize.Small -> 14.sp
+                PgkSize.Medium -> 16.sp
+                PgkSize.Big -> 18.sp
             },
             fontWeight = FontWeight.Medium
         ),
         caption = TextStyle(
             fontSize = when (textSize) {
-                JetHabitSize.Small -> 10.sp
-                JetHabitSize.Medium -> 12.sp
-                JetHabitSize.Big -> 14.sp
+                PgkSize.Small -> 10.sp
+                PgkSize.Medium -> 12.sp
+                PgkSize.Big -> 14.sp
             }
         )
     )
 
-    val shapes = JetHabitShape(
+    val shapes = PgkShape(
         padding = when (paddingSize) {
-            JetHabitSize.Small -> 12.dp
-            JetHabitSize.Medium -> 16.dp
-            JetHabitSize.Big -> 20.dp
+            PgkSize.Small -> 12.dp
+            PgkSize.Medium -> 16.dp
+            PgkSize.Big -> 20.dp
         },
         cornersStyle = when (corners) {
-            JetHabitCorners.Flat -> RoundedCornerShape(0.dp)
-            JetHabitCorners.Rounded -> RoundedCornerShape(8.dp)
+            PgkCorners.Flat -> RoundedCornerShape(0.dp)
+            PgkCorners.Rounded -> RoundedCornerShape(8.dp)
         }
     )
 
-    val font = JetHabitFontFamily(
+    val font = PgkFontFamily(
         fontFamily = when(fontFamily){
-            JetHabitFont.Cursive -> FontFamily.Cursive
-            JetHabitFont.Serif -> FontFamily.Serif
-            JetHabitFont.Default -> FontFamily.Default
-            JetHabitFont.Monospace -> FontFamily.Monospace
-            JetHabitFont.SansSerif -> FontFamily.SansSerif
+            PgkFont.Cursive -> FontFamily.Cursive
+            PgkFont.Serif -> FontFamily.Serif
+            PgkFont.Default -> FontFamily.Default
+            PgkFont.Monospace -> FontFamily.Monospace
+            PgkFont.SansSerif -> FontFamily.SansSerif
         }
     )
 
     CompositionLocalProvider(
-        LocalJetHabitColors provides colors,
-        LocalJetHabitTypography provides typography,
-        LocalJetHabitShape provides shapes,
-        LocalJetFontFamily provides font,
+        LocalPgkHabitColors provides colors,
+        LocalPgkHabitTypography provides typography,
+        LocalPgkHabitShape provides shapes,
+        LocalPgkFontFamily provides font,
         content = content
     )
 }

@@ -2,7 +2,7 @@ package ru.pgk63.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val baseLightPalette = JetHabitColors(
+val baseLightPalette = PgkColors(
     primaryBackground = Color(0xFFFFFFFF),
     primaryText = Color(0xFF3D454C),
     secondaryBackground = Color(0xFFF3F4F5),
@@ -13,7 +13,7 @@ val baseLightPalette = JetHabitColors(
     errorColor = Color(0xFFFF3377),
 )
 
-val baseDarkPalette = JetHabitColors(
+val baseDarkPalette = PgkColors(
     primaryBackground = Color(0xFF181818),
     primaryText = Color(0xFFE0E0E0),
     secondaryBackground = Color(0xFF1F1F1F),

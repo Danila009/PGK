@@ -8,6 +8,6 @@ import ru.pgk63.core_common.api.auth.model.SignInResponse
 
 interface AuthApi {
 
-    @POST("/Auth/SignIn")
-    suspend fun signId(@Body signIn: SignIn) : Response<SignInResponse>
+    @POST("/pgk63/api/Auth/SignIn")
+    suspend fun signIn(@Body body: SignIn) : Response<SignInResponse>
 }
