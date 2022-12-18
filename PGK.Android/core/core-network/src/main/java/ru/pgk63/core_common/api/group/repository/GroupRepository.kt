@@ -2,8 +2,10 @@ package ru.pgk63.core_common.api.group.repository
 
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.GroupApi
+import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.model.GroupResponse
 import ru.pgk63.core_common.common.response.ApiResponse
+import ru.pgk63.core_common.common.response.Result
 import javax.inject.Inject
 
 class GroupRepository @Inject constructor(
@@ -21,7 +23,7 @@ class GroupRepository @Inject constructor(
         headmanIds: List<Int>? = null,
         pageNumber: Int = 1,
         pageSize: Int = PAGE_SIZE,
-    ): List<GroupResponse> {
+    ): GroupResponse {
         return groupApi.getAll(
             search = search,
             course = course,
@@ -34,5 +36,9 @@ class GroupRepository @Inject constructor(
             pageNumber = pageNumber,
             pageSize = pageSize
         )
+    }
+
+    suspend fun getById(id: Int): Result<Group> {
+        return safeApiCall { groupApi.getById(id) }
     }
 }

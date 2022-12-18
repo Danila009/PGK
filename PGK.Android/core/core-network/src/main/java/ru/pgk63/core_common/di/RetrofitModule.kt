@@ -32,7 +32,7 @@ internal class RetrofitModule {
             val token = userDataSource.getAccessToken()
 
             val request = it.request().newBuilder()
-                .header("Authorization","Bearer $token")
+                .addHeader("Authorization","Bearer $token")
                 .build()
 
             it.proceed(request)

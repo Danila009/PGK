@@ -1,5 +1,6 @@
 package ru.pgk63.feature_main.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -23,15 +24,22 @@ import ru.pgk63.feature_main.viewModel.MainViewModel
 
 @Composable
 internal fun MainRoute(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    onGroupScreen: () -> Unit
 ) {
-    MainScreen()
+    MainScreen(
+        onGroupScreen = onGroupScreen,
+        updateDarkMode = {
+            viewModel.updateDarkMode()
+        }
+    )
 }
 
 
 @Composable
 private fun MainScreen(
-
+    updateDarkMode:() -> Unit = {},
+    onGroupScreen:() -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -49,7 +57,12 @@ private fun MainScreen(
         },
         drawerShape = PgkTheme.shapes.cornersStyle,
         drawerBackgroundColor = PgkTheme.colors.drawerBackground,
-        drawerContent = { DrawerContentUi() },
+        drawerContent = {
+            DrawerContentUi(
+                updateDarkMode = updateDarkMode,
+                onGroupScreen = onGroupScreen
+            )
+        },
         content = { paddingValues ->
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -123,7 +136,8 @@ private fun TopBar(
 
 @Composable
 private fun DrawerContentUi(
-
+    updateDarkMode: () -> Unit = {},
+    onGroupScreen: () -> Unit = {},
 ) {
     LazyColumn {
         item {
@@ -149,9 +163,7 @@ private fun DrawerContentUi(
                 actions = {
                     IconButton(
                         modifier = Modifier.padding(5.dp),
-                        onClick = {
-
-                        }
+                        onClick = updateDarkMode
                     ) {
                         Icon(
                             modifier = Modifier.size(24.dp),
@@ -169,7 +181,12 @@ private fun DrawerContentUi(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(15.dp),
+                        .padding(15.dp)
+                        .clickable {
+                            if (drawerContent == DrawerContent.GROUPS) {
+                                onGroupScreen()
+                            }
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Spacer(modifier = Modifier.width(30.dp))

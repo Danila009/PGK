@@ -1,13 +1,16 @@
 package ru.pgk63.core_common.api.group
 
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.model.GroupResponse
 
 interface GroupApi {
 
-    @GET("/Group")
+    @GET("/pgk63/api/Group")
     suspend fun getAll(
         @Query("search") search:String? = null,
         @Query("course") course: List<Int>? = null,
@@ -19,5 +22,8 @@ interface GroupApi {
         @Query("headmanIds") headmanIds: List<Int>? = null,
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = PAGE_SIZE
-    ): List<GroupResponse>
+    ): GroupResponse
+
+    @GET("/pgk63/api/Group/{id}")
+    suspend fun getById(@Path("id") id: Int): Response<Group>
 }

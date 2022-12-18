@@ -6,7 +6,9 @@ import com.airbnb.lottie.compose.*
 import ru.pgk63.core_ui.R
 
 enum class LottieAnimationType(val resId: Int) {
-    WELCOME(R.raw.welcome)
+    WELCOME(R.raw.welcome),
+    LOADING(R.raw.loading),
+    ERROR(R.raw.error)
 }
 
 @Composable

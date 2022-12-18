@@ -17,15 +17,19 @@ class UserDataSource @Inject constructor(
 ) {
     private val userSharedPreferences = context.getSharedPreferences(
         userSharedPreferencesKey,Context.MODE_PRIVATE)
-    
+
+    fun getAccessToken(): String? {
+        return userSharedPreferences.getString(accessTokenKey,null)
+    }
+
     fun saveAccessToken(accessToken: String?){
         userSharedPreferences.edit()
             .putString(accessTokenKey,accessToken)
             .apply()
     }
-    
-    fun getAccessToken(): String? {
-        return userSharedPreferences.getString(accessTokenKey,null)
+
+    fun getRefreshToken(): String? {
+        return userSharedPreferences.getString(refreshTokenKey,null)
     }
 
     fun saveRefreshToken(accessToken: String?){
@@ -34,12 +38,21 @@ class UserDataSource @Inject constructor(
             .apply()
     }
 
-    fun getRefreshToken(): String? {
-        return userSharedPreferences.getString(refreshTokenKey,null)
+    suspend fun saveDarkModel(darkModel: Boolean){
+        context.userDataStore.data.collect { preferences ->
+            val user = preferences[USER_DATA_STORE]?.decodeFromString() ?: UserLocalDatabase()
+
+            user.darkMode = darkModel
+
+            context.userDataStore.edit {
+                it[USER_DATA_STORE] = user.encodeToString()
+            }
+        }
     }
 
     suspend fun save(user: UserLocalDatabase){
         context.userDataStore.edit { preferences ->
+
             preferences[USER_DATA_STORE] = user.encodeToString()
         }
     }
@@ -54,7 +67,7 @@ class UserDataSource @Inject constructor(
     companion object{
         private val Context.userDataStore by preferencesDataStore(name = "user_data_store")
         private val USER_DATA_STORE = stringPreferencesKey("user_key")
-        
+
         private const val userSharedPreferencesKey = "user_key"
         private const val accessTokenKey = "accessToken"
         private const val refreshTokenKey = "refreshToken"
