@@ -18,7 +18,7 @@ fun Error(message: String? = null) {
     ) {
         BaseLottieAnimation(
             type = LottieAnimationType.ERROR,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(0.9f)
         )
 
         Spacer(modifier = Modifier.height(8.dp))

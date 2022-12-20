@@ -4,6 +4,7 @@ import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.GroupApi
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.model.GroupResponse
+import ru.pgk63.core_common.api.student.model.StudentResponse
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
 import javax.inject.Inject
@@ -41,4 +42,10 @@ class GroupRepository @Inject constructor(
     suspend fun getById(id: Int): Result<Group> {
         return safeApiCall { groupApi.getById(id) }
     }
+
+    suspend fun getStudentByGroupId(
+        id: Int,
+        pageNumber: Int = 1,
+        pageSize: Int = PAGE_SIZE
+    ): StudentResponse = groupApi.getStudentByGroupId(id, pageNumber, pageSize)
 }

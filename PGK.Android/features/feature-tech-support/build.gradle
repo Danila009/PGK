@@ -42,7 +42,9 @@ dependencies {
 
     implementation project(":core:core-network")
     implementation project(":core:core-navigation")
+    implementation project(":core:core-database")
     implementation project(":core:core-ui")
+    implementation project(":core:core-common")
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -56,8 +58,14 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    // Okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
     //Navigation
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanist_navigation_animation_version")
+
+    //Paging
+    implementation "androidx.paging:paging-compose:$paging_compose_version"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

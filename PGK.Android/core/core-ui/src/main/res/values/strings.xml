@@ -17,4 +17,10 @@
     <string name="error">Ошибка</string>
     <string name="authorization_error">Ошибка авторизации</string>
     <string name="field_required">Это поле является обязательным</string>
+    <string name="message">Сообщение</string>
+    <string name="students">Студенты</string>
+    <string name="student">Студент</string>
+    <string name="headman">Староста</string>
+    <string name="deputyHeadma">Зам староста</string>
+    <string name="classroomTeacher">Куратор</string>
 </resources>

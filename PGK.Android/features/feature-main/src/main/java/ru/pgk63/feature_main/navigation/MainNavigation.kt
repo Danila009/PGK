@@ -12,11 +12,17 @@ object MainDestination : NavigationDestination {
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.mainNavigation(
-    onGroupScreen: () -> Unit
+    onGroupScreen: () -> Unit,
+    onTechSupportChatScreen: () -> Unit,
+    onSettingsScreen: () -> Unit
 ) {
     composable(
         route = MainDestination.route
     ){
-        MainRoute(onGroupScreen = onGroupScreen)
+        MainRoute(
+            onGroupScreen = onGroupScreen,
+            onTechSupportChatScreen = onTechSupportChatScreen,
+            onSettingsScreen = onSettingsScreen
+        )
     }
 }

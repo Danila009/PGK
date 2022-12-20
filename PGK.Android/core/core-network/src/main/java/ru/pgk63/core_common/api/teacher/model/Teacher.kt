@@ -6,5 +6,5 @@ data class Teacher(
     val lastName:String,
     val middleName:String?,
     val email:String,
-    val photoUrl:String
+    val photoUrl:String?
 )

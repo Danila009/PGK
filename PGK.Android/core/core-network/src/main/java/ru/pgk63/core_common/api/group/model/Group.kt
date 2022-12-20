@@ -1,6 +1,8 @@
 package ru.pgk63.core_common.api.group.model
 
+import ru.pgk63.core_common.api.department.model.Department
 import ru.pgk63.core_common.api.speciality.model.Speciality
+import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.teacher.model.Teacher
 
 data class GroupResponse(
@@ -18,5 +20,8 @@ data class Group(
     val course:Int,
     val number:Int,
     val speciality: Speciality,
-    val classroomTeacher: Teacher
+    val department: Department,
+    val classroomTeacher: Teacher,
+    val headman: Student? = null,
+    val deputyHeadma: Student? = null
 )

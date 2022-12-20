@@ -25,10 +25,14 @@ import ru.pgk63.feature_main.viewModel.MainViewModel
 @Composable
 internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel(),
-    onGroupScreen: () -> Unit
+    onGroupScreen: () -> Unit,
+    onTechSupportChatScreen: () -> Unit,
+    onSettingsScreen: () -> Unit
 ) {
     MainScreen(
         onGroupScreen = onGroupScreen,
+        onTechSupportChatScreen = onTechSupportChatScreen,
+        onSettingsScreen = onSettingsScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -38,8 +42,10 @@ internal fun MainRoute(
 
 @Composable
 private fun MainScreen(
-    updateDarkMode:() -> Unit = {},
-    onGroupScreen:() -> Unit = {}
+    updateDarkMode: () -> Unit = {},
+    onGroupScreen: () -> Unit = {},
+    onTechSupportChatScreen: () -> Unit,
+    onSettingsScreen: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -60,7 +66,9 @@ private fun MainScreen(
         drawerContent = {
             DrawerContentUi(
                 updateDarkMode = updateDarkMode,
-                onGroupScreen = onGroupScreen
+                onGroupScreen = onGroupScreen,
+                onTechSupportChatScreen = onTechSupportChatScreen,
+                onSettingsScreen = onSettingsScreen
             )
         },
         content = { paddingValues ->
@@ -138,6 +146,8 @@ private fun TopBar(
 private fun DrawerContentUi(
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
+    onTechSupportChatScreen: () -> Unit,
+    onSettingsScreen: () -> Unit
 ) {
     LazyColumn {
         item {
@@ -183,8 +193,16 @@ private fun DrawerContentUi(
                         .fillMaxWidth()
                         .padding(15.dp)
                         .clickable {
-                            if (drawerContent == DrawerContent.GROUPS) {
-                                onGroupScreen()
+
+                            when(drawerContent){
+                                DrawerContent.PROFILE -> Unit
+                                DrawerContent.SCHEDULE -> Unit
+                                DrawerContent.GUIDE -> Unit
+                                DrawerContent.GROUPS -> onGroupScreen()
+                                DrawerContent.JOURNAL -> Unit
+                                DrawerContent.RAPORTICHKA -> Unit
+                                DrawerContent.SETTINGS -> onSettingsScreen()
+                                DrawerContent.HELP -> onTechSupportChatScreen()
                             }
                         },
                     verticalAlignment = Alignment.CenterVertically

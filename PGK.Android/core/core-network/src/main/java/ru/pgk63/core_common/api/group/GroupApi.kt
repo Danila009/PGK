@@ -7,6 +7,7 @@ import retrofit2.http.Query
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.model.GroupResponse
+import ru.pgk63.core_common.api.student.model.StudentResponse
 
 interface GroupApi {
 
@@ -26,4 +27,11 @@ interface GroupApi {
 
     @GET("/pgk63/api/Group/{id}")
     suspend fun getById(@Path("id") id: Int): Response<Group>
+
+    @GET("/pgk63/api/Group/{id}/Students")
+    suspend fun getStudentByGroupId(
+        @Path("id") id: Int,
+        @Query("pageNumber") pageNumber: Int = 1,
+        @Query("pageSize") pageSize: Int = PAGE_SIZE
+    ): StudentResponse
 }

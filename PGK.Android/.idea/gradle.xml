@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/features/feature-auth" />
             <option value="$PROJECT_DIR$/features/feature-group" />
             <option value="$PROJECT_DIR$/features/feature-main" />
+            <option value="$PROJECT_DIR$/features/feature-settings" />
             <option value="$PROJECT_DIR$/features/feature-tech-support" />
           </set>
         </option>

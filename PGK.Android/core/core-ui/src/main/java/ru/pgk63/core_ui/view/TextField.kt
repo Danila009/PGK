@@ -30,7 +30,7 @@ import ru.pgk63.core_ui.theme.MainTheme
 import ru.pgk63.core_ui.theme.PgkTheme
 
 @Composable
-private fun rememberTextFieldColors() = TextFieldDefaults.textFieldColors(
+fun rememberTextFieldColors() = TextFieldDefaults.textFieldColors(
     textColor = PgkTheme.colors.primaryText,
     focusedIndicatorColor = PgkTheme.colors.tintColor,
     backgroundColor = PgkTheme.colors.primaryBackground,
@@ -46,6 +46,7 @@ fun TextFieldBase(
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
+    placeholder: String? = null,
     maxChar: Int? = null,
     hasError: Boolean = false,
     errorText: String? = null,
@@ -72,6 +73,7 @@ fun TextFieldBase(
             singleLine = singleLine,
             shape = shape,
             label = { label?.let { Text(text = label, color = PgkTheme.colors.primaryText) } },
+            placeholder = { placeholder?.let { Text(text = placeholder, color = PgkTheme.colors.primaryText) } },
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
             colors = colors,

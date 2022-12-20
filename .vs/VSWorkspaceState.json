@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\PGK.Backend",
+    "\\PGK.Backend\\PGK.Application",
+    "\\PGK.Backend\\PGK.Application\\App",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Commands",
+    "\\PGK.Backend\\PGK.Application\\App\\Schedule\\Commands\\FileCreateSchedule",
+    "\\PGK.Backend\\PGK.WebApi",
+    "\\PGK.Backend\\PGK.WebApi\\Controllers"
+  ],
+  "SelectedNode": "\\PGK.Backend\\PGK.WebApi\\Controllers\\TechnicalSupportController.cs",
+  "PreviewInSolutionExplorer": false
+}
