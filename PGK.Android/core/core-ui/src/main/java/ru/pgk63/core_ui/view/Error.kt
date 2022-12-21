@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import ru.pgk63.core_ui.theme.PgkTheme
 
 @Composable
-fun Error(message: String? = null) {
+fun ErrorUi(message: String? = null) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -18,6 +18,7 @@ fun Error(message: String? = null) {
     ) {
         BaseLottieAnimation(
             type = LottieAnimationType.ERROR,
+            iterations = 1,
             modifier = Modifier.fillMaxSize(0.9f)
         )
 

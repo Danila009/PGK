@@ -23,7 +23,7 @@ class MessagePagingSource(
 
             messagesWebSocket.setMessagesParameters(GetMessageListParameters(pageNumber = nextPage))
 
-            val messageResponse = messagesWebSocket.messageResponse
+            val messageResponse = messagesWebSocket.messageResponse.last()
 
 
             Log.e("MessagePagingSource",messageResponse.toString())

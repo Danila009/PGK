@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import ru.pgk63.core_ui.view.shimmer.rememberAnimationShimmer
 
 @Composable
 fun ImageCoil(

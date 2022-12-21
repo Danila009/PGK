@@ -5,6 +5,7 @@ import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.*
 import ru.pgk63.core_common.api.techSupport.model.GetMessageListParameters
@@ -26,7 +27,7 @@ class MessagesWebSocket (
     private var webSocket: WebSocket? = null
 
     private var messagesParameters = GetMessageListParameters()
-    var messageResponse:MessageResponse? = null
+    var messageResponse = MutableStateFlow<MessageResponse?>(null)
 
     fun connect() {
         val request = Request.Builder()
@@ -41,7 +42,7 @@ class MessagesWebSocket (
     }
 
     private fun sendRepeatHeartMessage() {
-        if (TextUtils.equals(postPayload, messageResponse.encodeToString())) {
+        if (TextUtils.equals(postPayload, messageResponse.value.encodeToString())) {
             postPayload = System.currentTimeMillis().toString()
             sendMessageDetail(postPayload)
         } else {
@@ -64,7 +65,7 @@ class MessagesWebSocket (
 
     fun clear() {
         postPayload = ""
-        messageResponse = null
+        messageResponse.value = null
         if (webSocket != null) {
             webSocket?.cancel()
             webSocket = null
@@ -93,7 +94,7 @@ class MessagesWebSocket (
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         Log.e("onMessage", "message: $text")
-        messageResponse = text.decodeFromString()
+        messageResponse.value = text.decodeFromString()
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {

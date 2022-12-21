@@ -61,6 +61,7 @@ dependencies {
     implementation project(":features:feature-group")
     implementation project(":features:feature-tech-support")
     implementation project(":features:feature-settings")
+    implementation project(":features:feature-specialization")
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

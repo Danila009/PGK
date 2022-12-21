@@ -27,12 +27,14 @@ internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel(),
     onGroupScreen: () -> Unit,
     onTechSupportChatScreen: () -> Unit,
-    onSettingsScreen: () -> Unit
+    onSettingsScreen: () -> Unit,
+    onSpecializationListScreen: () -> Unit
 ) {
     MainScreen(
         onGroupScreen = onGroupScreen,
         onTechSupportChatScreen = onTechSupportChatScreen,
         onSettingsScreen = onSettingsScreen,
+        onSpecializationListScreen = onSpecializationListScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -45,7 +47,8 @@ private fun MainScreen(
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: () -> Unit,
-    onSettingsScreen: () -> Unit
+    onSettingsScreen: () -> Unit,
+    onSpecializationListScreen: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -68,7 +71,8 @@ private fun MainScreen(
                 updateDarkMode = updateDarkMode,
                 onGroupScreen = onGroupScreen,
                 onTechSupportChatScreen = onTechSupportChatScreen,
-                onSettingsScreen = onSettingsScreen
+                onSettingsScreen = onSettingsScreen,
+                onSpecializationListScreen = onSpecializationListScreen
             )
         },
         content = { paddingValues ->
@@ -147,7 +151,8 @@ private fun DrawerContentUi(
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: () -> Unit,
-    onSettingsScreen: () -> Unit
+    onSettingsScreen: () -> Unit,
+    onSpecializationListScreen: () -> Unit
 ) {
     LazyColumn {
         item {
@@ -197,7 +202,11 @@ private fun DrawerContentUi(
                             when(drawerContent){
                                 DrawerContent.PROFILE -> Unit
                                 DrawerContent.SCHEDULE -> Unit
+                                DrawerContent.STUDENTS -> Unit
                                 DrawerContent.GUIDE -> Unit
+                                DrawerContent.SPECIALTIES -> onSpecializationListScreen()
+                                DrawerContent.DEPARTMENS -> Unit
+                                DrawerContent.SUBJECTS -> Unit
                                 DrawerContent.GROUPS -> onGroupScreen()
                                 DrawerContent.JOURNAL -> Unit
                                 DrawerContent.RAPORTICHKA -> Unit

@@ -23,7 +23,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.department.model.Department
 import ru.pgk63.core_common.api.group.model.Group
-import ru.pgk63.core_common.api.speciality.model.Speciality
+import ru.pgk63.core_common.api.speciality.model.Specialization
 import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.teacher.model.Teacher
 import ru.pgk63.core_common.extension.launchWhenStarted
@@ -31,9 +31,9 @@ import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.Error
+import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.ImageCoil
-import ru.pgk63.core_ui.view.LoadingList
+import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.feature_group.screens.groupDetailsScreen.viewModel.GroupDetailsViewModel
 
@@ -88,8 +88,8 @@ private fun GroupDetailsScreen(
                 color = PgkTheme.colors.primaryBackground
             ) {
                 when(groupResult){
-                    is Result.Error -> Error(message = groupResult.message)
-                    is Result.Loading -> LoadingList()
+                    is Result.Error -> ErrorUi(message = groupResult.message)
+                    is Result.Loading -> LoadingUi()
                     is Result.Success -> {
                         LazyVerticalGrid(GridCells.Fixed(2)) {
 
@@ -214,7 +214,7 @@ private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
 @Composable
 private fun DepartmentAndSpecialityUi(
     department: Department,
-    speciality: Speciality
+    speciality: Specialization
 ) {
     Card(
         modifier = Modifier.padding(5.dp),

@@ -13,4 +13,8 @@ object ResIcons {
     val help = R.drawable.help
     val sun = R.drawable.sun
     val nightMode = R.drawable.night_mode
+    val student = R.drawable.student
+    val specialization = R.drawable.specialization
+    val subject = R.drawable.subject
+    val departmen = R.drawable.departmen
 }

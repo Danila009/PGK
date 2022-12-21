@@ -9,7 +9,7 @@ import ru.pgk63.core_navigation.NavigationDestination
 import ru.pgk63.feature_group.screens.groupDetailsScreen.GroupDetailsRoute
 import ru.pgk63.feature_group.screens.groupListScreen.GroupListRoute
 
-object GroupDestination : NavigationDestination {
+object GroupListDestination : NavigationDestination {
     override val route = "group_screen"
 }
 
@@ -24,7 +24,7 @@ fun NavGraphBuilder.groupNavigation(
     onGroupDetailsScreen: (groupId: Int) -> Unit
 ) {
     composable(
-        route = GroupDestination.route
+        route = GroupListDestination.route
     ){
         GroupListRoute(
             onBackScreen = onBackScreen,

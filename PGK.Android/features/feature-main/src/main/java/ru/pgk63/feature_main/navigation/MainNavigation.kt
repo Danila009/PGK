@@ -14,7 +14,8 @@ object MainDestination : NavigationDestination {
 fun NavGraphBuilder.mainNavigation(
     onGroupScreen: () -> Unit,
     onTechSupportChatScreen: () -> Unit,
-    onSettingsScreen: () -> Unit
+    onSettingsScreen: () -> Unit,
+    onSpecializationListScreen: () -> Unit
 ) {
     composable(
         route = MainDestination.route
@@ -22,7 +23,8 @@ fun NavGraphBuilder.mainNavigation(
         MainRoute(
             onGroupScreen = onGroupScreen,
             onTechSupportChatScreen = onTechSupportChatScreen,
-            onSettingsScreen = onSettingsScreen
+            onSettingsScreen = onSettingsScreen,
+            onSpecializationListScreen = onSpecializationListScreen
         )
     }
 }
