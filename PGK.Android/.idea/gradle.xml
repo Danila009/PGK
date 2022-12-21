@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/features/feature-main" />
             <option value="$PROJECT_DIR$/features/feature-settings" />
             <option value="$PROJECT_DIR$/features/feature-specialization" />
+            <option value="$PROJECT_DIR$/features/feature-subject" />
             <option value="$PROJECT_DIR$/features/feature-tech-support" />
           </set>
         </option>

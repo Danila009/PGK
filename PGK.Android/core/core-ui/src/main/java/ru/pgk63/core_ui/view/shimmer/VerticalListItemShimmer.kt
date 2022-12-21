@@ -24,7 +24,7 @@ fun VerticalListItemShimmer(modifier: Modifier = Modifier) {
             .height(120.dp)
             .padding(horizontal = 15.dp, vertical = 10.dp),
         shape = PgkTheme.shapes.cornersStyle,
-        backgroundColor = PgkTheme.colors.primaryBackground,
+        backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 8.dp
     ) {
         Column(modifier = Modifier.padding(start = 10.dp)) {

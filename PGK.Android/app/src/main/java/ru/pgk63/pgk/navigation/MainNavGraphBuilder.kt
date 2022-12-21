@@ -12,6 +12,9 @@ import ru.pgk63.feature_settings.navigation.settingsNavigation
 import ru.pgk63.feature_specialization.navigation.SpecializationDetailsDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationListDestination
 import ru.pgk63.feature_specialization.navigation.specializationNavigation
+import ru.pgk63.feature_subject.navigation.SubjectDetailsDestination
+import ru.pgk63.feature_subject.navigation.SubjectListDestination
+import ru.pgk63.feature_subject.navigation.subjectNavigation
 import ru.pgk63.feature_tech_support.navigation.TechSupportChatDestination
 import ru.pgk63.feature_tech_support.navigation.techSupportNavigation
 
@@ -27,6 +30,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSpecializationListScreen = {
             navController.navigate(SpecializationListDestination.route)
+        },
+        onSubjectListScreen = {
+            navController.navigate(SubjectListDestination.route)
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
@@ -50,6 +56,13 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onBackScreen = { navController.navigateUp() },
         onSpecializationDetailsScreen = { id ->
             navController.navigate("${SpecializationDetailsDestination.route}/$id")
+        }
+    )
+
+    subjectNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onSubjectDetailsScreen = { id ->
+            navController.navigate("${SubjectDetailsDestination.route}/$id")
         }
     )
 
