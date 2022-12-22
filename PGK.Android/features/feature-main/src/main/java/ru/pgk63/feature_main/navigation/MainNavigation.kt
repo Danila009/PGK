@@ -16,7 +16,8 @@ fun NavGraphBuilder.mainNavigation(
     onTechSupportChatScreen: () -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
-    onSubjectListScreen: () -> Unit
+    onSubjectListScreen: () -> Unit,
+    onStudentListScreen: () -> Unit
 ) {
     composable(
         route = MainDestination.route
@@ -26,7 +27,8 @@ fun NavGraphBuilder.mainNavigation(
             onTechSupportChatScreen = onTechSupportChatScreen,
             onSettingsScreen = onSettingsScreen,
             onSpecializationListScreen = onSpecializationListScreen,
-            onSubjectListScreen = onSubjectListScreen
+            onSubjectListScreen = onSubjectListScreen,
+            onStudentListScreen = onStudentListScreen
         )
     }
 }

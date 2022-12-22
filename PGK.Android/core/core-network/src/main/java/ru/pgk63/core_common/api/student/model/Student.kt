@@ -1,5 +1,7 @@
 package ru.pgk63.core_common.api.student.model
 
+import ru.pgk63.core_common.api.group.model.Group
+
 data class StudentResponse(
     val currentPage:Int,
     val totalPages:Int,
@@ -15,5 +17,6 @@ data class Student(
     val firstName:String,
     val lastName:String,
     val middleName:String? = null,
-    val photoUrl:String? = null
+    val photoUrl:String? = null,
+    val group:Group
 )

@@ -30,6 +30,7 @@ internal fun MainRoute(
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
+    onStudentListScreen: () -> Unit,
 ) {
     MainScreen(
         onGroupScreen = onGroupScreen,
@@ -37,6 +38,7 @@ internal fun MainRoute(
         onSettingsScreen = onSettingsScreen,
         onSpecializationListScreen = onSpecializationListScreen,
         onSubjectListScreen = onSubjectListScreen,
+        onStudentListScreen = onStudentListScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -51,7 +53,8 @@ private fun MainScreen(
     onTechSupportChatScreen: () -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
-    onSubjectListScreen: () -> Unit
+    onSubjectListScreen: () -> Unit,
+    onStudentListScreen: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -76,7 +79,8 @@ private fun MainScreen(
                 onTechSupportChatScreen = onTechSupportChatScreen,
                 onSettingsScreen = onSettingsScreen,
                 onSpecializationListScreen = onSpecializationListScreen,
-                onSubjectListScreen = onSubjectListScreen
+                onSubjectListScreen = onSubjectListScreen,
+                onStudentListScreen = onStudentListScreen
             )
         },
         content = { paddingValues ->
@@ -157,7 +161,8 @@ private fun DrawerContentUi(
     onTechSupportChatScreen: () -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
-    onSubjectListScreen: () -> Unit
+    onSubjectListScreen: () -> Unit,
+    onStudentListScreen: () -> Unit
 ) {
     LazyColumn {
         item {
@@ -207,7 +212,7 @@ private fun DrawerContentUi(
                             when(drawerContent){
                                 DrawerContent.PROFILE -> Unit
                                 DrawerContent.SCHEDULE -> Unit
-                                DrawerContent.STUDENTS -> Unit
+                                DrawerContent.STUDENTS -> onStudentListScreen()
                                 DrawerContent.GUIDE -> Unit
                                 DrawerContent.SPECIALTIES -> onSpecializationListScreen()
                                 DrawerContent.DEPARTMENS -> Unit

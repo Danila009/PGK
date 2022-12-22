@@ -2,6 +2,9 @@ package ru.pgk63.pgk.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import com.example.feature_student.navigation.StudentDetailsDestination
+import com.example.feature_student.navigation.StudentListDestination
+import com.example.feature_student.navigation.studentNavigation
 import ru.pgk63.feature_auth.navigation.authNavigation
 import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
@@ -34,6 +37,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onSubjectListScreen = {
             navController.navigate(SubjectListDestination.route)
         },
+        onStudentListScreen = {
+            navController.navigate(StudentListDestination.route)
+        },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
         }
@@ -63,6 +69,13 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onBackScreen = { navController.navigateUp() },
         onSubjectDetailsScreen = { id ->
             navController.navigate("${SubjectDetailsDestination.route}/$id")
+        }
+    )
+
+    studentNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onStudentDetailsScreen = { id ->
+            navController.navigate("${StudentDetailsDestination.route}/$id")
         }
     )
 
