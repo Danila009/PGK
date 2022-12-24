@@ -22,6 +22,7 @@ import ru.pgk63.pgk.navigation.MainNavHost
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("FlowOperatorInvokedInComposition")
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
             val mainViewModel = hiltViewModel<MainViewModel>()
 
-            var userLocalDatabase by remember { mutableStateOf<UserLocalDatabase?>(null) }
+            var userLocalDatabase by remember { mutableStateOf<UserLocalDatabase?>(UserLocalDatabase()) }
 
             mainViewModel.user.onEach {
                 userLocalDatabase = it

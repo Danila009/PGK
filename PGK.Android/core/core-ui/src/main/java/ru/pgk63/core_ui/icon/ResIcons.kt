@@ -17,4 +17,8 @@ object ResIcons {
     val specialization = R.drawable.specialization
     val subject = R.drawable.subject
     val departmen = R.drawable.departmen
+    val appearance = R.drawable.appearance
+    val security = R.drawable.security
+    val notifications = R.drawable.notifications
+    val language = R.drawable.language
 }

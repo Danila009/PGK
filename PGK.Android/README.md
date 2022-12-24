@@ -4,6 +4,9 @@
 ## API
 - <https://api.cfif31.ru/pgk63/swagger/index.html>
 
+## Design
+- <https://www.figma.com/file/zBiFLtibydk324s0QGZcep/PGK?node-id=250%3A1286&t=3m3HGAEK51c6LWFl-0>
+
 <br>
 
 ## Technology stack

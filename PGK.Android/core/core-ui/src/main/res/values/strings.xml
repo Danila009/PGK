@@ -1,12 +1,17 @@
 <resources>
     <string name="profile">Профиль</string>
     <string name="schedule">Расписание</string>
+    <string name="schedule_notifications_settings_body">Уведомления о заменах в расписании</string>
     <string name="guide">Руководство</string>
     <string name="groups">Группы</string>
     <string name="journal">Журнал</string>
+    <string name="journal_notifications_settings_body">Если вам поставят оценку в журнале вам придет уведомления</string>
     <string name="raportichka">Рапортички</string>
+    <string name="raportichka_notifications_settings_body">Если вас отметят в рапортичке вам придет уведомления</string>
     <string name="settings">Настройки</string>
     <string name="help">Помощь</string>
+    <string name="technical_support">Техподдержка</string>
+    <string name="technical_support_notifications_settings_body">Получать уведомления от техподдержки</string>
     <string name="email">Электронная почта</string>
     <string name="password">Пароль</string>
     <string name="firstName">Имя</string>
@@ -28,4 +33,27 @@
     <string name="classroomTeacher">Куратор</string>
     <string name="number">Номер</string>
     <string name="qualification">Квалификация</string>
+    <string name="appearance">Внешность</string>
+    <string name="appearance_settings_body">Изменить тему, размер шрифта, шрифт текст, поля, углы</string>
+    <string name="security">Безопасность</string>
+    <string name="security_settings_body">Изменить пароль, выйти из системы, добавить электронную почту или телеграм для восстановления доступа</string>
+    <string name="language">Язык</string>
+    <string name="language_settings_body">Изменить язык в системе</string>
+    <string name="notifications">Уведомления</string>
+    <string name="notifications_settings_body">Включить или выклюсить уведомления, звук и вибрация</string>
+    <string name="danger_zone">Опасная зона</string>
+    <string name="vibration">Вибрация</string>
+    <string name="sound">Звук</string>
+    <string name="sign_out_app">Выйти из приложения</string>
+    <string name="sign_out_app_body">При нажатии вы выйдите из системы и будете переброшены на экран авторизации</string>
+    <string name="sign_out_all">Выйти из всех устройств</string>
+    <string name="sign_out_all_body">При нажатии вы выйдите из всех устройнств (Android и Web) и будете переброшены на экран авторизации</string>
+    <string name="change_password">Сменить пароль</string>
+    <string name="change_password_body">При нажатии вы будете переброшены на новый экран, где вы увидете свой новый пароль</string>
+    <string name="email_password_body">В случае если вы забудите пароль, вы сможите востанновить доступ</string>
+    <string name="telegram">Телеграм</string>
+    <string name="telegram_password_body">Если вы забудите пароль, вы сможите изменить пароль с помощью нашего телеграм бота</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="font_style">Стиль шрифта</string>
+    <string name="corners">Углы</string>
 </resources>

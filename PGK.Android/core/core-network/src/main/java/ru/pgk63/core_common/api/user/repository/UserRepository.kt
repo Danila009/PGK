@@ -11,6 +11,7 @@ class UserRepository @Inject constructor(
     private val userApi: UserApi,
     private val userDataSource: UserDataSource
 ): ApiResponse() {
+
     suspend fun updateDarkMode(): Result<ResponseUpdateDarkMode> {
 
         val result = safeApiCall { userApi.updateDarkMode() }

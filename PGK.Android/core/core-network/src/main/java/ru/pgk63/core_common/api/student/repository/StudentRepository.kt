@@ -14,4 +14,6 @@ class StudentRepository @Inject constructor(
         pageNumber: Int = 1,
         pageSize: Int = Constants.PAGE_SIZE
     ) = studentApi.getAll(search, pageNumber, pageSize)
+
+    suspend fun getById(id:Int) = safeApiCall { studentApi.getById(id) }
 }

@@ -50,22 +50,6 @@ object PgkTheme {
         get() = LocalPgkFontFamily.current
 }
 
-enum class PgkStyle {
-    Purple, Orange, Blue, Red, Green, Yellow
-}
-
-enum class PgkSize {
-    Small, Medium, Big
-}
-
-enum class PgkCorners {
-    Flat, Rounded
-}
-
-enum class PgkFont {
-    Cursive, Serif, Default, Monospace, SansSerif
-}
-
 val LocalPgkHabitColors = staticCompositionLocalOf<PgkColors> {
     error("No colors provided")
 }

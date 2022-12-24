@@ -10,8 +10,7 @@ import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
 import ru.pgk63.feature_main.navigation.mainNavigation
-import ru.pgk63.feature_settings.navigation.SettingsDestination
-import ru.pgk63.feature_settings.navigation.settingsNavigation
+import ru.pgk63.feature_settings.navigation.*
 import ru.pgk63.feature_specialization.navigation.SpecializationDetailsDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationListDestination
 import ru.pgk63.feature_specialization.navigation.specializationNavigation
@@ -80,6 +79,18 @@ fun NavGraphBuilder.mainNavGraphBuilder(
     )
 
     settingsNavigation(
-        onBackScreen = { navController.navigateUp() }
+        onBackScreen = { navController.navigateUp() },
+        onSettingsSecurityScreen = {
+            navController.navigate(SettingsSecurityDestination.route)
+        },
+        onSettingsNotificationsScreen = {
+            navController.navigate(SettingsNotificationsDestination.route)
+        },
+        onSettingsLanguageScreen = {
+            navController.navigate(SettingsLanguageDestination.route)
+        },
+        onSettingsAppearanceScreen = {
+            navController.navigate(SettingsAppearanceDestination.route)
+        }
     )
 }

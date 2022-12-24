@@ -10,10 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userDataSource: UserDataSource
+    userDataSource: UserDataSource
 ): ViewModel() {
 
-    val user by lazy {
-        userDataSource.get().stateIn(viewModelScope, SharingStarted.Eagerly,null)
-    }
+    val user = userDataSource.get().stateIn(viewModelScope, SharingStarted.Eagerly,null)
 }

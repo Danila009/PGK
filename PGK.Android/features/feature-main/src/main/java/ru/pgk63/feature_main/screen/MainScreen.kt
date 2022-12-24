@@ -208,7 +208,6 @@ private fun DrawerContentUi(
                         .fillMaxWidth()
                         .padding(15.dp)
                         .clickable {
-
                             when(drawerContent){
                                 DrawerContent.PROFILE -> Unit
                                 DrawerContent.SCHEDULE -> Unit

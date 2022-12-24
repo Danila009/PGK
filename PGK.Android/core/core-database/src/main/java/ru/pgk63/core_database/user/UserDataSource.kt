@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.pgk63.core_common.extension.decodeFromString
 import ru.pgk63.core_common.extension.encodeToString
@@ -39,14 +40,12 @@ class UserDataSource @Inject constructor(
     }
 
     suspend fun saveDarkModel(darkModel: Boolean){
-        context.userDataStore.data.collect { preferences ->
-            val user = preferences[USER_DATA_STORE]?.decodeFromString() ?: UserLocalDatabase()
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
 
-            user.darkMode = darkModel
+        user?.darkMode = darkModel
 
-            context.userDataStore.edit {
-                it[USER_DATA_STORE] = user.encodeToString()
-            }
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
         }
     }
 
@@ -62,6 +61,13 @@ class UserDataSource @Inject constructor(
             .map { preferences ->
                 preferences[USER_DATA_STORE]?.decodeFromString() ?: UserLocalDatabase()
             }
+    }
+
+    suspend fun signOut(){
+        context.userDataStore.edit { it.clear() }
+        userSharedPreferences.edit()
+            .clear()
+            .apply()
     }
 
     companion object{

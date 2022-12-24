@@ -4,7 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.feature_student.studentListScreen.StudentListRoute
+import com.example.feature_student.screens.studentDetailsScreen.StudentDetailsRoute
+import com.example.feature_student.screens.studentListScreen.StudentListRoute
 import com.google.accompanist.navigation.animation.composable
 import ru.pgk63.core_navigation.NavigationDestination
 
@@ -39,9 +40,9 @@ fun NavGraphBuilder.studentNavigation(
             }
         )
     ) {
-//       StudentDetailsRoute(
-//           studentId = it.arguments!!.getInt(SpecializationDetailsDestination.id_argument),
-//           onBackScreen = onBackScreen
-//       )
+       StudentDetailsRoute(
+           studentId = it.arguments!!.getInt(StudentDetailsDestination.id_argument),
+           onBackScreen = onBackScreen
+       )
     }
 }

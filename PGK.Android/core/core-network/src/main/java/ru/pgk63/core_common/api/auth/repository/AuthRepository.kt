@@ -33,4 +33,8 @@ class AuthRepository @Inject constructor(
 
         return response
     }
+
+    suspend fun revokeRefreshToken() : Result<Unit?> = safeApiCall {
+        authApi.revokeRefreshToken(refreshToken = userDataSource.getRefreshToken()!!)
+    }
 }

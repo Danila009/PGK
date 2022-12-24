@@ -1,13 +1,15 @@
-package com.example.feature_student.studentListScreen
+package com.example.feature_student.screens.studentDetailsScreen
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -16,63 +18,71 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import com.example.feature_student.studentListScreen.viewModel.StudentListViewModel
+import com.example.feature_student.screens.studentDetailsScreen.viewModel.StudentDetailsViewModel
+import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.student.model.Student
+import ru.pgk63.core_common.extension.launchWhenStarted
+import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.ImageCoil
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
-internal fun StudentListRoute(
-    viewModel: StudentListViewModel = hiltViewModel(),
-    onBackScreen: () -> Unit,
-    onStudentDetailsScreen: (studentId: Int) -> Unit
+internal fun StudentDetailsRoute(
+    viewModel: StudentDetailsViewModel = hiltViewModel(),
+    studentId: Int,
+    onBackScreen: () -> Unit
 ) {
 
-    val students = viewModel.getStudents().collectAsLazyPagingItems()
+    var resultStudent by remember { mutableStateOf<Result<Student>>(Result.Loading()) }
 
-    StudentListScreen(
-        students = students,
-        onBackScreen = onBackScreen,
-        onStudentDetailsScreen = onStudentDetailsScreen
+    viewModel.responseStudents.onEach { result ->
+        resultStudent = result
+    }.launchWhenStarted()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getStudentById(id = studentId)
+    })
+
+    StudentDetailsScreen(
+        resultStudent = resultStudent,
+        onBackScreen = onBackScreen
     )
 }
 
 @Composable
-private fun StudentListScreen(
-    students: LazyPagingItems<Student>,
-    onBackScreen: () -> Unit,
-    onStudentDetailsScreen: (studentId: Int) -> Unit
+private fun StudentDetailsScreen(
+    resultStudent: Result<Student>,
+    onBackScreen: () -> Unit
 ) {
     Scaffold(
-        backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
-            TopBarBack(
-                title = stringResource(id = R.string.students),
-                onBackClick = onBackScreen
-            )
+            Column {
+                TopBarBack(
+                    title = stringResource(id = R.string.student),
+                    onBackClick = onBackScreen
+                )
+                AnimatedVisibility(visible = resultStudent.data != null) {
+                    TopBarStudentInfo(student = resultStudent.data!!)
+                }
+            }
         }
     ) { paddingValues ->
         LazyColumn {
 
-            items(students){ student ->
-                student?.let { StudentCard(student,onStudentDetailsScreen) }
+            item {
+                Text(resultStudent.message.toString(), color = PgkTheme.colors.errorColor)
             }
 
-            item {
-                Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-            }
+            item { Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding())) }
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: Int) -> Unit) {
+private fun TopBarStudentInfo(student: Student){
 
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
@@ -80,9 +90,9 @@ private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: In
     Card(
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
-        shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(PgkTheme.shapes.padding),
-        onClick = { onStudentDetailsScreen(student.id) }
+        shape = AbsoluteRoundedCornerShape(
+            0, 0, 5, 5
+        )
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -119,7 +129,9 @@ private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: In
                 )
 
                 Text(
-                    text = "${student.group.speciality.nameAbbreviation}-${student.group.course}${student.group.number}",
+                    text = student.group.speciality.nameAbbreviation +
+                            "-${student.group.course}" +
+                            "${student.group.number}",
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,
@@ -130,3 +142,6 @@ private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: In
         }
     }
 }
+
+
+

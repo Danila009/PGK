@@ -1,4 +1,4 @@
-package com.example.feature_student.studentListScreen.viewModel
+package com.example.feature_student.screens.studentListScreen.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
