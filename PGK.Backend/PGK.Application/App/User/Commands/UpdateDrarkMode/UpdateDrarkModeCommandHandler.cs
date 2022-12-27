@@ -1,18 +1,21 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using PGK.Application.App.User.Queries.GetUserSettings;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 
 namespace PGK.Application.App.User.Commands.UpdateDrarkMode
 {
     internal class UpdateDrarkModeCommandHandler
-        : IRequestHandler<UpdateDrarkModeCommand, UpdateDrarkModeVm>
+        : IRequestHandler<UpdateDrarkModeCommand, UserSettingsDto>
     {
         private readonly IPGKDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public UpdateDrarkModeCommandHandler(IPGKDbContext dbContext) =>
-            _dbContext = dbContext;
+        public UpdateDrarkModeCommandHandler(IPGKDbContext dbContext, IMapper mapper) =>
+            (_dbContext, _mapper) = (dbContext, mapper);
 
-        public async Task<UpdateDrarkModeVm> Handle(UpdateDrarkModeCommand request,
+        public async Task<UserSettingsDto> Handle(UpdateDrarkModeCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.FindAsync(request.UserId);
@@ -26,10 +29,7 @@ namespace PGK.Application.App.User.Commands.UpdateDrarkMode
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return new UpdateDrarkModeVm
-            {
-                DrarkMode = user.DrarkMode
-            };
+            return _mapper.Map<UserSettingsDto>(user);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace PGK.Application.App.User.Queries.GetUserLits
         [Required, MaxLength(256)] public string FirstName { get; set; } = string.Empty;
         [Required, MaxLength(256)] public string LastName { get; set; } = string.Empty;
         [MaxLength(256)] public string? MiddleName { get; set; }
+        public string? PhotoUrl { get; set; } = null;
 
         public void Mapping(Profile profile)
         {

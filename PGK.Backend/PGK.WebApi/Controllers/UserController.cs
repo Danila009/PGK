@@ -7,19 +7,57 @@ using PGK.Application.App.User.Commands.SendEmailPaswordReset;
 using PGK.Application.App.User.Commands.SendEmailVerification;
 using PGK.Application.App.User.Commands.UpdateDrarkMode;
 using PGK.Application.App.User.Commands.UpdateEmail;
-using PGK.Application.App.User.Commands.UpdateSecondaryBackground;
+using PGK.Application.App.User.Commands.UpdateThemeStyle;
 using PGK.Application.App.User.Commands.UpdateTelegramId;
 using PGK.Application.App.User.Commands.UpdateUser;
 using PGK.Application.App.User.Queries.GetUserNotification;
 using PGK.Application.App.User.Queries.GetUserPhoto;
 using PGK.Application.App.User.Queries.GetUserSettings;
-using PGK.Domain.User;
 using PGK.WebApi.Models.User;
+using PGK.Domain.User.Enums;
+using PGK.Application.App.User.Commands.UpdateThemeFontStyle;
+using PGK.Application.App.User.Commands.UpdateThemeFontSize;
+using PGK.Application.App.User.Commands.UpdateThemeCorners;
+using PGK.Application.App.User.Commands.UpdateLanguage;
+using PGK.Application.App.User.Queries.GetUserById;
+using PGK.Application.App.User.Queries.GetUserLits;
+using PGK.Application.App.User.Commands.UpdateNotificationsSettings;
+using PGK.Application.App.User.Commands.UpdatePassword;
 
 namespace PGK.WebApi.Controllers
 {
     public class UserController : Controller
     {
+        [Authorize]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
+        public async Task<ActionResult> GetUser()
+        {
+            var query = new GetUserByIdQuery
+            {
+                UserId = UserId
+            };
+
+            var dto = await Mediator.Send(query);
+
+            return Ok(dto);
+        }
+
+        [Authorize]
+        [HttpPatch("Password")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        public async Task<ActionResult> UpdatePassword()
+        {
+            var command = new UpdatePasswordCommand
+            {
+                UserId = UserId
+            };
+
+            var newPassword = await Mediator.Send(command);
+
+            return Ok(newPassword);
+        }
+
         /// <summary>
         /// Получить уведомления пользователя
         /// </summary>
@@ -28,7 +66,7 @@ namespace PGK.WebApi.Controllers
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
-        [HttpGet("Notification")]
+        [HttpGet("Notifications")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NotificationListVm))]
         public async Task<ActionResult> GetAllNotification(
             [FromQuery] GetUserNotificationModel model)
@@ -114,15 +152,39 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
+        [Authorize]
+        [HttpPatch("Settings/Notifications")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> UpdateSettingsNotifications(
+            UpdateNotificationsSettingsModel model)
+        {
+            var command = new UpdateNotificationsSettingsCommand
+            {
+                UserId = UserId,
+                IncludedNotifications = model.IncludedNotifications,
+                SoundNotifications = model.SoundNotifications,
+                VibrationNotifications = model.VibrationNotifications,
+                IncludedSchedulesNotifications = model.IncludedSchedulesNotifications,
+                IncludedJournalNotifications = model.IncludedJournalNotifications,
+                IncludedRaportichkaNotifications = model.IncludedRaportichkaNotifications,
+                IncludedTechnicalSupportNotifications = model.IncludedTechnicalSupportNotifications
+            };
+
+            var dto = await Mediator.Send(command);
+
+            return Ok(dto);
+        }
+
+
         /// <summary>
-        /// Изменить "Drark Mode"
+        /// Изменить Drark Mode
         /// </summary>
-        /// <returns>UpdateDrarkModeVm object</returns>
+        /// <returns>UserSettingsDto object</returns>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPatch("Settings/DrarkMode")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDrarkModeVm))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
         public async Task<ActionResult> SettingsUpdateDrarkMode()
         {
             var command = new UpdateDrarkModeCommand
@@ -136,21 +198,108 @@ namespace PGK.WebApi.Controllers
         }
 
         /// <summary>
-        /// Изменить "Secondary Background"
+        /// Изменить Theme Style
         /// </summary>
-        /// <returns>UpdateSecondaryBackgroundVm object</returns>
+        /// <returns>UpdateThemeStyleVm object</returns>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
-        [HttpPatch("Settings/SecondaryBackground")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateSecondaryBackgroundVm))]
-        public async Task<ActionResult> SettingsUpdateSecondaryBackground(
-            SecondaryBackground secondaryBackground)
+        [HttpPatch("Settings/ThemeStyle")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateThemeStyleVm))]
+        public async Task<ActionResult> SettingsUpdateThemeStyle(ThemeStyle themeStyle)
         {
-            var command = new UpdateSecondaryBackgroundCommand
+            var command = new UpdateThemeStyleCommand
             {
                 UserId = UserId,
-                SecondaryBackground = secondaryBackground
+                ThemeStyle = themeStyle
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        /// <summary>
+        /// Изменить Theme Font Style
+        /// </summary>
+        /// <returns>UserSettingsDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpPatch("Settings/ThemeFontStyle")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> SettingsUpdateThemeFontStyle(ThemeFontStyle themeFontStyle)
+        {
+            var command = new UpdateThemeFontStyleCommand
+            {
+                UserId = UserId,
+                ThemeFontStyle = themeFontStyle
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        /// <summary>
+        /// Изменить Theme Font Size
+        /// </summary>
+        /// <returns>UserSettingsDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpPatch("Settings/ThemeFontSize")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> SettingsUpdateThemeFontSize(ThemeFontSize themeFontSize)
+        {
+            var command = new UpdateThemeFontSizeCommand
+            {
+                UserId = UserId,
+                ThemeFontSize = themeFontSize
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        /// <summary>
+        /// Изменить Theme Corners
+        /// </summary>
+        /// <returns>UserSettingsDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpPatch("Settings/ThemeCorners")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> SettingsUpdateThemeCorners(ThemeCorners themeCorners)
+        {
+            var command = new UpdateThemeCornersCommand
+            {
+                UserId = UserId,
+                ThemeCorners = themeCorners
+            };
+
+            var vm = await Mediator.Send(command);
+
+            return Ok(vm);
+        }
+
+        /// <summary>
+        /// Изменить язык
+        /// </summary>
+        /// <returns>UserSettingsDto object</returns>
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        [Authorize]
+        [HttpPatch("Settings/Language")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserSettingsDto))]
+        public async Task<ActionResult> SettingsUpdateLanguage(int languageId)
+        {
+            var command = new UpdateLanguageCommand
+            {
+                UserId = UserId,
+                LanguageId = languageId
             };
 
             var vm = await Mediator.Send(command);

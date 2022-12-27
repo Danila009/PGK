@@ -18,9 +18,12 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
         public async Task<SignInVm> Handle(SignInCommand request,
             CancellationToken cancellationToken)
         {
+            var firstName = request.FirstName.ToLower().Trim();
+            var lastName = request.LastName.ToLower().Trim();
+
             var users = await _dbContext.Users.Where(u =>
-                u.FirstName == request.FirstName &&
-                u.LastName == request.LastName
+                u.FirstName.Trim().ToLower() == firstName &&
+                u.LastName.Trim().ToLower() == lastName
                 ).ToListAsync(cancellationToken);
 
             if (users == null || users.Count < 1)
@@ -37,7 +40,7 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
                     break;
                 }
 
-                if (PasswordHash.ValidatePassword(request.Password, i.Password))
+                if (PasswordHash.ValidatePassword(request.Password.Trim(), i.Password.Trim()))
                 {
                     user = i;
                 }
@@ -65,7 +68,18 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
                 UserId = user.Id,
                 UserRole = user.Role,
                 DrarkMode = user.DrarkMode,
-                SecondaryBackground = user.SecondaryBackground,
+                ThemeStyle = user.ThemeStyle,
+                ThemeFontStyle = user.ThemeFontStyle,
+                ThemeFontSize = user.ThemeFontSize,
+                ThemeCorners = user.ThemeCorners,
+                Language = user.Language,
+                IncludedNotifications = user.IncludedNotifications,
+                SoundNotifications = user.SoundNotifications,
+                VibrationNotifications = user.VibrationNotifications,
+                IncludedSchedulesNotifications = user.IncludedSchedulesNotifications,
+                IncludedJournalNotifications = user.IncludedJournalNotifications,
+                IncludedRaportichkaNotifications = user.IncludedRaportichkaNotifications,
+                IncludedTechnicalSupportNotifications = user.IncludedTechnicalSupportNotifications,
                 RefreshToken = refreshToken,
                 AccessToken = accessToken
             };

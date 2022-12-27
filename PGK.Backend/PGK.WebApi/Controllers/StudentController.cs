@@ -24,15 +24,18 @@ namespace PGK.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(StudentUserListVm))]
         public async Task<ActionResult> GetAll(
-            string? search,[FromQuery] List<string> userRoles,
+            string? search,
             [FromQuery] List<int> groupIds,
+            [FromQuery] List<int> departmenIds,
+            [FromQuery] List<int> specialityIds,
             int pageNumber = 1, int pageSize = 20)
         {
             var query = new GetStudentUserListQuery {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 Search = search,
-                UserRoles = userRoles,
+                DepartmenIds = departmenIds,
+                SpecialityIds = specialityIds,
                 GroupIds = groupIds
             };
 

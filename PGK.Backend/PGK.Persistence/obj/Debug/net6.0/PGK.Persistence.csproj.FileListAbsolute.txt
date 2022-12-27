@@ -32,3 +32,5 @@ C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Debug\net6.0\PGK.Pers
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Debug\net6.0\PGK.Persistence.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Debug\net6.0\ref\PGK.Persistence.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Debug\net6.0\PGK.Persistence.pdb
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\bin\Debug\net6.0\PGK.Persistence.runtimeconfig.json
+C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Persistence\obj\Debug\net6.0\PGK.Persistence.genruntimeconfig.cache

@@ -859,7 +859,7 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.StudentController.GetAll(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+        <member name="M:PGK.WebApi.Controllers.StudentController.GetAll(System.String,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
             <summary>
             Получить список студентов
             </summary>
@@ -1184,17 +1184,49 @@
         </member>
         <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateDrarkMode">
             <summary>
-            Изменить "Drark Mode"
+            Изменить Drark Mode
             </summary>
-            <returns>UpdateDrarkModeVm object</returns>
+            <returns>UserSettingsDto object</returns>
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateSecondaryBackground(PGK.Domain.User.SecondaryBackground)">
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateThemeStyle(PGK.Domain.User.Enums.ThemeStyle)">
             <summary>
-            Изменить "Secondary Background"
+            Изменить Theme Style
             </summary>
-            <returns>UpdateSecondaryBackgroundVm object</returns>
+            <returns>UpdateThemeStyleVm object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateThemeFontStyle(PGK.Domain.User.Enums.ThemeFontStyle)">
+            <summary>
+            Изменить Theme Font Style
+            </summary>
+            <returns>UserSettingsDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateThemeFontSize(PGK.Domain.User.Enums.ThemeFontSize)">
+            <summary>
+            Изменить Theme Font Size
+            </summary>
+            <returns>UserSettingsDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateThemeCorners(PGK.Domain.User.Enums.ThemeCorners)">
+            <summary>
+            Изменить Theme Corners
+            </summary>
+            <returns>UserSettingsDto object</returns>
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.SettingsUpdateLanguage(System.Int32)">
+            <summary>
+            Изменить язык
+            </summary>
+            <returns>UserSettingsDto object</returns>
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
         </member>

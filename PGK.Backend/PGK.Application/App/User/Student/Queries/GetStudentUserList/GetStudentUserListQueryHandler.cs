@@ -37,14 +37,19 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
                 );
             }
 
-            if(request.UserRoles != null && request.UserRoles.Count > 0)
-            {
-                queries = queries.Where(u => request.UserRoles.Contains(u.Role));
-            }
-
             if(request.GroupIds != null && request.GroupIds.Count > 0)
             {
                 queries = queries.Where(u => request.GroupIds.Contains(u.Group.Id));
+            }
+
+            if (request.SpecialityIds != null && request.SpecialityIds.Count > 0)
+            {
+                queries = queries.Where(u => request.SpecialityIds.Contains(u.Group.Speciality.Id));
+            }
+
+            if (request.DepartmenIds != null && request.DepartmenIds.Count > 0)
+            {
+                queries = queries.Where(u => request.DepartmenIds.Contains(u.Group.Department.Id));
             }
 
             var students = queries

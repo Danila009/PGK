@@ -2,6 +2,7 @@
 using PGK.Application.Interfaces;
 using PGK.Domain.Department;
 using PGK.Domain.Journal;
+using PGK.Domain.Language;
 using PGK.Domain.Notification;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
@@ -60,6 +61,9 @@ namespace PGK.Persistence
         public DbSet<MessageContent> MessageContents { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
         public PGKDbContext(DbContextOptions<PGKDbContext> options) : base(options)
         {
 

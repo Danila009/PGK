@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PGK.Domain.Department;
 using PGK.Domain.Journal;
+using PGK.Domain.Language;
 using PGK.Domain.Notification;
 using PGK.Domain.Raportichka;
 using PGK.Domain.Schedules;
@@ -58,6 +59,8 @@ namespace PGK.Application.Interfaces
         DbSet<MessageContent> MessageContents { get; set; }
 
         DbSet<Notification> Notifications { get; set; }
+
+        DbSet<Language> Languages { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
