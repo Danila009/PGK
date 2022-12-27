@@ -27,7 +27,7 @@ namespace PGK.WebApi.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var code = HttpStatusCode.InternalServerError;
+            var code = HttpStatusCode.OK;
             var result = string.Empty;
             switch (exception)
             {

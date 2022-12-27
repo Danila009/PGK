@@ -32,8 +32,8 @@ namespace PGK.Application.Security
             var dateTimeUtc = DateTime.UtcNow;
 
             DateTime? timeToken = type == TokenType.REFRESH_TOKEN ? dateTimeUtc.AddDays(-30)
-                : type == TokenType.EMAIL_SEND_TOKEN ? dateTimeUtc.AddMinutes(-10)
-                : null;
+                : type == TokenType.EMAIL_SEND_TOKEN || type == TokenType.TELEGRAM_TOKEN 
+                ? dateTimeUtc.AddMinutes(-10) : null;
 
             if(timeToken == null)
             {

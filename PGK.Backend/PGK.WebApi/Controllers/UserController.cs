@@ -23,6 +23,7 @@ using PGK.Application.App.User.Queries.GetUserById;
 using PGK.Application.App.User.Queries.GetUserLits;
 using PGK.Application.App.User.Commands.UpdateNotificationsSettings;
 using PGK.Application.App.User.Commands.UpdatePassword;
+using PGK.Application.App.User.Queries.GetTelegramToken;
 
 namespace PGK.WebApi.Controllers
 {
@@ -84,21 +85,34 @@ namespace PGK.WebApi.Controllers
             return Ok(vm);
         }
 
+        [Authorize]
+        [HttpGet("Telegram/Token")]
+        public async Task<ActionResult> GetTelegramToken()
+        {
+            var query = new GetTelegramTokenQuery
+            {
+                UserId = UserId
+            };
+
+            var token = await Mediator.Send(query);
+
+            return Ok(token);
+        }
+
         /// <summary>
         /// Обновить или добавить TelegramId
         /// </summary>
         /// <param name="telegramId"></param>
+        /// <param name="telegramToken"></param>
         /// <returns>Returns NoContend</returns>
         /// <response code="200">Запрос выполнен успешно</response>
-        /// <response code="401">Пустой или неправильный токен</response>
-        [Authorize]
-        [HttpPatch("TelegramId")]
-        public async Task<ActionResult> UpdateTelegramId(int telegramId)
+        [HttpPatch("Telegram/{telegramId}")]
+        public async Task<ActionResult> UpdateTelegramId(int telegramId, [FromHeader] string telegramToken)
         {
             var command = new UpdateTelegramIdCommand
             {
                 TelegramId = telegramId,
-                UserId = UserId
+                TelegramToken = telegramToken
             };
 
             await Mediator.Send(command);

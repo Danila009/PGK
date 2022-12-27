@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using PGK.Application.Interfaces;
 using PGK.Application.Common.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using PGK.Application.Security;
 
 namespace PGK.Application.App.User.Commands.UpdateTelegramId
 {
@@ -8,18 +10,25 @@ namespace PGK.Application.App.User.Commands.UpdateTelegramId
         : IRequestHandler<UpdateTelegramIdCommand>
     {
         private readonly IPGKDbContext _dbContext;
+        private readonly IAuth _auth;
 
-        public UpdateTelegramIdCommandHandler(IPGKDbContext dbContext) =>
-            _dbContext = dbContext;
+        public UpdateTelegramIdCommandHandler(IPGKDbContext dbContext, IAuth auth) =>
+            (_dbContext, _auth) = (dbContext, auth);
 
         public async Task<Unit> Handle(UpdateTelegramIdCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.FindAsync(request.UserId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => 
+                u.TelegramToken == request.TelegramToken);
 
             if(user == null)
             {
-                throw new NotFoundException(nameof(Domain.User.User), request.UserId);
+                throw new NotFoundException(nameof(Domain.User.User), request.TelegramToken);
+            }
+
+            if(!_auth.TokenValidation(request.TelegramToken, TokenType.TELEGRAM_TOKEN))
+            {
+                throw new UnauthorizedAccessException("Telegram token истек");
             }
 
             user.TelegramId = request.TelegramId;
