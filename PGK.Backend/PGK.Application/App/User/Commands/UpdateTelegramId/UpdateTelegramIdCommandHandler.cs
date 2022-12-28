@@ -31,6 +31,7 @@ namespace PGK.Application.App.User.Commands.UpdateTelegramId
                 throw new UnauthorizedAccessException("Telegram token истек");
             }
 
+            user.TelegramToken = null;
             user.TelegramId = request.TelegramId;
 
             await _dbContext.SaveChangesAsync(cancellationToken);

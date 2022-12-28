@@ -3,7 +3,9 @@ using MediatR;
 using PGK.Application.App.Journal.Queries.GetJournalSubjectColumnList;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
+using PGK.Application.Services.FCMService;
 using PGK.Domain.Journal;
+using PGK.Domain.Notification;
 using PGK.Domain.User;
 using PGK.Domain.User.Teacher;
 
@@ -13,10 +15,12 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectColumn
         : IRequestHandler<CreateJournalSubjectColumnCommand, JournalSubjectColumnDto>
     {
         private readonly IPGKDbContext _dbContext;
+        private readonly IFCMService _fCMService;
         private readonly IMapper _mapper;
 
         public CreateJournalSubjectColumnCommandHandler(IPGKDbContext dbContext,
-            IMapper mapper) => (_dbContext, _mapper) = (dbContext, mapper);
+            IFCMService fCMService,IMapper mapper) => 
+            (_dbContext, _fCMService, _mapper) = (dbContext, fCMService, mapper);
 
         public async Task<JournalSubjectColumnDto> Handle(CreateJournalSubjectColumnCommand request,
             CancellationToken cancellationToken)
@@ -50,8 +54,28 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectColumn
                 }
             }
 
+            var notification = new Notification
+            {
+                Title = "Вам поставили оценку в журнале",
+                Message = $"Оценка {column.Evaluation}," +
+                $" предмет {journalSubjectRow.JournalSubject.Subject.SubjectTitle}, " +
+                $"преподаватель {journalSubjectRow.JournalSubject.Teacher.LastName}",
+                Users = new List<Domain.User.User> { journalSubjectRow.Student }
+            };
+
             await _dbContext.JournalSubjectColumns.AddAsync(column, cancellationToken);
+            await _dbContext.Notifications.AddAsync(notification, cancellationToken);
+
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            if (journalSubjectRow.Student.IncludedJournalNotifications)
+            {
+                await _fCMService.SendMessage(
+                    notification.Title,
+                    notification.Message,
+                    notification.Users.Last().Id.ToString()
+               );
+            }
 
             return _mapper.Map<JournalSubjectColumnDto>(column);
         }

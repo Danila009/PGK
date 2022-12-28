@@ -48,7 +48,6 @@ namespace PGK.WebApi.Middleware
                 result = JsonSerializer.Serialize(new ErrorDetails
                 {
                     Message = exception.Message,
-                    Date = exception.Data,
                     Code = (int)code
                 });
             }

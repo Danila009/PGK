@@ -1156,14 +1156,14 @@
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.UserController.UpdateTelegramId(System.Int32)">
+        <member name="M:PGK.WebApi.Controllers.UserController.UpdateTelegramId(System.Int32,System.String)">
             <summary>
             Обновить или добавить TelegramId
             </summary>
             <param name="telegramId"></param>
+            <param name="telegramToken"></param>
             <returns>Returns NoContend</returns>
             <response code="200">Запрос выполнен успешно</response>
-            <response code="401">Пустой или неправильный токен</response>
         </member>
         <member name="M:PGK.WebApi.Controllers.UserController.Update(PGK.WebApi.Models.User.UpdateUserModel)">
             <summary>

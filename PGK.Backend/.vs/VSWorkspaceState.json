@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
+    "\\PGK.Application",
     "\\PGK.Domain",
-    "\\PGK.Domain\\Language",
+    "\\PGK.Domain\\User",
     "\\PGK.Persistence"
   ],
   "SelectedNode": "\\PGK.Backend.sln",

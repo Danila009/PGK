@@ -8,14 +8,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAevCE8L0efUGQDNCYyy9RHwAAAAACAAAAAAAQZgAAAAEAACAAAAAAAj4a0B8CzOcdCxWcylpevoJOYG61rUphmLQ4AIcbdgAAAAAOgAAAAAIAACAAAADKK2Ip/m5DivzmnJHtbH6VEoZKYclwsTTglW84/I03CSAAAABWDvD+65OwYM5OHn3DrfUM25uFuffLBCkIPC2dBVse00AAAADg/top2fa8TAtq9tdNCRyAC9ExaOQGnO3NUWnH4Vm12hK6GvMCE3PDgp3j4fzfMzw4X0fPfV8p8QEQUpwc/jgG</EncryptedPassword>
     <_PublishTargetUrl>ftp://f0749936.xsph.ru</_PublishTargetUrl>
-    <History>True|2022-12-03T16:37:40.9966394Z;True|2022-12-03T20:30:13.0870294+04:00;False|2022-12-03T20:22:35.6123183+04:00;</History>
+    <History>True|2022-12-28T13:34:14.8736547Z;True|2022-12-03T20:37:40.9966394+04:00;True|2022-12-03T20:30:13.0870294+04:00;False|2022-12-03T20:22:35.6123183+04:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
-      <publishTime>11/25/2022 17:45:51</publishTime>
+      <publishTime>12/22/2022 23:14:45</publishTime>
     </File>
     <File Include="appsettings.json">
-      <publishTime>01/12/2022 18:44:54</publishTime>
+      <publishTime>12/27/2022 22:54:44</publishTime>
     </File>
     <File Include="AutoMapper.dll">
       <publishTime>09/30/2022 13:45:38</publishTime>
@@ -25,6 +25,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="BouncyCastle.Crypto.dll">
       <publishTime>10/19/2021 15:53:34</publishTime>
+    </File>
+    <File Include="EntityFramework.dll">
+      <publishTime>04/17/2020 00:38:44</publishTime>
+    </File>
+    <File Include="EntityFramework.SqlServer.dll">
+      <publishTime>04/17/2020 00:39:00</publishTime>
     </File>
     <File Include="EPPlus.dll">
       <publishTime>11/21/2022 16:57:16</publishTime>
@@ -45,7 +51,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/25/2022 23:23:28</publishTime>
     </File>
     <File Include="MediatR.Contracts.dll">
-      <publishTime>10/01/2022 18:06:26</publishTime>
+      <publishTime>01/10/2022 18:06:26</publishTime>
     </File>
     <File Include="MediatR.dll">
       <publishTime>11/20/2022 01:39:18</publishTime>
@@ -57,13 +63,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/24/2022 02:39:36</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
-      <publishTime>10/13/2022 23:29:46</publishTime>
+      <publishTime>11/15/2022 02:43:50</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.dll">
-      <publishTime>10/13/2022 23:30:20</publishTime>
+      <publishTime>11/15/2022 02:44:18</publishTime>
     </File>
     <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
-      <publishTime>06/15/2022 12:57:42</publishTime>
+      <publishTime>11/15/2022 02:44:38</publishTime>
     </File>
     <File Include="Microsoft.Extensions.Caching.Memory.dll">
       <publishTime>01/14/2022 23:54:16</publishTime>
@@ -101,47 +107,62 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="MySqlConnector.dll">
       <publishTime>12/23/2021 07:43:44</publishTime>
     </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>11/24/2022 06:10:26</publishTime>
+    </File>
     <File Include="PGK.Application.dll">
-      <publishTime>03/12/2022 20:20:22</publishTime>
+      <publishTime>12/28/2022 17:32:19</publishTime>
     </File>
     <File Include="PGK.Application.pdb">
-      <publishTime>03/12/2022 20:20:22</publishTime>
+      <publishTime>12/28/2022 17:32:19</publishTime>
     </File>
     <File Include="PGK.Domain.dll">
-      <publishTime>03/12/2022 20:20:19</publishTime>
+      <publishTime>12/28/2022 17:32:15</publishTime>
     </File>
     <File Include="PGK.Domain.pdb">
-      <publishTime>03/12/2022 20:20:19</publishTime>
+      <publishTime>12/28/2022 17:32:15</publishTime>
     </File>
     <File Include="PGK.Persistence.dll">
-      <publishTime>03/12/2022 20:20:23</publishTime>
+      <publishTime>12/28/2022 17:32:21</publishTime>
     </File>
     <File Include="PGK.Persistence.pdb">
-      <publishTime>03/12/2022 20:20:23</publishTime>
+      <publishTime>12/28/2022 17:32:21</publishTime>
     </File>
     <File Include="PGK.WebApi.deps.json">
-      <publishTime>12/03/2022 20:35:27</publishTime>
+      <publishTime>12/28/2022 17:32:34</publishTime>
     </File>
     <File Include="PGK.WebApi.dll">
-      <publishTime>12/03/2022 20:35:26</publishTime>
+      <publishTime>12/28/2022 17:32:24</publishTime>
     </File>
     <File Include="PGK.WebApi.exe">
-      <publishTime>12/03/2022 20:35:26</publishTime>
+      <publishTime>12/28/2022 17:32:24</publishTime>
     </File>
     <File Include="PGK.WebApi.pdb">
-      <publishTime>12/03/2022 20:35:26</publishTime>
+      <publishTime>12/28/2022 17:32:24</publishTime>
     </File>
     <File Include="PGK.WebApi.runtimeconfig.json">
-      <publishTime>03/12/2022 20:20:27</publishTime>
+      <publishTime>12/28/2022 17:32:26</publishTime>
     </File>
     <File Include="PGK.WebApi.xml">
-      <publishTime>12/03/2022 20:35:26</publishTime>
+      <publishTime>12/28/2022 17:32:24</publishTime>
     </File>
     <File Include="Pomelo.EntityFrameworkCore.MySql.dll">
       <publishTime>07/24/2022 14:24:54</publishTime>
     </File>
     <File Include="runtimes/unix/lib/net6.0/System.Drawing.Common.dll">
       <publishTime>10/23/2021 03:51:42</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 22:41:36</publishTime>
+    </File>
+    <File Include="runtimes/win-arm64/native/sni.dll">
+      <publishTime>07/12/2017 15:24:24</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/sni.dll">
+      <publishTime>07/12/2017 15:24:22</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/sni.dll">
+      <publishTime>07/12/2017 15:24:22</publishTime>
     </File>
     <File Include="runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll">
       <publishTime>10/23/2021 03:40:18</publishTime>
@@ -151,6 +172,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="runtimes/win/lib/net6.0/System.Security.Cryptography.Pkcs.dll">
       <publishTime>04/13/2022 21:44:50</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 22:41:44</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll">
+      <publishTime>11/15/2019 12:54:30</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll">
+      <publishTime>11/15/2019 12:53:46</publishTime>
     </File>
     <File Include="SixLabors.ImageSharp.dll">
       <publishTime>06/18/2022 04:35:24</publishTime>
@@ -164,6 +194,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Swashbuckle.AspNetCore.SwaggerUI.dll">
       <publishTime>07/19/2022 19:21:48</publishTime>
     </File>
+    <File Include="System.CodeDom.dll">
+      <publishTime>11/15/2019 12:36:56</publishTime>
+    </File>
+    <File Include="System.Configuration.ConfigurationManager.dll">
+      <publishTime>11/15/2019 12:37:04</publishTime>
+    </File>
+    <File Include="System.Data.SqlClient.dll">
+      <publishTime>01/17/2020 22:28:34</publishTime>
+    </File>
     <File Include="System.Drawing.Common.dll">
       <publishTime>10/23/2021 03:49:12</publishTime>
     </File>
@@ -173,8 +212,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="System.Security.Cryptography.Pkcs.dll">
       <publishTime>04/13/2022 21:44:42</publishTime>
     </File>
+    <File Include="System.Security.Cryptography.ProtectedData.dll">
+      <publishTime>11/15/2019 12:37:42</publishTime>
+    </File>
+    <File Include="System.Security.Permissions.dll">
+      <publishTime>11/15/2019 12:56:44</publishTime>
+    </File>
+    <File Include="System.Windows.Extensions.dll">
+      <publishTime>11/15/2019 12:56:52</publishTime>
+    </File>
     <File Include="web.config">
-      <publishTime>12/03/2022 20:35:27</publishTime>
+      <publishTime>12/28/2022 17:32:34</publishTime>
     </File>
   </ItemGroup>
 </Project>

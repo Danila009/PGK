@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Exceptions;
@@ -24,14 +25,15 @@ namespace PGK.Application.App.Group.Queries.GetGroupDetails
                 .Include(u => u.Department)
                 .Include(u => u.DeputyHeadma)
                 .Include(u => u.Headman)
-                .FirstOrDefaultAsync(u => u.Id == request.GroupId);
+                .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(u => u.Id == request.GroupId, cancellationToken);
 
             if (group == null)
             {
                 throw new NotFoundException(nameof(Domain.Group.Group), request.GroupId);
             }
 
-            return _mapper.Map<GroupDetails>(group);
+            return group;
         }
     }
 }

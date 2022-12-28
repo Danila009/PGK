@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
+using PGK.Application.Services.FCMService;
+using PGK.Domain.Notification;
 using PGK.Domain.Raportichka;
 using PGK.Domain.User;
 using PGK.Domain.User.Student;
@@ -9,13 +11,14 @@ using PGK.Domain.User.Teacher;
 
 namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
 {
-    public class CreateRaportichkaRowCommandHandler
+    internal class CreateRaportichkaRowCommandHandler
         : IRequestHandler<CreateRaportichkaRowCommand, CreateRaportichkaRowVm>
     {
         private readonly IPGKDbContext _dbContext;
+        private readonly IFCMService _fCMService;
 
-        public CreateRaportichkaRowCommandHandler(IPGKDbContext dbContext) =>
-            _dbContext = dbContext;
+        public CreateRaportichkaRowCommandHandler(IPGKDbContext dbContext, IFCMService fCMService) =>
+            (_dbContext, _fCMService) = (dbContext, fCMService);
 
         public async Task<CreateRaportichkaRowVm> Handle(CreateRaportichkaRowCommand request,
             CancellationToken cancellationToken)
@@ -101,8 +104,26 @@ namespace PGK.Application.App.Raportichka.Row.Commands.CreateRow
                 Raportichka = raportichka
             };
 
-            await _dbContext.RaportichkaRows.AddAsync(row);
+            var notification = new Notification
+            {
+                Title = "Вас отметели в рапортичке",
+                Message = $"Преподаватель {teacher.LastName}, предмет {subject.SubjectTitle}",
+                Users = new List<Domain.User.User> { student }
+            };
+
+            await _dbContext.RaportichkaRows.AddAsync(row, cancellationToken);
+            await _dbContext.Notifications.AddAsync(notification, cancellationToken);
+
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            if (student.IncludedRaportichkaNotifications)
+            {
+                await _fCMService.SendMessage(
+                    notification.Title,
+                    notification.Message,
+                    notification.Users.Last().Id.ToString()
+               );
+            }
 
             return new CreateRaportichkaRowVm
             {

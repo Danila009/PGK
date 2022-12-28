@@ -8,6 +8,7 @@ using PGK.Application.Common.Behaviors;
 using PGK.Application.Repository.ImageRepository;
 using PGK.Application.Services.EmailService;
 using PGK.Application.Repository.FileRepository;
+using PGK.Application.Services.FCMService;
 
 namespace Market.Application
 {
@@ -20,6 +21,7 @@ namespace Market.Application
             service.AddSingleton<IImageRepository, ImageRepository>();
             service.AddSingleton<IFileRepository, FileRepository>();
             service.AddSingleton<IEmailService, EmailService>();
+            service.AddSingleton<IFCMService, FCMService>();
 
             service.AddMediatR(Assembly.GetExecutingAssembly());
 
