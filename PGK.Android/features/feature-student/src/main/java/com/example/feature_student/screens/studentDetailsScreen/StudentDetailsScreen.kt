@@ -58,6 +58,7 @@ private fun StudentDetailsScreen(
     onBackScreen: () -> Unit
 ) {
     Scaffold(
+        backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             Column {
                 TopBarBack(
@@ -73,7 +74,7 @@ private fun StudentDetailsScreen(
         LazyColumn {
 
             item {
-                Text(resultStudent.message.toString(), color = PgkTheme.colors.errorColor)
+
             }
 
             item { Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding())) }

@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.Dp
 
 data class PgkColors(
     val primaryText: Color,
@@ -27,7 +26,6 @@ data class PgkTypography(
 )
 
 data class PgkShape(
-    val padding: Dp,
     val cornersStyle: Shape
 )
 

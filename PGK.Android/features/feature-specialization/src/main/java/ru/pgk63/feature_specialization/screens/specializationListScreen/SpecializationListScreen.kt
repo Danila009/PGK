@@ -103,7 +103,7 @@ private fun SpecializationCardUi(
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(PgkTheme.shapes.padding),
+        modifier = Modifier.padding(5.dp),
         onClick = { onSpecializationDetailsScreen(specialization.id) }
     ) {
         Column {

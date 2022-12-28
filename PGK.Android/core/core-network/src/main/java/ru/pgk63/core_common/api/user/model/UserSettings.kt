@@ -1,24 +1,12 @@
-package ru.pgk63.core_common.api.auth.model
+package ru.pgk63.core_common.api.user.model
 
 import com.google.gson.annotations.SerializedName
-import ru.pgk63.core_common.api.user.model.Language
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle
 import ru.pgk63.core_common.enums.theme.ThemeStyle
-import ru.pgk63.core_common.enums.user.UserRole
 
-data class SignIn(
-    val firstName:String,
-    val lastName:String,
-    val password:String
-)
-
-data class SignInResponse(
-    val accessToken:String,
-    val refreshToken:String,
-    val userId:Int,
-    val userRole: UserRole,
+data class UserSettings(
     @SerializedName("drarkMode")
     val darkMode: Boolean,
     val themeStyle: ThemeStyle = ThemeStyle.Green,
@@ -26,8 +14,11 @@ data class SignInResponse(
     val themeFontSize: ThemeFontSize = ThemeFontSize.Medium,
     val themeCorners: ThemeCorners = ThemeCorners.Rounded,
     val language: Language?,
-    @SerializedName("Message")
-    val errorMessage:String? = null,
-    @SerializedName("Code")
-    val errorCode: Int? = null
+    val includedNotifications: Boolean,
+    val soundNotifications: Boolean,
+    val vibrationNotifications: Boolean,
+    val includedSchedulesNotifications: Boolean,
+    val includedJournalNotifications: Boolean,
+    val includedRaportichkaNotifications: Boolean,
+    val includedTechnicalSupportNotifications: Boolean
 )

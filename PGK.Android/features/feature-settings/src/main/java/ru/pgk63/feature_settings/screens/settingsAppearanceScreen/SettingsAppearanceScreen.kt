@@ -1,5 +1,6 @@
 package ru.pgk63.feature_settings.screens.settingsAppearanceScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,26 +13,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.onEach
+import ru.pgk63.core_common.api.user.model.UserSettings
+import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle
 import ru.pgk63.core_common.enums.theme.ThemeStyle
+import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.*
+import ru.pgk63.core_ui.view.ErrorUi
+import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.feature_settings.screens.settingsAppearanceScreen.viewModel.SettingsAppearanceViewModel
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun SettingsAppearanceRoute(
-    onBackScreen: () -> Unit
+    viewModel: SettingsAppearanceViewModel = hiltViewModel(),
+    onBackScreen: () -> Unit,
 ) {
-    val isDarkMode by remember { mutableStateOf(true) }
+    var isDarkMode by remember { mutableStateOf(true) }
     var fontStyle by remember { mutableStateOf(ThemeFontStyle.Default) }
     var themeCorners by remember { mutableStateOf(ThemeCorners.Rounded) }
     var themeFontSize by remember { mutableStateOf(ThemeFontSize.Medium) }
     var themeStyle by remember { mutableStateOf(ThemeStyle.Green) }
 
+    var userSettings by remember { mutableStateOf<Result<UserSettings>>(Result.Loading()) }
+
+    viewModel.responseUserSettings.onEach { result ->
+        userSettings = result
+    }.launchWhenStarted()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getSettings()
+    })
+
+    LaunchedEffect(key1 = userSettings, block = {
+        userSettings.data?.let { settings ->
+            isDarkMode = settings.darkMode
+            fontStyle = settings.themeFontStyle
+            themeCorners = settings.themeCorners
+            themeFontSize = settings.themeFontSize
+            themeStyle = settings.themeStyle
+        }
+    })
+
     SettingsAppearanceScreen(
+        userSettings = userSettings,
         isDarkMode = isDarkMode,
         fontStyle = fontStyle,
         themeCorners = themeCorners,
@@ -39,15 +72,19 @@ internal fun SettingsAppearanceRoute(
         themeStyle = themeStyle,
         onBackScreen = onBackScreen,
         onFontStyleChange = {
+            viewModel.updateThemeFontStyle(it)
             fontStyle = it
         },
         onThemeCornersChange = {
+            viewModel.updateThemeCorners(it)
             themeCorners = it
         },
         onThemeFontSizeChange = {
+            viewModel.updateThemeFontSize(it)
             themeFontSize = it
         },
         onThemeStyle = {
+            viewModel.updateThemeStyle(it)
             themeStyle = it
         }
     )
@@ -55,7 +92,8 @@ internal fun SettingsAppearanceRoute(
 
 @Composable
 private fun SettingsAppearanceScreen(
-    isDarkMode:Boolean,
+    userSettings: Result<UserSettings>,
+    isDarkMode: Boolean,
     fontStyle: ThemeFontStyle,
     themeCorners: ThemeCorners,
     themeFontSize: ThemeFontSize,
@@ -75,34 +113,66 @@ private fun SettingsAppearanceScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn {
 
-            item {
-                MenuThemeFontStyle(
-                    fontStyle = fontStyle,
-                    onFontStyleChange = onFontStyleChange
-                )
+        when(userSettings){
+            is Result.Error -> ErrorUi(message = userSettings.message)
+            is Result.Loading -> LoadingUi()
+            is Result.Success -> UserSettingsSuccess(
+                bottomPadding = paddingValues.calculateBottomPadding(),
+                isDarkMode = isDarkMode,
+                fontStyle = fontStyle,
+                themeCorners = themeCorners,
+                themeFontSize = themeFontSize,
+                themeStyle = themeStyle,
+                onFontStyleChange = onFontStyleChange,
+                onThemeCornersChange = onThemeCornersChange,
+                onThemeFontSizeChange = onThemeFontSizeChange,
+                onThemeStyle = onThemeStyle
+            )
+        }
+    }
+}
 
-                MenuThemeCorners(
-                    themeCorners = themeCorners,
-                    onThemeCornersChange = onThemeCornersChange
-                )
+@Composable
+private fun UserSettingsSuccess(
+    bottomPadding: Dp,
+    isDarkMode: Boolean,
+    fontStyle: ThemeFontStyle,
+    themeCorners: ThemeCorners,
+    themeFontSize: ThemeFontSize,
+    themeStyle: ThemeStyle,
+    onFontStyleChange: (ThemeFontStyle) -> Unit,
+    onThemeCornersChange: (ThemeCorners) -> Unit,
+    onThemeFontSizeChange: (ThemeFontSize) -> Unit,
+    onThemeStyle: (ThemeStyle) -> Unit,
+) {
+    LazyColumn {
 
-                MenuThemeFontSize(
-                    themeFontSize = themeFontSize,
-                    onThemeFontSizeChange = onThemeFontSizeChange
-                )
+        item {
+            MenuThemeFontStyle(
+                fontStyle = fontStyle,
+                onFontStyleChange = onFontStyleChange
+            )
 
-                ThemeStyleCards(
-                    isDarkMode = isDarkMode,
-                    onThemeStyle = onThemeStyle,
-                    themeStyle = themeStyle
-                )
-            }
+            MenuThemeCorners(
+                themeCorners = themeCorners,
+                onThemeCornersChange = onThemeCornersChange
+            )
 
-            item {
-                Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-            }
+            MenuThemeFontSize(
+                themeFontSize = themeFontSize,
+                onThemeFontSizeChange = onThemeFontSizeChange
+            )
+
+            ThemeStyleCards(
+                isDarkMode = isDarkMode,
+                onThemeStyle = onThemeStyle,
+                themeStyle = themeStyle
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(bottomPadding))
         }
     }
 }

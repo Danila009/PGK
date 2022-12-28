@@ -32,6 +32,9 @@ buildscript {
         junit_version = "4.13.2"
         mockk_version = "1.12.5"
     }
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.14'
+    }
 }
 
 plugins {

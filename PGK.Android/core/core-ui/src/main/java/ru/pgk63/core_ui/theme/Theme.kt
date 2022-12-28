@@ -19,7 +19,6 @@ import ru.pgk63.core_common.enums.theme.ThemeStyle
 fun MainTheme(
     style: ThemeStyle = ThemeStyle.Green,
     textSize: ThemeFontSize = ThemeFontSize.Medium,
-    paddingSize: ThemeFontSize = ThemeFontSize.Medium,
     corners: ThemeCorners = ThemeCorners.Rounded,
     fontFamily: ThemeFontStyle = ThemeFontStyle.Default,
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -83,11 +82,6 @@ fun MainTheme(
     )
 
     val shapes = PgkShape(
-        padding = when (paddingSize) {
-            ThemeFontSize.Small -> 12.dp
-            ThemeFontSize.Medium -> 16.dp
-            ThemeFontSize.Big -> 20.dp
-        },
         cornersStyle = when (corners) {
             ThemeCorners.Flat -> RoundedCornerShape(0.dp)
             ThemeCorners.Rounded -> RoundedCornerShape(8.dp)

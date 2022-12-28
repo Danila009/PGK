@@ -81,7 +81,7 @@ private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: In
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(PgkTheme.shapes.padding),
+        modifier = Modifier.padding(5.dp),
         onClick = { onStudentDetailsScreen(student.id) }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

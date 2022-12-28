@@ -1,5 +1,6 @@
 package ru.pgk63.feature_main.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,20 +9,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.api.user.model.User
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_common.enums.user.UserRole
+import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.feature_main.screen.enums.DrawerContent
 import ru.pgk63.feature_main.viewModel.MainViewModel
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel(),
@@ -32,7 +38,24 @@ internal fun MainRoute(
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
 ) {
+    var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
+    var userRole by remember { mutableStateOf<UserRole?>(null) }
+
+    viewModel.responseUserNetwork.onEach { result ->
+        userResult = result
+    }.launchWhenStarted()
+
+    viewModel.userLocal.onEach { user ->
+        userRole = user?.userRole
+    }.launchWhenStarted()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getUserNetwork()
+    })
+
     MainScreen(
+        userResult = userResult,
+        userRole = userRole,
         onGroupScreen = onGroupScreen,
         onTechSupportChatScreen = onTechSupportChatScreen,
         onSettingsScreen = onSettingsScreen,
@@ -48,6 +71,8 @@ internal fun MainRoute(
 
 @Composable
 private fun MainScreen(
+    userResult: Result<User>,
+    userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: () -> Unit,
@@ -74,6 +99,8 @@ private fun MainScreen(
         drawerBackgroundColor = PgkTheme.colors.drawerBackground,
         drawerContent = {
             DrawerContentUi(
+                userResult = userResult,
+                userRole = userRole,
                 updateDarkMode = updateDarkMode,
                 onGroupScreen = onGroupScreen,
                 onTechSupportChatScreen = onTechSupportChatScreen,
@@ -156,6 +183,8 @@ private fun TopBar(
 
 @Composable
 private fun DrawerContentUi(
+    userResult: Result<User>,
+    userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: () -> Unit,
@@ -170,19 +199,23 @@ private fun DrawerContentUi(
                 backgroundColor = PgkTheme.colors.secondaryBackground,
                 title = {
                     Column {
-                        Text(
-                            text = "Данила ИСП-239",
-                            color = PgkTheme.colors.primaryText,
-                            fontFamily = PgkTheme.fontFamily.fontFamily,
-                            style = PgkTheme.typography.toolbar
-                        )
+                        userResult.data?.let { user ->
+                            Text(
+                                text = "${user.firstName} ${user.lastName}",
+                                color = PgkTheme.colors.primaryText,
+                                fontFamily = PgkTheme.fontFamily.fontFamily,
+                                style = PgkTheme.typography.toolbar
+                            )
+                        }
 
-                        Text(
-                            text = "Студент",
-                            color = PgkTheme.colors.primaryText,
-                            fontFamily = PgkTheme.fontFamily.fontFamily,
-                            style = PgkTheme.typography.caption
-                        )
+                        userRole?.let {
+                            Text(
+                                text = stringResource(id = userRole.nameId),
+                                color = PgkTheme.colors.primaryText,
+                                fontFamily = PgkTheme.fontFamily.fontFamily,
+                                style = PgkTheme.typography.caption
+                            )
+                        }
                     }
                 },
                 actions = {
@@ -208,7 +241,7 @@ private fun DrawerContentUi(
                         .fillMaxWidth()
                         .padding(15.dp)
                         .clickable {
-                            when(drawerContent){
+                            when (drawerContent) {
                                 DrawerContent.PROFILE -> Unit
                                 DrawerContent.SCHEDULE -> Unit
                                 DrawerContent.STUDENTS -> onStudentListScreen()

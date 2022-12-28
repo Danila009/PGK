@@ -106,7 +106,7 @@ private fun GroupListItem(group: Group, onGroupDetailsScreen: (groupId: Int) -> 
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(PgkTheme.shapes.padding),
+        modifier = Modifier.padding(5.dp),
         onClick = { onGroupDetailsScreen(group.id) }
     ) {
         Column(

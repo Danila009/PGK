@@ -13,4 +13,11 @@
     <string name="small">Маленький</string>
     <string name="medium">Средний</string>
     <string name="big">Большой</string>
+    <string name="student">Студент</string>
+    <string name="headman">Староста</string>
+    <string name="deputy_headman">Зам старосты</string>
+    <string name="teacher">Преподаватель</string>
+    <string name="educational_sector">Учебный сектор</string>
+    <string name="department_head">Зав отделения</string>
+    <string name="admin">Админ</string>
 </resources>

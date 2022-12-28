@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
 
             val mainViewModel = hiltViewModel<MainViewModel>()
@@ -47,7 +48,10 @@ class MainActivity : ComponentActivity() {
                     LocalNavController provides navHostController
                 ) {
                     MainTheme(
-                        darkTheme = user.darkMode ?: isSystemInDarkTheme
+                        darkTheme = user.darkMode ?: isSystemInDarkTheme,
+                        textSize = user.themeFontSize,
+                        corners = user.themeCorners,
+                        fontFamily = user.themeFontStyle
                     ) {
                         MainNavHost(
                             startDestination = if(user.statusRegistration)

@@ -83,7 +83,7 @@ private fun SubjectCard(subject: Subject, onSubjectDetailsScreen: (subjectId: In
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(PgkTheme.shapes.padding),
+        modifier = Modifier.padding(5.dp),
         onClick = { onSubjectDetailsScreen(subject.id) }
     ) {
         Box {

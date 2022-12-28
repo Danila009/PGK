@@ -8,6 +8,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import ru.pgk63.core_common.enums.theme.ThemeCorners
+import ru.pgk63.core_common.enums.theme.ThemeFontSize
+import ru.pgk63.core_common.enums.theme.ThemeFontStyle
+import ru.pgk63.core_common.enums.theme.ThemeStyle
 import ru.pgk63.core_common.extension.decodeFromString
 import ru.pgk63.core_common.extension.encodeToString
 import ru.pgk63.core_database.user.model.UserLocalDatabase
@@ -39,7 +43,7 @@ class UserDataSource @Inject constructor(
             .apply()
     }
 
-    suspend fun saveDarkModel(darkModel: Boolean){
+    suspend fun updateDarkModel(darkModel: Boolean){
         val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
 
         user?.darkMode = darkModel
@@ -48,6 +52,57 @@ class UserDataSource @Inject constructor(
             it[USER_DATA_STORE] = user.encodeToString()
         }
     }
+
+    suspend fun updateThemeStyle(themeStyle: ThemeStyle){
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
+
+        user?.themeStyle = themeStyle
+
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
+        }
+    }
+
+    suspend fun updateThemeFontStyle(fontStyle: ThemeFontStyle){
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
+
+        user?.themeFontStyle = fontStyle
+
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
+        }
+    }
+
+    suspend fun updateThemeFontSize(themeFontSize: ThemeFontSize){
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
+
+        user?.themeFontSize = themeFontSize
+
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
+        }
+    }
+
+    suspend fun updateThemeCorners(themeCorners: ThemeCorners){
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
+
+        user?.themeCorners = themeCorners
+
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
+        }
+    }
+
+    suspend fun updateLanguageCode(code:String?) {
+        val user = context.userDataStore.data.first()[USER_DATA_STORE]?.decodeFromString<UserLocalDatabase>()
+
+        user?.languageCode = code
+
+        context.userDataStore.edit {
+            it[USER_DATA_STORE] = user.encodeToString()
+        }
+    }
+
 
     suspend fun save(user: UserLocalDatabase){
         context.userDataStore.edit { preferences ->
