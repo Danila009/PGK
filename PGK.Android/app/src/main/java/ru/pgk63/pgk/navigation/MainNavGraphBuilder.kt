@@ -50,6 +50,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onGroupDetailsScreen = { id ->
             navController.navigate("${GroupDetailsDestination.route}/$id")
         },
+        onStudentDetailsScreen = { id ->
+            navController.navigate("${StudentDetailsDestination.route}/$id")
+        },
         onBackScreen = { navController.navigateUp() }
     )
 
@@ -91,6 +94,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSettingsAppearanceScreen = {
             navController.navigate(SettingsAppearanceDestination.route)
+        },
+        onChangePasswordScreen = {
+            navController.navigate(ChangePasswordDestination.route)
         }
     )
 }

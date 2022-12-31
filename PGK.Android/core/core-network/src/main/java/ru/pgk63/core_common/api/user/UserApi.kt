@@ -16,6 +16,9 @@ interface UserApi {
     @GET("/pgk63/api/User")
     suspend fun get(): Response<User>
 
+    @PATCH("/pgk63/api/User/Password")
+    suspend fun updatePassword(): Response<String>
+
     @PATCH("/pgk63/api/User/Settings/DrarkMode")
     suspend fun updateDarkMode(): Response<UserSettings>
 

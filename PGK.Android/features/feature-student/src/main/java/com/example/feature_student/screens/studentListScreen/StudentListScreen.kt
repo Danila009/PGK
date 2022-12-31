@@ -110,7 +110,7 @@ private fun StudentCard(student: Student, onStudentDetailsScreen: (studentId: In
             ) {
                 Text(
                     text = "${student.lastName} ${student.firstName} " +
-                            "${student.middleName}",
+                            (student.middleName ?: ""),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,

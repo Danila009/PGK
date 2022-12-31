@@ -42,7 +42,8 @@ import ru.pgk63.feature_group.screens.groupDetailsScreen.viewModel.GroupDetailsV
 internal fun GroupDetailsRoute(
     viewModel: GroupDetailsViewModel = hiltViewModel(),
     groupId: Int,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
     var groupResult by remember { mutableStateOf<Result<Group>>(Result.Loading()) }
 
@@ -58,16 +59,18 @@ internal fun GroupDetailsRoute(
 
     GroupDetailsScreen(
         groupResult = groupResult,
+        onBackScreen = onBackScreen,
         students = students,
-        onBackScreen = onBackScreen
+        onStudentDetailsScreen = onStudentDetailsScreen
     )
 }
 
 @Composable
 private fun GroupDetailsScreen(
     groupResult: Result<Group>,
+    students: LazyPagingItems<Student>,
     onBackScreen: () -> Unit,
-    students: LazyPagingItems<Student>
+    onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -110,21 +113,28 @@ private fun GroupDetailsScreen(
 
                             item(span = { GridItemSpan(maxCurrentLineSpan) }) {
                                 if(students.itemCount > 0 ){
-                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Spacer(modifier = Modifier.height(40.dp))
 
                                     Text(
                                         text = stringResource(id = R.string.students),
                                         color = PgkTheme.colors.primaryText,
                                         style = PgkTheme.typography.heading,
-                                        fontFamily = PgkTheme.fontFamily.fontFamily
+                                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                                        modifier = Modifier.padding(start = 20.dp)
                                     )
 
-                                    Spacer(modifier = Modifier.height(5.dp))
+                                    Spacer(modifier = Modifier.height(25.dp))
                                 }
                             }
 
                             items(students){ student ->
-                                student?.let { StudentCard(groupResult.data!!, it) }
+                                student?.let {
+                                    StudentCard(
+                                        group = groupResult.data!!,
+                                        student = student,
+                                        onClick = onStudentDetailsScreen
+                                    )
+                                }
                             }
 
                             item(span = { GridItemSpan(maxCurrentLineSpan) }) {
@@ -178,7 +188,7 @@ private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "${classroomTeacher.lastName} ${classroomTeacher.firstName} " +
-                                "${classroomTeacher.middleName}",
+                                (classroomTeacher.middleName ?: ""),
                         color = PgkTheme.colors.primaryText,
                         style = PgkTheme.typography.body,
                         fontFamily = PgkTheme.fontFamily.fontFamily,
@@ -253,8 +263,13 @@ private fun DepartmentAndSpecialityUi(
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StudentCard(group: Group,student: Student) {
+fun StudentCard(
+    group: Group,
+    student: Student,
+    onClick: (studentId: Int) -> Unit
+) {
 
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
@@ -262,7 +277,8 @@ fun StudentCard(group: Group,student: Student) {
     Card(
         modifier = Modifier.padding(5.dp),
         backgroundColor = PgkTheme.colors.secondaryBackground,
-        shape = PgkTheme.shapes.cornersStyle
+        shape = PgkTheme.shapes.cornersStyle,
+        onClick = { onClick(student.id) }
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -287,7 +303,8 @@ fun StudentCard(group: Group,student: Student) {
             }
             
             Text(
-                text = "${student.lastName} ${student.firstName} ${student.middleName}",
+                text = "${student.lastName} ${student.firstName} " +
+                        (student.middleName ?: ""),
                 color = PgkTheme.colors.primaryText,
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,

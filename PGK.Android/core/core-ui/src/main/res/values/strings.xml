@@ -56,4 +56,5 @@
     <string name="font_size">Размер шрифта</string>
     <string name="font_style">Стиль шрифта</string>
     <string name="corners">Углы</string>
+    <string name="your_new_password">Ваш новый пароль</string>
 </resources>

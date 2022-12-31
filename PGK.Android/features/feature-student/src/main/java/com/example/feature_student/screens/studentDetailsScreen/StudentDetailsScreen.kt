@@ -121,7 +121,7 @@ private fun TopBarStudentInfo(student: Student){
             ) {
                 Text(
                     text = "${student.lastName} ${student.firstName} " +
-                            "${student.middleName}",
+                            (student.middleName ?: ""),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,

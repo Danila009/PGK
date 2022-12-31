@@ -1,6 +1,5 @@
 package ru.pgk63.core_common.api.user.repository
 
-import android.util.Log
 import ru.pgk63.core_common.api.user.UserApi
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserSettings
@@ -11,7 +10,6 @@ import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle
 import ru.pgk63.core_common.enums.theme.ThemeStyle
-import ru.pgk63.core_database.user.model.UserLocalDatabase
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -20,6 +18,8 @@ class UserRepository @Inject constructor(
 ): ApiResponse() {
 
     suspend fun get(): Result<User> = safeApiCall { userApi.get() }
+
+    suspend fun updatePassword(): Result<String> = safeApiCall { userApi.updatePassword() }
 
     suspend fun updateDarkMode(): Result<UserSettings> {
 

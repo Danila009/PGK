@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import ru.pgk63.core_navigation.NavigationDestination
+import ru.pgk63.feature_settings.screens.changePasswordScreen.ChangePasswordRoute
 import ru.pgk63.feature_settings.screens.settingsAppearanceScreen.SettingsAppearanceRoute
 import ru.pgk63.feature_settings.screens.settingsLanguageScreen.SettingsLanguageScreenRoute
 import ru.pgk63.feature_settings.screens.settingsNotificationsScreen.SettingsNotificationsRoute
@@ -30,13 +31,18 @@ object SettingsAppearanceDestination : NavigationDestination {
     override val route = "settings_appearance_screen"
 }
 
+object ChangePasswordDestination : NavigationDestination {
+    override val route = "change_password_screen"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.settingsNavigation(
     onSettingsSecurityScreen:() -> Unit,
     onSettingsNotificationsScreen:() -> Unit,
     onSettingsLanguageScreen:() -> Unit,
     onSettingsAppearanceScreen:() -> Unit,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onChangePasswordScreen: () -> Unit
 ) {
     composable(
         route = SettingsDestination.route
@@ -54,7 +60,8 @@ fun NavGraphBuilder.settingsNavigation(
         route = SettingsSecurityDestination.route
     ){
         SettingsSecurityRoute(
-            onBackScreen = onBackScreen
+            onBackScreen = onBackScreen,
+            onChangePasswordScreen = onChangePasswordScreen
         )
     }
 
@@ -78,6 +85,14 @@ fun NavGraphBuilder.settingsNavigation(
         route = SettingsAppearanceDestination.route
     ){
         SettingsAppearanceRoute(
+            onBackScreen = onBackScreen
+        )
+    }
+
+    composable(
+        route = ChangePasswordDestination.route
+    ){
+        ChangePasswordRoute(
             onBackScreen = onBackScreen
         )
     }

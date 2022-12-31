@@ -9,7 +9,8 @@ enum class LottieAnimationType(val resId: Int) {
     WELCOME(R.raw.welcome),
     LOADING(R.raw.loading),
     ERROR(R.raw.error),
-    EMPTY(R.raw.empty)
+    EMPTY(R.raw.empty),
+    PASSWORD_SECURITY(R.raw.password_security)
 }
 
 @Composable

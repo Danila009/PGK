@@ -1,6 +1,5 @@
 package ru.pgk63.feature_settings.screens.settingsSecurityScreen
 
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,9 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.pgk63.core_ui.R
@@ -26,10 +23,12 @@ import ru.pgk63.feature_settings.view.SettingsButton
 internal fun SettingsSecurityRoute(
     viewModel: SettingsSecurityViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
+    onChangePasswordScreen: () -> Unit,
 ) {
 
     SettingsSecurityScreen(
         onBackScreen = onBackScreen,
+        onChangePasswordScreen = onChangePasswordScreen,
         onSignOutApp = {
             viewModel.signOutApp()
         },
@@ -41,9 +40,10 @@ internal fun SettingsSecurityRoute(
 
 @Composable
 private fun SettingsSecurityScreen(
-    onSignOutApp:() -> Unit,
-    onSignOutAll:() -> Unit,
-    onBackScreen: () -> Unit
+    onSignOutApp: () -> Unit,
+    onSignOutAll: () -> Unit,
+    onBackScreen: () -> Unit,
+    onChangePasswordScreen: () -> Unit
 ) {
     Scaffold(
         backgroundColor = PgkTheme.colors.primaryBackground,
@@ -58,7 +58,9 @@ private fun SettingsSecurityScreen(
 
             item {
 
-                SecurityUi()
+                SecurityUi(
+                    onChangePasswordScreen = onChangePasswordScreen
+                )
 
                 Spacer(modifier = Modifier.height(25.dp))
 
@@ -76,13 +78,15 @@ private fun SettingsSecurityScreen(
 }
 
 @Composable
-private fun SecurityUi (){
+private fun SecurityUi(
+    onChangePasswordScreen: () -> Unit
+){
 
     Column {
         SettingsButton(
             title = stringResource(id = R.string.change_password),
             body = stringResource(id = R.string.change_password_body)
-        ) {  }
+        ) { onChangePasswordScreen() }
 
         Spacer(modifier = Modifier.height(10.dp))
 

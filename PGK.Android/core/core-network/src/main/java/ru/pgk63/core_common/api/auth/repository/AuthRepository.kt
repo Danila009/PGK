@@ -21,22 +21,22 @@ class AuthRepository @Inject constructor(
     suspend fun signIn(body: SignIn): Result<SignInResponse> {
         val response = safeApiCall { authApi.signIn(body) }
 
-        if(response is Result.Success){
+        if(response is Result.Success && response.data?.accessToken != null){
             val userLocalDatabase = UserLocalDatabase(
                 statusRegistration = true,
-                userId = response.data?.userId,
-                userRole = response.data?.userRole,
-                darkMode = response.data?.darkMode,
-                themeStyle = response.data?.themeStyle ?: ThemeStyle.Green,
-                themeFontStyle = response.data?.themeFontStyle ?: ThemeFontStyle.Default,
-                themeFontSize = response.data?.themeFontSize ?: ThemeFontSize.Medium,
-                themeCorners = response.data?.themeCorners ?: ThemeCorners.Rounded,
-                languageCode = response.data?.language?.code
+                userId = response.data.userId,
+                userRole = response.data.userRole,
+                darkMode = response.data.darkMode,
+                themeStyle = response.data.themeStyle,
+                themeFontStyle = response.data.themeFontStyle,
+                themeFontSize = response.data.themeFontSize,
+                themeCorners = response.data.themeCorners,
+                languageCode = response.data.language?.code
             )
 
             userDataSource.save(userLocalDatabase)
-            userDataSource.saveAccessToken(response.data?.accessToken)
-            userDataSource.saveRefreshToken(response.data?.refreshToken)
+            userDataSource.saveAccessToken(response.data.accessToken)
+            userDataSource.saveRefreshToken(response.data.refreshToken)
         }
 
         return response
