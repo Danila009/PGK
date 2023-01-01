@@ -1,20 +1,25 @@
 package ru.pgk63.core_common.api.user.repository
 
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.pgk63.core_common.api.user.UserApi
+import ru.pgk63.core_common.api.user.model.UpdateUserPhotoResponse
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserSettings
 import ru.pgk63.core_common.common.response.ApiResponse
-import ru.pgk63.core_database.user.UserDataSource
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle
 import ru.pgk63.core_common.enums.theme.ThemeStyle
+import ru.pgk63.core_database.user.UserDataSource
 import javax.inject.Inject
+
 
 class UserRepository @Inject constructor(
     private val userApi: UserApi,
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
 ): ApiResponse() {
 
     suspend fun get(): Result<User> = safeApiCall { userApi.get() }
@@ -87,5 +92,20 @@ class UserRepository @Inject constructor(
         }
 
         return result
+    }
+
+    suspend fun uploadImage(file: ByteArray): Result<UpdateUserPhotoResponse> {
+        val reqFile = file.toRequestBody("application/octet-stream".toMediaTypeOrNull(), 0, file.size)
+
+        return safeApiCall {
+            userApi.uploadImage(
+                photo = MultipartBody.Part
+                    .createFormData(
+                        "photo",
+                        "photo",
+                        reqFile
+                    )
+            )
+        }
     }
 }

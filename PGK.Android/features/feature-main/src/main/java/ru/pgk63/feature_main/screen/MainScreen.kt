@@ -37,6 +37,7 @@ internal fun MainRoute(
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
+    onProfileScreen: () -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -62,6 +63,7 @@ internal fun MainRoute(
         onSpecializationListScreen = onSpecializationListScreen,
         onSubjectListScreen = onSubjectListScreen,
         onStudentListScreen = onStudentListScreen,
+        onProfileScreen = onProfileScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -79,7 +81,8 @@ private fun MainScreen(
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
-    onStudentListScreen: () -> Unit
+    onStudentListScreen: () -> Unit,
+    onProfileScreen: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -107,7 +110,8 @@ private fun MainScreen(
                 onSettingsScreen = onSettingsScreen,
                 onSpecializationListScreen = onSpecializationListScreen,
                 onSubjectListScreen = onSubjectListScreen,
-                onStudentListScreen = onStudentListScreen
+                onStudentListScreen = onStudentListScreen,
+                onProfileScreen = onProfileScreen
             )
         },
         content = { paddingValues ->
@@ -191,7 +195,8 @@ private fun DrawerContentUi(
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
-    onStudentListScreen: () -> Unit
+    onStudentListScreen: () -> Unit,
+    onProfileScreen: () -> Unit
 ) {
     LazyColumn {
         item {
@@ -242,8 +247,7 @@ private fun DrawerContentUi(
                         .padding(15.dp)
                         .clickable {
                             when (drawerContent) {
-                                DrawerContent.PROFILE -> Unit
-                                DrawerContent.SCHEDULE -> Unit
+                                DrawerContent.PROFILE -> onProfileScreen()
                                 DrawerContent.STUDENTS -> onStudentListScreen()
                                 DrawerContent.GUIDE -> Unit
                                 DrawerContent.SPECIALTIES -> onSpecializationListScreen()

@@ -1,9 +1,14 @@
 package ru.pgk63.core_common.api.user
 
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
+import ru.pgk63.core_common.api.user.model.UpdateUserPhotoResponse
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserSettings
 import ru.pgk63.core_common.enums.theme.ThemeCorners
@@ -42,4 +47,10 @@ interface UserApi {
 
     @GET("/pgk63/api/User/Settings")
     suspend fun getSettings(): Response<UserSettings>
+
+    @POST("/pgk63/api/User/Photo")
+    @Multipart
+    suspend fun uploadImage(
+        @Part photo: MultipartBody.Part
+    ): Response<UpdateUserPhotoResponse>
 }

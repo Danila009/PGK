@@ -21,4 +21,5 @@ object ResIcons {
     val security = R.drawable.security
     val notifications = R.drawable.notifications
     val language = R.drawable.language
+    val camera = R.drawable.camera
 }

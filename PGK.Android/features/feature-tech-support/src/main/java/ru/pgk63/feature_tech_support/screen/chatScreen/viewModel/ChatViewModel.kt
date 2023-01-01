@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.techSupport.model.GetMessageListParameters
 import ru.pgk63.core_common.api.techSupport.model.SendMessageBody
 import ru.pgk63.core_common.api.techSupport.paging.MessagePagingSource
@@ -26,7 +27,7 @@ internal class ChatViewModel @Inject constructor(
 
     private val messagesWebSocket = MessagesWebSocket(userDataSource)
 
-    val messages = Pager(PagingConfig(pageSize = 20)){
+    val messages = Pager(PagingConfig(pageSize = PAGE_SIZE)){
         MessagePagingSource(messagesWebSocket)
     }.flow.cachedIn(viewModelScope)
 

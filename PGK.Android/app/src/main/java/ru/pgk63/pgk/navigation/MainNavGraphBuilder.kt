@@ -10,6 +10,8 @@ import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
 import ru.pgk63.feature_main.navigation.mainNavigation
+import ru.pgk63.feature_profile.navigation.ProfileDestination
+import ru.pgk63.feature_profile.navigation.profileNavigation
 import ru.pgk63.feature_settings.navigation.*
 import ru.pgk63.feature_specialization.navigation.SpecializationDetailsDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationListDestination
@@ -38,6 +40,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onStudentListScreen = {
             navController.navigate(StudentListDestination.route)
+        },
+        onProfileScreen = {
+            navController.navigate(ProfileDestination.route)
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
@@ -79,6 +84,10 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onStudentDetailsScreen = { id ->
             navController.navigate("${StudentDetailsDestination.route}/$id")
         }
+    )
+
+    profileNavigation(
+        onBackScreen = { navController.navigateUp() },
     )
 
     settingsNavigation(
