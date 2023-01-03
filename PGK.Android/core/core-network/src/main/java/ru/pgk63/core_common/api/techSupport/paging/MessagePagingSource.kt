@@ -3,13 +3,12 @@ package ru.pgk63.core_common.api.techSupport.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
-import ru.pgk63.core_common.api.techSupport.model.GetMessageListParameters
+import ru.pgk63.core_common.api.techSupport.model.MessageListParameters
 import ru.pgk63.core_common.api.techSupport.model.Message
 import ru.pgk63.core_common.api.techSupport.webSocket.MessagesWebSocket
 
-class MessagePagingSource(
+private class MessagePagingSource(
     private val messagesWebSocket: MessagesWebSocket
 ): PagingSource<Int, Message>() {
 
@@ -21,15 +20,14 @@ class MessagePagingSource(
         return try {
             val nextPage = params.key ?: 1
 
-            messagesWebSocket.setMessagesParameters(GetMessageListParameters(pageNumber = nextPage))
+            messagesWebSocket.setMessagesParameters(MessageListParameters(pageNumber = nextPage))
 
             val messageResponse = messagesWebSocket.messageResponse.last()
-
 
             Log.e("MessagePagingSource",messageResponse.toString())
 
             LoadResult.Page(
-                data = messageResponse?.results ?: listOf(),
+                data = messageResponse.data?.results!!,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
                 nextKey = nextPage.plus(1)
             )

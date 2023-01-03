@@ -2,10 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\PGK.Application",
+    "\\PGK.Application\\App",
+    "\\PGK.Application\\App\\TechnicalSupport",
+    "\\PGK.Application\\App\\TechnicalSupport\\Commands",
+    "\\PGK.Application\\App\\TechnicalSupport\\Commands\\SendMessage",
+    "\\PGK.Application\\App\\TechnicalSupport\\Queries",
+    "\\PGK.Application\\App\\TechnicalSupport\\Queries\\GetMessageList",
     "\\PGK.Domain",
-    "\\PGK.Domain\\User",
-    "\\PGK.Persistence"
+    "\\PGK.Domain\\TechnicalSupport"
   ],
-  "SelectedNode": "\\PGK.Backend.sln",
+  "SelectedNode": "\\PGK.Application\\App\\TechnicalSupport\\Commands\\SendMessage\\SendMessageCommandHandler.cs",
   "PreviewInSolutionExplorer": false
 }

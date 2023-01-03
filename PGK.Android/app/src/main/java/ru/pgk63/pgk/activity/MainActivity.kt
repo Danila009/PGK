@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MainTheme(
                         darkTheme = user.darkMode ?: isSystemInDarkTheme,
+                        style = user.themeStyle,
                         textSize = user.themeFontSize,
                         corners = user.themeCorners,
                         fontFamily = user.themeFontStyle

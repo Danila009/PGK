@@ -32,7 +32,7 @@ import ru.pgk63.feature_main.viewModel.MainViewModel
 internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel(),
     onGroupScreen: () -> Unit,
-    onTechSupportChatScreen: () -> Unit,
+    onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
@@ -77,7 +77,7 @@ private fun MainScreen(
     userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
-    onTechSupportChatScreen: () -> Unit,
+    onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
@@ -191,7 +191,7 @@ private fun DrawerContentUi(
     userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
-    onTechSupportChatScreen: () -> Unit,
+    onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
@@ -257,7 +257,7 @@ private fun DrawerContentUi(
                                 DrawerContent.JOURNAL -> Unit
                                 DrawerContent.RAPORTICHKA -> Unit
                                 DrawerContent.SETTINGS -> onSettingsScreen()
-                                DrawerContent.HELP -> onTechSupportChatScreen()
+                                DrawerContent.HELP -> userRole?.let { onTechSupportChatScreen(it) }
                             }
                         },
                     verticalAlignment = Alignment.CenterVertically

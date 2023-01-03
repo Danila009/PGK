@@ -29,5 +29,19 @@ data class Message(
     @[SerialName("Date") Serializable(with = DateSerialization::class)]
     val date:String,
     @SerialName("User")
-    val user: User
+    val user: MessageUser
+)
+
+@Serializable
+data class MessageUser(
+    @SerialName("Id")
+    val id:Int = 0,
+    @SerialName("FirstName")
+    val firstName:String = "",
+    @SerialName("LastName")
+    val lastName:String = "",
+    @SerialName("MiddleName")
+    val middleName:String? = null,
+    @SerialName("PhotoUrl")
+    val photoUrl:String? = null
 )

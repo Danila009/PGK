@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import com.example.feature_student.navigation.StudentDetailsDestination
 import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
+import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.authNavigation
 import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
@@ -20,14 +21,20 @@ import ru.pgk63.feature_subject.navigation.SubjectDetailsDestination
 import ru.pgk63.feature_subject.navigation.SubjectListDestination
 import ru.pgk63.feature_subject.navigation.subjectNavigation
 import ru.pgk63.feature_tech_support.navigation.TechSupportChatDestination
+import ru.pgk63.feature_tech_support.navigation.TechSupportChatListDestination
 import ru.pgk63.feature_tech_support.navigation.techSupportNavigation
 
 fun NavGraphBuilder.mainNavGraphBuilder(
     navController: NavController
 ){
     mainNavigation(
-        onTechSupportChatScreen = {
-            navController.navigate(TechSupportChatDestination.route)
+        onTechSupportChatScreen = { userRole ->
+            navController.navigate(
+                if(userRole != UserRole.ADMIN)
+                    TechSupportChatDestination.route
+                else
+                    TechSupportChatListDestination.route
+            )
         },
         onGroupScreen = {
             navController.navigate(GroupListDestination.route)
@@ -62,7 +69,11 @@ fun NavGraphBuilder.mainNavGraphBuilder(
     )
 
     techSupportNavigation(
-        onBackScreen = { navController.navigateUp() }
+        onBackScreen = { navController.navigateUp() },
+        onChatScreen = { chatId ->
+            navController.navigate("${TechSupportChatDestination.route}?" +
+                    "${TechSupportChatDestination.chatId}=$chatId")
+        }
     )
 
     specializationNavigation(

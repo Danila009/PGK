@@ -15,7 +15,7 @@ fun EmptyUi() {
         verticalArrangement = Arrangement.Center
     ) {
         BaseLottieAnimation(
-            type = LottieAnimationType.LOADING,
+            type = LottieAnimationType.EMPTY,
             modifier = Modifier.fillMaxSize()
         )
     }

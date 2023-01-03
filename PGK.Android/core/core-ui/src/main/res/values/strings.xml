@@ -59,4 +59,16 @@
     <string name="your_new_password">Ваш новый пароль</string>
     <string name="set_profile_photo">Установить фотографию профиля</string>
     <string name="photo_updated">Фото обновлено</string>
+    <string name="back">Назад</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
+    <string name="file">Файл</string>
+    <string name="video">Видео</string>
+    <string name="clear_chat">Очистить чат</string>
+    <string name="copy">Копировать</string>
+    <string name="pin">Закрепить</string>
+    <string name="pin_messages">Закрепленые сообщения</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="search">Поиск</string>
 </resources>

@@ -6,13 +6,6 @@ import ru.pgk63.core_common.enums.theme.ThemeFontStyle
 import ru.pgk63.core_common.enums.theme.ThemeStyle
 import ru.pgk63.core_common.enums.user.UserRole
 
-//@kotlinx.serialization.Serializable
-//data class SaveUserLocalDatabase(
-//    val statusRegistration: Boolean = false,
-//    val userId: Int? = null,
-//    val userRole: String? = null
-//)
-
 @kotlinx.serialization.Serializable
 data class UserLocalDatabase(
     val statusRegistration: Boolean = false,

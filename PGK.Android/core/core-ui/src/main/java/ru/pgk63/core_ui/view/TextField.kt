@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -30,14 +31,22 @@ import ru.pgk63.core_ui.theme.MainTheme
 import ru.pgk63.core_ui.theme.PgkTheme
 
 @Composable
-fun rememberTextFieldColors() = TextFieldDefaults.textFieldColors(
-    textColor = PgkTheme.colors.primaryText,
-    focusedIndicatorColor = PgkTheme.colors.tintColor,
-    backgroundColor = PgkTheme.colors.primaryBackground,
-    cursorColor = PgkTheme.colors.tintColor,
-    focusedLabelColor = PgkTheme.colors.tintColor,
-    unfocusedLabelColor = PgkTheme.colors.primaryText,
-    errorIndicatorColor = PgkTheme.colors.errorColor
+fun rememberTextFieldColors(
+    textColor: Color = PgkTheme.colors.primaryText,
+    focusedIndicatorColor: Color = PgkTheme.colors.tintColor,
+    backgroundColor: Color = PgkTheme.colors.primaryBackground,
+    cursorColor: Color = PgkTheme.colors.tintColor,
+    focusedLabelColor: Color = PgkTheme.colors.tintColor,
+    unfocusedLabelColor: Color = PgkTheme.colors.primaryText,
+    errorIndicatorColor: Color = PgkTheme.colors.errorColor,
+) = TextFieldDefaults.textFieldColors(
+    textColor = textColor,
+    focusedIndicatorColor = focusedIndicatorColor,
+    backgroundColor = backgroundColor,
+    cursorColor = cursorColor,
+    focusedLabelColor = focusedLabelColor,
+    unfocusedLabelColor = unfocusedLabelColor,
+    errorIndicatorColor = errorIndicatorColor
 )
 
 @Composable
@@ -115,9 +124,9 @@ fun TextFieldSearch(
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label:String? = null,
-    onClear: () -> Unit,
-    onSearch: (KeyboardActionScope.() -> Unit)? = null
+    label: String? = stringResource(id = R.string.search),
+    onClose: () -> Unit = {},
+    onSearch: (KeyboardActionScope.() -> Unit)? = null,
 ) {
     TextFieldBase(
         text = text,
@@ -125,25 +134,21 @@ fun TextFieldSearch(
         modifier = modifier,
         label = label,
         leadingIcon = {
-            AnimatedVisibility(text.isEmpty()){
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                tint = PgkTheme.colors.controlColor
+            )
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                onClose()
+            }) {
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    imageVector = Icons.Default.Close,
                     contentDescription = null,
                     tint = PgkTheme.colors.controlColor
                 )
-            }
-        },
-        trailingIcon = {
-            AnimatedVisibility(text.isNotEmpty()){
-                IconButton(onClick = {
-                    onClear()
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = null,
-                        tint = PgkTheme.colors.controlColor
-                    )
-                }
             }
         },
         keyboardOptions = KeyboardOptions(
@@ -252,7 +257,7 @@ private fun TextFieldSearchDartPreview() {
         TextFieldSearch(
             text = "Danila",
             onTextChanged = {},
-            onClear = {}
+            onClose = {}
         )
     }
 }
@@ -264,7 +269,7 @@ private fun TextFieldSearchLightPreview() {
         TextFieldSearch(
             text = "Danila",
             onTextChanged = {},
-            onClear = {}
+            onClose = {}
         )
     }
 }

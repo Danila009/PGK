@@ -22,4 +22,9 @@ object ResIcons {
     val notifications = R.drawable.notifications
     val language = R.drawable.language
     val camera = R.drawable.camera
+    val attachFile = R.drawable.attach_file
+    val videoCamera = R.drawable.video_camera
+    val file = R.drawable.file
+    val gallery = R.drawable.gallery
+    val back = R.drawable.back
 }
