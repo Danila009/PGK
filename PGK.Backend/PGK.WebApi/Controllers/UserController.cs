@@ -327,7 +327,6 @@ namespace PGK.WebApi.Controllers
         /// <param name="userId">Индификатор пользователя</param>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
-        [Authorize]
         [HttpGet("Photo/{userId}.jpg")]
         public async Task<ActionResult> GetPhoto(int userId)
         {

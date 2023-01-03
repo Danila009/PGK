@@ -32,8 +32,6 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetChatList
 
             var chatDtoList = _mapper.Map<List<ChatDto>>(chatList);
 
-            _mapper.Map<List<ChatDto>>(chatList);
-
             var chatListPaged = new PagedList<ChatDto>(chatDtoList.ToList(),
                 count,request.PageNumber,request.PageSize);
 

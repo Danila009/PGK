@@ -10,7 +10,7 @@ namespace PGK.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LanguageListVm))]
-        public async Task<ActionResult> GetLanguageAll(GetLanguageListQuery query)
+        public async Task<ActionResult> GetLanguageAll([FromQuery] GetLanguageListQuery query)
         {
             var vm = await Mediator.Send(query);
 

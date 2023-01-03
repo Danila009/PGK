@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.TechnicalSupport.Commands.CreateMessageContent;
+using PGK.Application.App.TechnicalSupport.Commands.DeleteChat;
 using PGK.Application.App.TechnicalSupport.Commands.DeleteMessage;
 using PGK.Application.App.TechnicalSupport.Commands.DeleteMessageContent;
 using PGK.Application.App.TechnicalSupport.Commands.SendMessage;
@@ -104,6 +105,20 @@ namespace PGK.WebApi.Controllers
             return Ok(dto);
         }
 
+        [Authorize]
+        [HttpDelete("Chat")]
+        public async Task<ActionResult> DeleteChat()
+        {
+            var command = new DeleteChatCommand
+            {
+                UserId = UserId
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
         /// <summary>
         /// Получить список сообщений
         /// </summary>
@@ -147,7 +162,6 @@ namespace PGK.WebApi.Controllers
         /// <param name="type">Тип файла</param>
         /// <response code="200">Запрос выполнен успешно</response>
         /// <response code="401">Пустой или неправильный токен</response>
-        [Authorize]
         [HttpGet("Chat/Message/Content/{fileId}")]
         public async Task<ActionResult> GetMessageContentFile(string fileId, MessageContentType type)
         {

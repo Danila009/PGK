@@ -24,7 +24,9 @@ namespace PGK.Application.App.TechnicalSupport.Commands.SendMessage
         public async Task<MessageDto> Handle(SendMessageCommand request,
             CancellationToken cancellationToken)
         {
-            var fromUser = await _dbContext.Users.FindAsync(request.UserId);
+            var fromUser = await _dbContext.Users
+                .Include(u => u.TechnicalSupportChat)
+                .FirstOrDefaultAsync(u => u.Id == request.UserId);
 
             if(fromUser == null)
             {
