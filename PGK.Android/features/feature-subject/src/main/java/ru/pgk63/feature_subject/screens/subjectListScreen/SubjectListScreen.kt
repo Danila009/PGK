@@ -1,9 +1,6 @@
 package ru.pgk63.feature_subject.screens.subjectListScreen
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
@@ -13,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +22,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_subject.screens.subjectListScreen.viewModel.SubjectListViewModel
 
 @Composable
@@ -48,16 +47,23 @@ private fun SubjectListScreen(
     onBackScreen: () -> Unit,
     onSubjectDetailsScreen: (subjectId: Int) -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.subjects),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         }
     ) { paddingValues ->
-        LazyVerticalGrid(GridCells.Fixed(2)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             items(subjects){ subject ->
                 subject?.let {

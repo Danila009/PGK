@@ -12,11 +12,13 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -119,6 +121,7 @@ fun TextFieldBase(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldSearch(
     text: String,
@@ -128,11 +131,24 @@ fun TextFieldSearch(
     onClose: () -> Unit = {},
     onSearch: (KeyboardActionScope.() -> Unit)? = null,
 ) {
-    TextFieldBase(
-        text = text,
-        onTextChanged = onTextChanged,
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    TextField(
+        value = text,
+        onValueChange = onTextChanged,
         modifier = modifier,
-        label = label,
+        shape = PgkTheme.shapes.cornersStyle,
+        colors = rememberTextFieldColors(),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = {
+            onSearch?.let { it() }
+            keyboardController?.hide()
+        }),
+        placeholder = {
+            if (label != null) {
+                Text(text = label, color = PgkTheme.colors.primaryText)
+            }
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -143,6 +159,7 @@ fun TextFieldSearch(
         trailingIcon = {
             IconButton(onClick = {
                 onClose()
+                keyboardController?.hide()
             }) {
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -150,11 +167,7 @@ fun TextFieldSearch(
                     tint = PgkTheme.colors.controlColor
                 )
             }
-        },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        keyboardActions = KeyboardActions(onSearch = onSearch)
+        }
     )
 }
 

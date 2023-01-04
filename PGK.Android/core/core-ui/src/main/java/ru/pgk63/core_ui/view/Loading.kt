@@ -16,6 +16,7 @@ fun LoadingUi() {
     ) {
         BaseLottieAnimation(
             type = LottieAnimationType.LOADING,
+            iterations = 1,
             modifier = Modifier.fillMaxSize()
         )
     }

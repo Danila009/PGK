@@ -7,6 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.pgk63.core_common.enums.theme.ThemeCorners
@@ -49,6 +50,11 @@ fun MainTheme(
 
     val typography = PgkTypography(
         heading = TextStyle(
+            lineHeight = when (textSize) {
+                ThemeFontSize.Small -> 28.sp
+                ThemeFontSize.Medium -> 32.sp
+                ThemeFontSize.Big -> 36.sp
+            },
             fontSize = when (textSize) {
                 ThemeFontSize.Small -> 20.sp
                 ThemeFontSize.Medium -> 24.sp
@@ -57,6 +63,11 @@ fun MainTheme(
             fontWeight = FontWeight.Bold
         ),
         body = TextStyle(
+            lineHeight = when (textSize) {
+                ThemeFontSize.Small -> 22.sp
+                ThemeFontSize.Medium -> 24.sp
+                ThemeFontSize.Big -> 26.sp
+            },
             fontSize = when (textSize) {
                 ThemeFontSize.Small -> 14.sp
                 ThemeFontSize.Medium -> 16.sp
@@ -65,6 +76,11 @@ fun MainTheme(
             fontWeight = FontWeight.Normal
         ),
         toolbar = TextStyle(
+            lineHeight = when (textSize) {
+                ThemeFontSize.Small -> 22.sp
+                ThemeFontSize.Medium -> 24.sp
+                ThemeFontSize.Big -> 26.sp
+            },
             fontSize = when (textSize) {
                 ThemeFontSize.Small -> 14.sp
                 ThemeFontSize.Medium -> 16.sp
@@ -73,6 +89,11 @@ fun MainTheme(
             fontWeight = FontWeight.Medium
         ),
         caption = TextStyle(
+            lineHeight = when (textSize) {
+                ThemeFontSize.Small -> 18.sp
+                ThemeFontSize.Medium -> 20.sp
+                ThemeFontSize.Big -> 22.sp
+            },
             fontSize = when (textSize) {
                 ThemeFontSize.Small -> 10.sp
                 ThemeFontSize.Medium -> 12.sp

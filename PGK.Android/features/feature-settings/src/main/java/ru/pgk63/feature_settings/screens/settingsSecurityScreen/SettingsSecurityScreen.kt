@@ -1,21 +1,20 @@
 package ru.pgk63.feature_settings.screens.settingsSecurityScreen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_settings.screens.settingsSecurityScreen.viewModel.SettingsSecurityViewModel
 import ru.pgk63.feature_settings.view.SettingsButton
 
@@ -45,16 +44,22 @@ private fun SettingsSecurityScreen(
     onBackScreen: () -> Unit,
     onChangePasswordScreen: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.security),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         }
     ) { paddingValues ->
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             item {
 

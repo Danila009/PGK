@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +26,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.ImageCoil
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 
 @Composable
 internal fun StudentListRoute(
@@ -48,16 +50,22 @@ private fun StudentListScreen(
     onBackScreen: () -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.students),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         }
     ) { paddingValues ->
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             items(students){ student ->
                 student?.let { StudentCard(student,onStudentDetailsScreen) }

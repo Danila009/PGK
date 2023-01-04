@@ -7,11 +7,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +34,7 @@ import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.ImageCoil
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_group.screens.groupDetailsScreen.viewModel.GroupDetailsViewModel
 
 @SuppressLint("FlowOperatorInvokedInComposition")
@@ -72,7 +72,11 @@ private fun GroupDetailsScreen(
     onBackScreen: () -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
 
             val title = if(groupResult is Result.Success){
@@ -82,27 +86,30 @@ private fun GroupDetailsScreen(
 
             TopBarBack(
                 title = title,
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         },
         content = { paddingValues ->
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = PgkTheme.colors.primaryBackground
-            ) {
-                when(groupResult){
-                    is Result.Error -> ErrorUi(message = groupResult.message)
-                    is Result.Loading -> LoadingUi()
-                    is Result.Success -> {
-                        LazyVerticalGrid(GridCells.Fixed(2)) {
+            when(groupResult){
+                is Result.Error -> ErrorUi(message = groupResult.message)
+                is Result.Loading -> LoadingUi()
+                is Result.Success -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
 
-                            item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                            Column {
                                 Spacer(modifier = Modifier.height(10.dp))
 
                                 ClassroomTeacherUi(classroomTeacher = groupResult.data!!.classroomTeacher)
                             }
+                        }
 
-                            item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                            Column {
                                 Spacer(modifier = Modifier.height(10.dp))
 
                                 DepartmentAndSpecialityUi(
@@ -110,10 +117,12 @@ private fun GroupDetailsScreen(
                                     speciality = groupResult.data!!.speciality
                                 )
                             }
+                        }
 
-                            item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                            Column {
                                 if(students.itemCount > 0 ){
-                                    Spacer(modifier = Modifier.height(40.dp))
+                                    Spacer(modifier = Modifier.height(25.dp))
 
                                     Text(
                                         text = stringResource(id = R.string.students),
@@ -123,23 +132,23 @@ private fun GroupDetailsScreen(
                                         modifier = Modifier.padding(start = 20.dp)
                                     )
 
-                                    Spacer(modifier = Modifier.height(25.dp))
+                                    Spacer(modifier = Modifier.height(15.dp))
                                 }
                             }
+                        }
 
-                            items(students){ student ->
-                                student?.let {
-                                    StudentCard(
-                                        group = groupResult.data!!,
-                                        student = student,
-                                        onClick = onStudentDetailsScreen
-                                    )
-                                }
+                        items(students){ student ->
+                            student?.let {
+                                StudentCard(
+                                    group = groupResult.data!!,
+                                    student = student,
+                                    onClick = onStudentDetailsScreen
+                                )
                             }
+                        }
 
-                            item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-                                Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-                            }
+                        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                            Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
                         }
                     }
                 }
@@ -204,17 +213,6 @@ private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
                         modifier = Modifier.padding(5.dp),
                         textAlign = TextAlign.Center
                     )
-
-                    Box(modifier = Modifier.align(Alignment.End)){
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null,
-                                modifier = Modifier.padding(5.dp),
-                                tint = PgkTheme.colors.primaryText
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -227,36 +225,43 @@ private fun DepartmentAndSpecialityUi(
     speciality: Specialization
 ) {
     Card(
-        modifier = Modifier.padding(5.dp),
+        modifier = Modifier
+            .padding(5.dp)
+            .fillMaxWidth(),
         backgroundColor = PgkTheme.colors.secondaryBackground,
         shape = PgkTheme.shapes.cornersStyle
     ) {
         Column {
-            Text(
-                text = speciality.name,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.body,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp)
-            )
+            TextButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    text = speciality.name,
+                    color = PgkTheme.colors.primaryText,
+                    style = PgkTheme.typography.body,
+                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
+                )
+            }
 
-            Text(
-                text = department.name,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.caption,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp)
-            )
-
-            Box(modifier = Modifier.align(Alignment.End)){
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.padding(5.dp),
-                        tint = PgkTheme.colors.primaryText
-                    )
-                }
+            TextButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    text = department.name,
+                    color = PgkTheme.colors.primaryText,
+                    style = PgkTheme.typography.body,
+                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
+                )
             }
         }
     }

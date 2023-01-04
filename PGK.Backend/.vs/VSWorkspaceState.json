@@ -4,13 +4,13 @@
     "\\PGK.Application",
     "\\PGK.Application\\App",
     "\\PGK.Application\\App\\TechnicalSupport",
-    "\\PGK.Application\\App\\TechnicalSupport\\Commands",
-    "\\PGK.Application\\App\\TechnicalSupport\\Commands\\SendMessage",
     "\\PGK.Application\\App\\TechnicalSupport\\Queries",
     "\\PGK.Application\\App\\TechnicalSupport\\Queries\\GetMessageList",
     "\\PGK.Domain",
-    "\\PGK.Domain\\TechnicalSupport"
+    "\\PGK.Domain\\TechnicalSupport",
+    "\\PGK.WebApi",
+    "\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend.sln",
+  "SelectedNode": "\\PGK.WebApi\\Controllers\\TechnicalSupportController.cs",
   "PreviewInSolutionExplorer": false
 }

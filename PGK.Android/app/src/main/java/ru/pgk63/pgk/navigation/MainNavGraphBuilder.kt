@@ -80,6 +80,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onBackScreen = { navController.navigateUp() },
         onSpecializationDetailsScreen = { id ->
             navController.navigate("${SpecializationDetailsDestination.route}/$id")
+        },
+        onGroupDetailsScreen = { id ->
+            navController.navigate("${GroupDetailsDestination.route}/$id")
         }
     )
 

@@ -3,35 +3,32 @@ package ru.pgk63.core_ui.view
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingTitle
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbar
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbarScrollBehavior
 
 @Composable
 fun TopBarBack(
-    title: String,
+    title: String? = null,
+    collapsingTitle: CollapsingTitle? = if(title == null) null else CollapsingTitle.large(titleText = title),
+    scrollBehavior: CollapsingToolbarScrollBehavior? = null,
     onBackClick: () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
-    TopAppBar(
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        title = {
-            Text(
-                text = title,
-                color = PgkTheme.colors.primaryText,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                style = PgkTheme.typography.toolbar
-            )
-        },
+    CollapsingToolbar(
+        collapsingTitle = collapsingTitle,
+        scrollBehavior = scrollBehavior,
         navigationIcon = {
+
             IconButton(onClick = onBackClick) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = "back",
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
                     tint = PgkTheme.colors.primaryText
                 )
             }

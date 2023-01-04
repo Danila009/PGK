@@ -17,6 +17,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,6 +38,7 @@ import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.ImageCoil
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_profile.screens.profileScreen.viewModel.ProfileViewModel
 import java.io.ByteArrayOutputStream
 
@@ -115,17 +117,24 @@ private fun ProfileScreen(
     onBackScreen: () -> Unit,
     updateUserPhoto: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         scaffoldState = scaffoldState,
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             Column {
                 TopBarBack(
                     title = stringResource(id = R.string.profile),
+                    scrollBehavior = scrollBehavior,
                     onBackClick = onBackScreen
                 )
 
-                AnimatedVisibility(visible = userResult.data != null) {
+                AnimatedVisibility(
+                    visible = userResult.data != null,
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                ) {
                     TopBarUserInfo(
                         user = userResult.data!!,
                         userRole = userRole,
@@ -226,7 +235,9 @@ private fun UserSuccess(
     bottomPadding: Dp,
     updateUserPhoto: () -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
         item {
 
             UpdateUserPhotoCard(onClick = updateUserPhoto)

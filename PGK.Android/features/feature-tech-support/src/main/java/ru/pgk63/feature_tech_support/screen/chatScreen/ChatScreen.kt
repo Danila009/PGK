@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -32,6 +33,7 @@ import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.view.*
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_tech_support.screen.chatScreen.enums.AttachMenu
 import ru.pgk63.feature_tech_support.screen.chatScreen.enums.ChatMenu
 import ru.pgk63.feature_tech_support.screen.chatScreen.enums.MessageMenu
@@ -140,11 +142,15 @@ private fun ChatScreen(
     var editMessageAlertDialog by remember { mutableStateOf(false) }
     var clickMessageEdit by remember { mutableStateOf<Message?>(null) }
 
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = if(!searchMode) stringResource(id = R.string.help) else "",
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen,
                 actions = {
                     Column {
@@ -420,7 +426,8 @@ private fun Messages(
     val context = LocalContext.current
 
     LazyColumn(
-        reverseLayout = true
+        reverseLayout = true,
+        modifier = Modifier.fillMaxSize()
     ) {
         item {
             Spacer(modifier = Modifier.height(bottomBarPadding))

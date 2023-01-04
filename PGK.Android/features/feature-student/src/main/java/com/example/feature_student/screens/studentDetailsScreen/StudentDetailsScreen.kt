@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +28,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.ImageCoil
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -57,21 +59,30 @@ private fun StudentDetailsScreen(
     resultStudent: Result<Student>,
     onBackScreen: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             Column {
                 TopBarBack(
                     title = stringResource(id = R.string.student),
+                    scrollBehavior = scrollBehavior,
                     onBackClick = onBackScreen
                 )
-                AnimatedVisibility(visible = resultStudent.data != null) {
+                AnimatedVisibility(
+                    visible = resultStudent.data != null,
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                ) {
                     TopBarStudentInfo(student = resultStudent.data!!)
                 }
             }
         }
     ) { paddingValues ->
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             item {
 
@@ -89,6 +100,7 @@ private fun TopBarStudentInfo(student: Student){
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
 
     Card(
+        modifier = Modifier.fillMaxWidth(),
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = AbsoluteRoundedCornerShape(

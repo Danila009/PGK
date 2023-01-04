@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.shimmer.rememberAnimationShimmer
 
 @Composable
@@ -18,14 +20,14 @@ fun ImageCoil(
     SubcomposeAsyncImage(
         model = url,
         contentDescription = contentDescription,
-        modifier = modifier
+        modifier = modifier.clip(PgkTheme.shapes.cornersStyle)
     ) {
         val state = painter.state
         if (
             state is AsyncImagePainter.State.Loading ||
             state is AsyncImagePainter.State.Error
         ) {
-            ImageShimmer(modifier = modifier)
+            ImageShimmer(modifier = modifier.clip(PgkTheme.shapes.cornersStyle))
         } else {
             SubcomposeAsyncImageContent()
         }
@@ -38,7 +40,5 @@ private fun ImageShimmer(
 ){
     val brush = rememberAnimationShimmer()
 
-    Spacer(
-        modifier = modifier.background(brush)
-    )
+    Spacer(modifier = modifier.background(brush))
 }

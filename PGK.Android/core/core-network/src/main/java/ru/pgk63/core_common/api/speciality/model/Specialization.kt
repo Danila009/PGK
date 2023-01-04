@@ -1,5 +1,7 @@
 package ru.pgk63.core_common.api.speciality.model
 
+import ru.pgk63.core_common.api.department.model.Department
+
 data class SpecializationResponse(
     val currentPage:Int,
     val totalPages:Int,
@@ -14,5 +16,6 @@ data class Specialization(
     val number:String,
     val name:String,
     val nameAbbreviation:String,
-    val qualification:String
+    val qualification:String,
+    val department: Department
 )

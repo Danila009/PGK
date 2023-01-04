@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import ru.pgk63.core_ui.theme.*
 import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_settings.screens.settingsAppearanceScreen.viewModel.SettingsAppearanceViewModel
 
 @SuppressLint("FlowOperatorInvokedInComposition")
@@ -104,11 +106,15 @@ private fun SettingsAppearanceScreen(
     onThemeStyle: (ThemeStyle) -> Unit,
     onBackScreen: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.appearance),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         }
@@ -146,7 +152,9 @@ private fun UserSettingsSuccess(
     onThemeFontSizeChange: (ThemeFontSize) -> Unit,
     onThemeStyle: (ThemeStyle) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         item {
             MenuThemeFontStyle(

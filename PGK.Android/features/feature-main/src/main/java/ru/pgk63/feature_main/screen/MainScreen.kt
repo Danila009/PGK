@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,10 @@ import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingTitle
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbar
+import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbarScrollBehavior
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_main.screen.enums.DrawerContent
 import ru.pgk63.feature_main.viewModel.MainViewModel
 
@@ -84,14 +89,18 @@ private fun MainScreen(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        backgroundColor = PgkTheme.colors.primaryBackground,
         scaffoldState = scaffoldState,
         topBar = {
             TopBar(
-                onClickMenu = {
+                scrollBehavior = scrollBehavior,
+                onClickIconMenu = {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
@@ -100,6 +109,7 @@ private fun MainScreen(
         },
         drawerShape = PgkTheme.shapes.cornersStyle,
         drawerBackgroundColor = PgkTheme.colors.drawerBackground,
+        drawerScrimColor = PgkTheme.colors.secondaryBackground,
         drawerContent = {
             DrawerContentUi(
                 userResult = userResult,
@@ -115,17 +125,12 @@ private fun MainScreen(
             )
         },
         content = { paddingValues ->
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = PgkTheme.colors.primaryBackground
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
 
-                    item {
-                        Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-                    }
+                item {
+                    Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
                 }
             }
         }
@@ -134,20 +139,14 @@ private fun MainScreen(
 
 @Composable
 private fun TopBar(
-    onClickMenu:() -> Unit
+    scrollBehavior: CollapsingToolbarScrollBehavior,
+    onClickIconMenu:() -> Unit
 ) {
-    TopAppBar(
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        title = {
-            Text(
-                text = "Доброе утро",
-                color = PgkTheme.colors.primaryText,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                style = PgkTheme.typography.toolbar
-            )
-        },
+    CollapsingToolbar(
+        collapsingTitle = CollapsingTitle.large(titleText = "Доброе утро"),
+        scrollBehavior = scrollBehavior,
         navigationIcon = {
-            IconButton(onClick = onClickMenu) {
+            IconButton(onClick = onClickIconMenu) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "menu",
@@ -201,7 +200,7 @@ private fun DrawerContentUi(
     LazyColumn {
         item {
             TopAppBar(
-                backgroundColor = PgkTheme.colors.secondaryBackground,
+                backgroundColor = PgkTheme.colors.primaryBackground,
                 title = {
                     Column {
                         userResult.data?.let { user ->
@@ -237,6 +236,7 @@ private fun DrawerContentUi(
                     }
                 }
             )
+            Divider(color = PgkTheme.colors.secondaryBackground)
         }
 
         item {

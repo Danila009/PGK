@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,6 +23,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.view.EmptyUi
 import ru.pgk63.core_ui.view.ErrorUi
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 import ru.pgk63.feature_group.screens.groupListScreen.viewModel.GroupListViewModel
 
@@ -46,52 +48,55 @@ private fun GroupListScreen(
     onBackScreen: () -> Unit,
     onGroupDetailsScreen: (groupId: Int) -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.groups),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
         },
         content = { paddingValues ->
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = PgkTheme.colors.primaryBackground
-            ) {
-                if (
-                    groups.itemCount <= 0 && groups.loadState.refresh !is LoadState.Loading
+            if (
+                groups.itemCount <= 0 && groups.loadState.refresh !is LoadState.Loading
+            ){
+                EmptyUi()
+            }else if(groups.loadState.refresh is LoadState.Error) {
+                ErrorUi()
+            }else{
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize()
                 ){
-                    EmptyUi()
-                }else if(groups.loadState.refresh is LoadState.Error) {
-                    ErrorUi()
-                }else{
-                    LazyVerticalGrid(GridCells.Fixed(2)){
-                        items(groups){ group ->
-                            GroupListItem(
-                                group = group ?: return@items,
-                                onGroupDetailsScreen = onGroupDetailsScreen
-                            )
-                        }
+                    items(groups){ group ->
+                        GroupListItem(
+                            group = group ?: return@items,
+                            onGroupDetailsScreen = onGroupDetailsScreen
+                        )
+                    }
 
-                        if (groups.loadState.append is LoadState.Loading){
-                            item {
-                                VerticalListItemShimmer()
-                            }
+                    if (groups.loadState.append is LoadState.Loading){
+                        item {
+                            VerticalListItemShimmer()
                         }
+                    }
 
-                        if (
-                            groups.loadState.refresh is LoadState.Loading
-                        ){
-                            items(20) {
-                                VerticalListItemShimmer()
-                            }
+                    if (
+                        groups.loadState.refresh is LoadState.Loading
+                    ){
+                        items(20) {
+                            VerticalListItemShimmer()
                         }
+                    }
 
-                        item(
-                            span = { GridItemSpan(maxCurrentLineSpan) }
-                        ) {
-                            Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-                        }
+                    item(
+                        span = { GridItemSpan(maxCurrentLineSpan) }
+                    ) {
+                        Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
                     }
                 }
             }
@@ -125,7 +130,7 @@ private fun GroupListItem(group: Group, onGroupDetailsScreen: (groupId: Int) -> 
             Text(
                 text = "${group.classroomTeacher.lastName} " +
                         "${group.classroomTeacher.firstName[0]}" +
-                        ".${group.classroomTeacher.middleName?.get(0) ?: ""}",
+                        ".${group.classroomTeacher.middleName?.getOrNull(0) ?: ""}",
                 color = PgkTheme.colors.primaryText,
                 style = PgkTheme.typography.caption,
                 fontFamily = PgkTheme.fontFamily.fontFamily,

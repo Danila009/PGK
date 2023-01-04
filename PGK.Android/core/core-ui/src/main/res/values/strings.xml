@@ -25,7 +25,9 @@
     <string name="message">Сообщение</string>
     <string name="students">Студенты</string>
     <string name="specialties">Специальности</string>
+    <string name="speciality">Специальность</string>
     <string name="departmens">Отделении</string>
+    <string name="departmen">Отделение</string>
     <string name="subjects">Предметы</string>
     <string name="student">Студент</string>
     <string name="headman">Староста</string>

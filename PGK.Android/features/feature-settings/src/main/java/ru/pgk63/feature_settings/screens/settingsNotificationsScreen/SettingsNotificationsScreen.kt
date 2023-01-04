@@ -1,6 +1,7 @@
 package ru.pgk63.feature_settings.screens.settingsNotificationsScreen
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
@@ -8,10 +9,12 @@ import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_settings.view.SettingsButton
 
 @Composable
@@ -95,11 +98,15 @@ private fun SettingsNotificationsScreen(
     onTechnicalSupportNotificationsChange: (Boolean) -> Unit,
     onBackScreen: () -> Unit
 ) {
+    val scrollBehavior = rememberToolbarScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.notifications),
+                scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen,
                 actions = {
                     Switch(
@@ -116,7 +123,9 @@ private fun SettingsNotificationsScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             item {
 
