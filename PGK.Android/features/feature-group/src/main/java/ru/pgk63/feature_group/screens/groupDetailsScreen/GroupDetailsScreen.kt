@@ -43,7 +43,9 @@ internal fun GroupDetailsRoute(
     viewModel: GroupDetailsViewModel = hiltViewModel(),
     groupId: Int,
     onBackScreen: () -> Unit,
-    onStudentDetailsScreen: (studentId: Int) -> Unit
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
 ) {
     var groupResult by remember { mutableStateOf<Result<Group>>(Result.Loading()) }
 
@@ -61,7 +63,9 @@ internal fun GroupDetailsRoute(
         groupResult = groupResult,
         onBackScreen = onBackScreen,
         students = students,
-        onStudentDetailsScreen = onStudentDetailsScreen
+        onStudentDetailsScreen = onStudentDetailsScreen,
+        onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+        onSpecializationDetailsScreen = onSpecializationDetailsScreen
     )
 }
 
@@ -70,7 +74,9 @@ private fun GroupDetailsScreen(
     groupResult: Result<Group>,
     students: LazyPagingItems<Student>,
     onBackScreen: () -> Unit,
-    onStudentDetailsScreen: (studentId: Int) -> Unit
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -114,7 +120,13 @@ private fun GroupDetailsScreen(
 
                                 DepartmentAndSpecialityUi(
                                     department = groupResult.data!!.department,
-                                    speciality = groupResult.data!!.speciality
+                                    speciality = groupResult.data!!.speciality,
+                                    onClickDepartment = {
+                                        onDepartmentDetailsScreen(groupResult.data!!.department.id)
+                                    },
+                                    onClickSpecialization = {
+                                        onSpecializationDetailsScreen(groupResult.data!!.speciality.id)
+                                    }
                                 )
                             }
                         }
@@ -222,7 +234,9 @@ private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
 @Composable
 private fun DepartmentAndSpecialityUi(
     department: Department,
-    speciality: Specialization
+    speciality: Specialization,
+    onClickDepartment: () -> Unit,
+    onClickSpecialization: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -234,7 +248,7 @@ private fun DepartmentAndSpecialityUi(
         Column {
             TextButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { /*TODO*/ }
+                onClick =onClickSpecialization
             ) {
                 Text(
                     text = speciality.name,
@@ -250,7 +264,7 @@ private fun DepartmentAndSpecialityUi(
 
             TextButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { /*TODO*/ }
+                onClick = onClickDepartment
             ) {
                 Text(
                     text = department.name,

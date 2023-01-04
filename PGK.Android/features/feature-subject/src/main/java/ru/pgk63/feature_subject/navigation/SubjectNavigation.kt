@@ -41,7 +41,7 @@ fun NavGraphBuilder.subjectNavigation(
         )
     ) {
         SubjectDetailsRoute(
-           specializationId = it.arguments!!.getInt(SubjectDetailsDestination.id_argument),
+           subjectId = it.arguments!!.getInt(SubjectDetailsDestination.id_argument),
            onBackScreen = onBackScreen
        )
     }

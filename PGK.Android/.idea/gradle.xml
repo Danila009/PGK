@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/core/core-ui" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/feature-auth" />
+            <option value="$PROJECT_DIR$/features/feature-department" />
             <option value="$PROJECT_DIR$/features/feature-group" />
             <option value="$PROJECT_DIR$/features/feature-main" />
             <option value="$PROJECT_DIR$/features/feature-profile" />

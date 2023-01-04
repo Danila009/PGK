@@ -22,7 +22,8 @@ object SpecializationDetailsDestination : NavigationDestination {
 fun NavGraphBuilder.specializationNavigation(
     onBackScreen: () -> Unit,
     onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit
 ) {
     composable(
         route = SpecializationListDestination.route
@@ -44,7 +45,8 @@ fun NavGraphBuilder.specializationNavigation(
        SpecializationDetailsRoute(
            specializationId = it.arguments!!.getInt(SpecializationDetailsDestination.id_argument),
            onBackScreen = onBackScreen,
-           onGroupDetailsScreen = onGroupDetailsScreen
+           onGroupDetailsScreen = onGroupDetailsScreen,
+           onDepartmentDetailsScreen = onDepartmentDetailsScreen
        )
     }
 }

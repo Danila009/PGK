@@ -1,7 +1,6 @@
 package ru.pgk63.feature_main.screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -12,6 +11,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,6 +43,7 @@ internal fun MainRoute(
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
+    onDepartmentListScreen: () -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -69,6 +70,7 @@ internal fun MainRoute(
         onSubjectListScreen = onSubjectListScreen,
         onStudentListScreen = onStudentListScreen,
         onProfileScreen = onProfileScreen,
+        onDepartmentListScreen = onDepartmentListScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -87,7 +89,8 @@ private fun MainScreen(
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
-    onProfileScreen: () -> Unit
+    onProfileScreen: () -> Unit,
+    onDepartmentListScreen: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
@@ -121,7 +124,8 @@ private fun MainScreen(
                 onSpecializationListScreen = onSpecializationListScreen,
                 onSubjectListScreen = onSubjectListScreen,
                 onStudentListScreen = onStudentListScreen,
-                onProfileScreen = onProfileScreen
+                onProfileScreen = onProfileScreen,
+                onDepartmentListScreen = onDepartmentListScreen
             )
         },
         content = { paddingValues ->
@@ -184,6 +188,7 @@ private fun TopBar(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun DrawerContentUi(
     userResult: Result<User>,
@@ -195,7 +200,8 @@ private fun DrawerContentUi(
     onSpecializationListScreen: () -> Unit,
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
-    onProfileScreen: () -> Unit
+    onProfileScreen: () -> Unit,
+    onDepartmentListScreen: () -> Unit
 ) {
     LazyColumn {
         item {
@@ -241,44 +247,48 @@ private fun DrawerContentUi(
 
         item {
             DrawerContent.values().forEach { drawerContent ->
-                Row(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(15.dp)
-                        .clickable {
-                            when (drawerContent) {
-                                DrawerContent.PROFILE -> onProfileScreen()
-                                DrawerContent.STUDENTS -> onStudentListScreen()
-                                DrawerContent.GUIDE -> Unit
-                                DrawerContent.SPECIALTIES -> onSpecializationListScreen()
-                                DrawerContent.DEPARTMENS -> Unit
-                                DrawerContent.SUBJECTS -> onSubjectListScreen()
-                                DrawerContent.GROUPS -> onGroupScreen()
-                                DrawerContent.JOURNAL -> Unit
-                                DrawerContent.RAPORTICHKA -> Unit
-                                DrawerContent.SETTINGS -> onSettingsScreen()
-                                DrawerContent.HELP -> userRole?.let { onTechSupportChatScreen(it) }
-                            }
-                        },
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(5.dp),
+                    backgroundColor = Color.Transparent,
+                    onClick = {
+                        when (drawerContent) {
+                            DrawerContent.PROFILE -> onProfileScreen()
+                            DrawerContent.STUDENTS -> onStudentListScreen()
+                            DrawerContent.GUIDE -> Unit
+                            DrawerContent.SPECIALTIES -> onSpecializationListScreen()
+                            DrawerContent.DEPARTMENS -> onDepartmentListScreen()
+                            DrawerContent.SUBJECTS -> onSubjectListScreen()
+                            DrawerContent.GROUPS -> onGroupScreen()
+                            DrawerContent.JOURNAL -> Unit
+                            DrawerContent.RAPORTICHKA -> Unit
+                            DrawerContent.SETTINGS -> onSettingsScreen()
+                            DrawerContent.HELP -> userRole?.let { onTechSupportChatScreen(it) }
+                        }
+                    }
                 ) {
-                    Spacer(modifier = Modifier.width(30.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(30.dp))
 
-                    Icon(
-                        painter = painterResource(id = drawerContent.iconId),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = PgkTheme.colors.secondaryText
-                    )
+                        Icon(
+                            painter = painterResource(id = drawerContent.iconId),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = PgkTheme.colors.secondaryText
+                        )
 
-                    Spacer(modifier = Modifier.width(20.dp))
+                        Spacer(modifier = Modifier.width(20.dp))
 
-                    Text(
-                        text = stringResource(id = drawerContent.nameId),
-                        color = PgkTheme.colors.primaryText,
-                        fontFamily = PgkTheme.fontFamily.fontFamily,
-                        style = PgkTheme.typography.body
-                    )
+                        Text(
+                            text = stringResource(id = drawerContent.nameId),
+                            color = PgkTheme.colors.primaryText,
+                            fontFamily = PgkTheme.fontFamily.fontFamily,
+                            style = PgkTheme.typography.body
+                        )
+                    }
                 }
             }
         }

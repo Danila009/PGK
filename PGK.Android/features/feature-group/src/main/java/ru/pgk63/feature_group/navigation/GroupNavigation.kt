@@ -22,7 +22,9 @@ object GroupDetailsDestination : NavigationDestination {
 fun NavGraphBuilder.groupNavigation(
     onBackScreen: () -> Unit,
     onGroupDetailsScreen: (groupId: Int) -> Unit,
-    onStudentDetailsScreen: (studentId: Int) -> Unit
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
 ) {
     composable(
         route = GroupListDestination.route
@@ -44,7 +46,9 @@ fun NavGraphBuilder.groupNavigation(
        GroupDetailsRoute(
            groupId = it.arguments!!.getInt(GroupDetailsDestination.id_argument),
            onBackScreen = onBackScreen,
-           onStudentDetailsScreen = onStudentDetailsScreen
+           onStudentDetailsScreen = onStudentDetailsScreen,
+           onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+           onSpecializationDetailsScreen = onSpecializationDetailsScreen
        )
     }
 }

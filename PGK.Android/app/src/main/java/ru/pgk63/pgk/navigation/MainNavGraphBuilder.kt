@@ -7,6 +7,9 @@ import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.authNavigation
+import ru.pgk63.feature_department.navigation.DepartmentDetailsDestination
+import ru.pgk63.feature_department.navigation.DepartmentListDestination
+import ru.pgk63.feature_department.navigation.departmentNavigation
 import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
@@ -51,6 +54,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onProfileScreen = {
             navController.navigate(ProfileDestination.route)
         },
+        onDepartmentListScreen = {
+            navController.navigate(DepartmentListDestination.route)
+        },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
         }
@@ -64,6 +70,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onStudentDetailsScreen = { id ->
             navController.navigate("${StudentDetailsDestination.route}/$id")
+        },
+        onDepartmentDetailsScreen = { id ->
+            navController.navigate("${DepartmentDetailsDestination.route}/$id")
+        },
+        onSpecializationDetailsScreen = { id ->
+            navController.navigate("${SpecializationDetailsDestination.route}/$id")
         },
         onBackScreen = { navController.navigateUp() }
     )
@@ -83,6 +95,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onGroupDetailsScreen = { id ->
             navController.navigate("${GroupDetailsDestination.route}/$id")
+        },
+        onDepartmentDetailsScreen = { id ->
+            navController.navigate("${DepartmentDetailsDestination.route}/$id")
         }
     )
 
@@ -102,6 +117,19 @@ fun NavGraphBuilder.mainNavGraphBuilder(
 
     profileNavigation(
         onBackScreen = { navController.navigateUp() },
+    )
+
+    departmentNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onDepartmentDetailsScreen = { id ->
+            navController.navigate("${DepartmentDetailsDestination.route}/$id")
+        },
+        onSpecializationDetailsScreen = { id ->
+            navController.navigate("${SpecializationDetailsDestination.route}/$id")
+        },
+        onGroupDetailsScreen = { id ->
+            navController.navigate("${GroupDetailsDestination.route}/$id")
+        }
     )
 
     settingsNavigation(

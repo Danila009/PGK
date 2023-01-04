@@ -42,7 +42,8 @@ internal fun SpecializationDetailsRoute(
     viewModel: SpecializationDetailsViewModel = hiltViewModel(),
     specializationId: Int,
     onBackScreen: () -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit
 ) {
 
     var resultSpecialization by remember { mutableStateOf<Result<Specialization>>(Result.Loading()) }
@@ -61,7 +62,8 @@ internal fun SpecializationDetailsRoute(
         resultSpecialization = resultSpecialization,
         groups = groups,
         onBackScreen = onBackScreen,
-        onGroupDetailsScreen = onGroupDetailsScreen
+        onGroupDetailsScreen = onGroupDetailsScreen,
+        onDepartmentDetailsScreen = onDepartmentDetailsScreen
     )
 }
 
@@ -70,7 +72,8 @@ private fun SpecializationDetailsScreen(
     resultSpecialization: Result<Specialization>,
     groups: LazyPagingItems<Group>,
     onBackScreen: () -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -92,7 +95,8 @@ private fun SpecializationDetailsScreen(
                 bottomBarPadding = paddingValues.calculateBottomPadding(),
                 specialization = resultSpecialization.data!!,
                 groups = groups,
-                onGroupDetailsScreen = onGroupDetailsScreen
+                onGroupDetailsScreen = onGroupDetailsScreen,
+                onDepartmentDetailsScreen = onDepartmentDetailsScreen
             )
         }
     }
@@ -103,7 +107,8 @@ private fun SpecializationSuccess(
     specialization: Specialization,
     bottomBarPadding: Dp,
     groups: LazyPagingItems<Group>,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -119,7 +124,10 @@ private fun SpecializationSuccess(
                Spacer(modifier = Modifier.height(10.dp))
 
                DepartmentCard(
-                   department = specialization.department
+                   department = specialization.department,
+                   onClick = {
+                       onDepartmentDetailsScreen(specialization.department.id)
+                   }
                )
            }
         }
@@ -187,9 +195,11 @@ private fun SpecializationDetailsUi(specialization: Specialization) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun DepartmentCard(
-    department: Department
+    department: Department,
+    onClick: () -> Unit
 ) {
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
@@ -198,7 +208,8 @@ private fun DepartmentCard(
         modifier = Modifier.fillMaxWidth(),
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
-        shape = PgkTheme.shapes.cornersStyle
+        shape = PgkTheme.shapes.cornersStyle,
+        onClick = onClick
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
