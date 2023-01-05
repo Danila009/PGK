@@ -178,6 +178,16 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
         </member>
+        <member name="M:PGK.WebApi.Controllers.DirectorController.Registration(PGK.Application.App.User.Director.Commands.Registration.RegistrationDirectorCommand)">
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,DIRECTOR,ADMIN</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.DirectorController.DirectorUpdateCurrent(System.Int32)">
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,DIRECTOR,ADMIN</response>
+        </member>
         <member name="M:PGK.WebApi.Controllers.EducationalSectorController.GetAll(PGK.Application.App.User.EducationalSector.Queries.GetEducationalSectorList.GetEducationalSectorListQuery)">
             <summary>
             Получить список пользователей из учебной части
@@ -808,11 +818,12 @@
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.SpecialityController.GetAll(System.String,System.Int32,System.Int32)">
+        <member name="M:PGK.WebApi.Controllers.SpecialityController.GetAll(System.String,System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
             <summary>
             Получить список спицальностей
             </summary>
             <param name="search">Ключивые слова для поиска</param>
+            <param name="departmentIds"></param>
             <param name="pageNumber">Номер страницы</param>
             <param name="pageSize">Количество результатов для возврата на страницу</param>
             <returns>SpecialityListVm object</returns>
@@ -950,11 +961,12 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль TEACHER,EDUCATIONAL_SECTOR,ADMIN</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.TeacherController.GetAll(System.String,System.Int32,System.Int32)">
+        <member name="M:PGK.WebApi.Controllers.TeacherController.GetAll(System.String,System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
             <summary>
             Получите список прподавателей
             </summary>
             <param name="search">Ключивые слова для поиска</param>
+            <param name="subjectIds"></param>
             <param name="pageNumber">Номер страницы</param>
             <param name="pageSize">Количество результатов для возврата на страницу</param>
             <returns>TeacherUserListVm object</returns>
@@ -1146,6 +1158,16 @@
             <returns>Returns NoContend</returns>
             <response code="200">Запрос выполнен успешно</response>
             <response code="401">Пустой или неправильный токен</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.UpdateInformation(PGK.WebApi.Models.User.UpdateInformationModel)">
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,DEPARTMENT_HEAD,DIRECTOR</response>
+        </member>
+        <member name="M:PGK.WebApi.Controllers.UserController.UpdateCabinet(PGK.WebApi.Models.User.UpdateCabinetModel)">
+            <response code="200">Запрос выполнен успешно</response>
+            <response code="401">Пустой или неправильный токен</response>
+            <response code="403">Авторизация роль TEACHER,DEPARTMENT_HEAD,DIRECTOR</response>
         </member>
         <member name="M:PGK.WebApi.Controllers.UserController.GetAllNotification(PGK.WebApi.Models.User.GetUserNotificationModel)">
             <summary>

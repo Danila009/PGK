@@ -9,9 +9,12 @@ namespace PGK.Domain.User.Teacher
     public class TeacherUser : User
     {
         public override string Role => UserRole.TEACHER.ToString();
+        
+        public string? Cabinet { get; set; }
+        public string? Information { get; set; }
 
         //Классный руководитель
-        public virtual List<Group.Group> Groups { get; set; } = new List<Group.Group>();
+        public virtual List<Group.Group> Сurator { get; set; } = new List<Group.Group>();
 
         public virtual List<RaportichkaRow> RaportichkaRows { get; set; } = new List<RaportichkaRow>();
 

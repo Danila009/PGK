@@ -8,5 +8,6 @@ namespace PGK.Application.App.Speciality.Queries.GetSpecialityList
         public int PageSize { get; set; }
 
         public string? Search { get; set; } = string.Empty;
+        public List<int>? DepartmentIds { get; set; }
     }
 }

@@ -24,6 +24,8 @@ using PGK.Application.App.User.Queries.GetUserLits;
 using PGK.Application.App.User.Commands.UpdateNotificationsSettings;
 using PGK.Application.App.User.Commands.UpdatePassword;
 using PGK.Application.App.User.Queries.GetTelegramToken;
+using PGK.Application.App.User.Commands.UpdateInformation;
+using PGK.Application.App.User.Commands.UpdateCabinet;
 
 namespace PGK.WebApi.Controllers
 {
@@ -42,6 +44,44 @@ namespace PGK.WebApi.Controllers
             var dto = await Mediator.Send(query);
 
             return Ok(dto);
+        }
+
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,DEPARTMENT_HEAD,DIRECTOR</response>
+        [Authorize(Roles = "TEACHER,DEPARTMENT_HEAD,DIRECTOR")]
+        [HttpPatch("Information")]
+        public async Task<ActionResult> UpdateInformation(UpdateInformationModel model)
+        {
+            var command = new UpdateInformationCommand
+            {
+                Information = model.Information,
+                UserId = UserId,
+                UserRole = UserRole.Value
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        /// <response code="200">Запрос выполнен успешно</response>
+        /// <response code="401">Пустой или неправильный токен</response>
+        /// <response code="403">Авторизация роль TEACHER,DEPARTMENT_HEAD,DIRECTOR</response>
+        [Authorize(Roles = "TEACHER,DEPARTMENT_HEAD,DIRECTOR")]
+        [HttpPatch("Cabinet")]
+        public async Task<ActionResult> UpdateCabinet(UpdateCabinetModel model)
+        {
+            var command = new UpdateUserCabinetCommand
+            {
+                Cabinet = model.Cabinet,
+                UserId = UserId,
+                UserRole = UserRole.Value
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Authorize]

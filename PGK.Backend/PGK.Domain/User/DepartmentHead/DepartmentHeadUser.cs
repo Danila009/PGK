@@ -6,5 +6,8 @@ namespace PGK.Domain.User.DepartmentHead
     public class DepartmentHeadUser : User
     {
         public override string Role => UserRole.DEPARTMENT_HEAD.ToString();
+
+        public string? Cabinet { get; set; }
+        public string? Information { get; set; }
     }
 }

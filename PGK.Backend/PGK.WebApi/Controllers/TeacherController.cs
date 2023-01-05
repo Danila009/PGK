@@ -16,6 +16,7 @@ namespace PGK.WebApi.Controllers
         /// Получите список прподавателей
         /// </summary>
         /// <param name="search">Ключивые слова для поиска</param>
+        /// <param name="subjectIds"></param>
         /// <param name="pageNumber">Номер страницы</param>
         /// <param name="pageSize">Количество результатов для возврата на страницу</param>
         /// <returns>TeacherUserListVm object</returns>
@@ -26,6 +27,7 @@ namespace PGK.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeacherUserListVm))]
         public async Task<ActionResult> GetAll(
             string? search,
+            [FromQuery] List<int>? subjectIds,
             int pageNumber = 1, 
             int pageSize = 20)
         {
@@ -33,7 +35,8 @@ namespace PGK.WebApi.Controllers
             {
                 Search = search,
                 PageNumber = pageNumber,
-                PageSize = pageSize
+                PageSize = pageSize,
+                SubjectIds = subjectIds
             };
 
             var vm = await Mediator.Send(query);

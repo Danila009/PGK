@@ -28,7 +28,10 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
 
             if (users == null || users.Count < 1)
             {
-                throw new Exception("Пользователь не найден");
+                return new SignInVm
+                {
+                    ErrorMessage = "Пользователь не найден"
+                };
             }
 
             Domain.User.User? user = null;
@@ -48,7 +51,10 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
 
             if(user == null)
             {
-                throw new Exception("Не верный пароль");
+                return new SignInVm
+                {
+                    ErrorMessage = "Не верный пароль"
+                };
             }
 
             var refreshToken = user.RefreshToken;

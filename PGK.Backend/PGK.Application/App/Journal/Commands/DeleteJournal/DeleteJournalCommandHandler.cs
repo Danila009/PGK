@@ -33,7 +33,7 @@ namespace PGK.Application.App.Journal.Commands.DeleteJournal
                     throw new NotFoundException(nameof(TeacherUser), request.UserId);
                 }
 
-                if (!teacher.Groups.Any(u => u.Id == journal.Group.Id))
+                if (!teacher.Сurator.Any(u => u.Id == journal.Group.Id))
                 {
                     throw new UnauthorizedAccessException("Классный руковадитель может удалить журнал только своей группы");
                 }

@@ -55,9 +55,9 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
                 query = query.Where(u => request.DepartmentIds.Contains(u.Department.Id));
             }
 
-            if (request.ClassroomTeacherIds != null && request.ClassroomTeacherIds.Count > 0)
+            if (request.СuratorIds != null && request.СuratorIds.Count > 0)
             {
-                query = query.Where(u => request.ClassroomTeacherIds.Contains(u.ClassroomTeacher.Id));
+                query = query.Where(u => request.СuratorIds.Contains(u.ClassroomTeacher.Id));
             }
 
             if (request.DeputyHeadmaIds != null && request.DeputyHeadmaIds.Count > 0)

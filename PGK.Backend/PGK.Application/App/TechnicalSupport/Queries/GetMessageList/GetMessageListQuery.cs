@@ -16,8 +16,5 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
 
         [FromQuery(Name = "userId")] public int? UserId { get; set; }
         [FromQuery(Name = "chatId")] public int? ChatId { get; set; }
-
-        [FromQuery(Name = "pageNumber"), DefaultValue("1")] public int PageNumber { get; set; } = 1;
-        [FromQuery(Name = "pageSize"), DefaultValue("20")] public int PageSize { get; set; } = 20;
     }
 }

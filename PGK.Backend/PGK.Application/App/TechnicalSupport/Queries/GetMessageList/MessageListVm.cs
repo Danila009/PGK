@@ -2,8 +2,15 @@
 
 namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
 {
-    public class MessageListVm : PagedResult<MessageDto>
+    public class MessageListVm
     {
-        public override PagedList<MessageDto> Results { get; set; }
+        public int MessagesCount
+        {
+            get
+            {
+                return Messages.Count;
+            }
+        }
+        public List<MessageDto> Messages { get; set; } = new List<MessageDto>();
     }
 }

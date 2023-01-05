@@ -66,7 +66,7 @@ void RegisterServices(IServiceCollection services)
 
         config.SwaggerDoc("v1", new OpenApiInfo
         {
-            Version = "v1.1",
+            Version = "v1.2",
             Title = "PGK API",
             Contact = new OpenApiContact
             {

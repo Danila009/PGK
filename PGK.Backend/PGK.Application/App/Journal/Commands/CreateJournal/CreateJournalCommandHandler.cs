@@ -36,7 +36,7 @@ namespace PGK.Application.App.Journal.Commands.CreateJournal
                     throw new NotFoundException(nameof(TeacherUser), request.UserId);
                 }
 
-                if(!teacher.Groups.Any(u => u.Id == group.Id))
+                if(!teacher.Сurator.Any(u => u.Id == group.Id))
                 {
                     throw new UnauthorizedAccessException("Классный руковадитель может создать журнал только для своей группы");
                 }

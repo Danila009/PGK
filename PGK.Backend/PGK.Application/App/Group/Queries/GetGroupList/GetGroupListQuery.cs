@@ -12,7 +12,7 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
        
         [FromQuery(Name = "specialityIds")] public List<int>? SpecialityIds { get; set; } = new List<int>();
         [FromQuery(Name = "departmentIds")] public List<int>? DepartmentIds { get; set; } = new List<int>();
-        [FromQuery(Name = "classroomTeacherIds")] public List<int>? ClassroomTeacherIds { get; set; } = new List<int>();
+        [FromQuery(Name = "сuratorIds")] public List<int>? СuratorIds { get; set; } = new List<int>();
         [FromQuery(Name = "deputyHeadmaIds")] public List<int>? DeputyHeadmaIds { get; set; } = new List<int>();
         [FromQuery(Name = "headmanIds")] public List<int>? HeadmanIds { get; set; } = new List<int>();
 

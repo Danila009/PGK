@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
 using PGK.Domain.TechnicalSupport;
@@ -25,7 +26,9 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
             if (!string.IsNullOrEmpty(request.Search))
             {
                 var seacrh = request.Search.ToLower().Trim();
-                query = query.Where(u => u.Text.ToLower().Contains(seacrh));
+                query = query
+                    .Where(u => u.Text != null)
+                    .Where(u => u.Text.ToLower().Contains(seacrh));
             }
 
             if(request.Pin != null)
@@ -63,15 +66,13 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
                 query = query.Where(u => u.Chat.Id == request.ChatId);
             }
 
-            var messages = query
-                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
-
-            var messagesPaged = await PagedList<MessageDto>.ToPagedList(messages,
-                request.PageNumber, request.PageSize);
+            var messages =  await query
+                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             return new MessageListVm
             {
-                Results = messagesPaged
+                Messages = messages
             };
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.App.User.Teacher.Queries.GetTeacherUserDetails;
 using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
@@ -20,7 +21,8 @@ namespace PGK.Application.App.User.Teacher.Queries.GetTeacherUserList
         public async Task<TeacherUserListVm> Handle(GetTeacherUserListQuery request,
             CancellationToken cancellationToken)
         {
-            IQueryable<TeacherUser> query = _dbContext.TeacherUsers;
+            IQueryable<TeacherUser> query = _dbContext.TeacherUsers
+                .Include(u => u.Subjects);
 
 
             if (!string.IsNullOrEmpty(request.Search))
@@ -30,6 +32,11 @@ namespace PGK.Application.App.User.Teacher.Queries.GetTeacherUserList
                     u.FirstName.ToLower().Contains(search) ||
                     u.LastName.ToLower().Contains(search)
                 );
+            }
+
+            if(request.SubjectIds != null && request.SubjectIds.Count > 0)
+            {
+                query = query.Where(u => u.Subjects.Any(u => request.SubjectIds.Contains(u.Id)));
             }
 
             var teachers = query

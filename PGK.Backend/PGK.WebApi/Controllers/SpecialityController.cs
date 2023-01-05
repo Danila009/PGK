@@ -15,6 +15,7 @@ namespace PGK.WebApi.Controllers
         /// Получить список спицальностей
         /// </summary>
         /// <param name="search">Ключивые слова для поиска</param>
+        /// <param name="departmentIds"></param>
         /// <param name="pageNumber">Номер страницы</param>
         /// <param name="pageSize">Количество результатов для возврата на страницу</param>
         /// <returns>SpecialityListVm object</returns>
@@ -24,12 +25,14 @@ namespace PGK.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SpecialityListVm))]
         public async Task<ActionResult> GetAll(
-            string? search, int pageNumber = 1, int pageSize = 20
+            string? search,[FromQuery] List<int> departmentIds,
+            int pageNumber = 1, int pageSize = 20
             )
         {
             var query = new GetSpecialityListQuery
             {
                 Search = search,
+                DepartmentIds = departmentIds,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };

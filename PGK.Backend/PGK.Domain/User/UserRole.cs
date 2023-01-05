@@ -8,6 +8,7 @@
         TEACHER,
         EDUCATIONAL_SECTOR,
         DEPARTMENT_HEAD,
+        DIRECTOR,
         ADMIN
     }
 }

@@ -19,12 +19,18 @@ namespace PGK.Application.App.Subject.Queries.GetSubjectList
         public async Task<SubjectListVm> Handle(GetSubjectListQuery request,
             CancellationToken cancellationToken)
         {
-            IQueryable<Domain.Subject.Subject> query = _dbContext.Subjects;
+            IQueryable<Domain.Subject.Subject> query = _dbContext.Subjects
+                .Include(u => u.Teachers);
 
             if (!string.IsNullOrEmpty(request.Search))
             {
                 query = query.Where(u => u.SubjectTitle.ToLower()
                     .Contains(request.Search.ToLower()));
+            }
+
+            if(request.TeacherIds != null && request.TeacherIds.Count > 0)
+            {
+                query = query.Where(u => u.Teachers.Any(u => request.TeacherIds.Contains(u.Id)));
             }
 
             var subjects = query

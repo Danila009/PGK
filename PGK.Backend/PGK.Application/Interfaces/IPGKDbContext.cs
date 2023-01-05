@@ -12,6 +12,7 @@ using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DepartmentHead;
 using PGK.Domain.User.DeputyHeadma;
+using PGK.Domain.User.Director;
 using PGK.Domain.User.EducationalSector;
 using PGK.Domain.User.Headman;
 using PGK.Domain.User.Student;
@@ -29,6 +30,7 @@ namespace PGK.Application.Interfaces
         DbSet<StudentUser> StudentsUsers { get; set; }
         DbSet<TeacherUser> TeacherUsers { get; set; }
         DbSet<DepartmentHeadUser> DepartmentHeadUsers { get; set; }
+        DbSet<DirectorUser> DirectorUsers { get; set; }
         DbSet<User> Users { get; set; }
 
         DbSet<Schedule> Schedules { get; set; }

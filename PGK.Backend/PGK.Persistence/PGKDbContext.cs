@@ -13,6 +13,7 @@ using PGK.Domain.User;
 using PGK.Domain.User.Admin;
 using PGK.Domain.User.DepartmentHead;
 using PGK.Domain.User.DeputyHeadma;
+using PGK.Domain.User.Director;
 using PGK.Domain.User.EducationalSector;
 using PGK.Domain.User.Headman;
 using PGK.Domain.User.Student;
@@ -31,6 +32,7 @@ namespace PGK.Persistence
         public DbSet<StudentUser> StudentsUsers { get; set; }
         public DbSet<TeacherUser> TeacherUsers { get; set; }
         public DbSet<DepartmentHeadUser> DepartmentHeadUsers { get; set; }
+        public DbSet<DirectorUser> DirectorUsers { get; set; }
         public DbSet<User> Users { get; set; }
 
         public DbSet<Domain.Group.Group> Groups { get; set; }
