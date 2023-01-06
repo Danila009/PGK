@@ -66,9 +66,14 @@ namespace PGK.Application.App.User.Commands.EmailPaswordReset
                 sentEmailMessageHtml = sentEmailMessageHtml.Replace("{{image_src}}", GetPgkIconUrl());
 
                 await _emailService.SendEmailAsync(
-                email: user.Email,
-                subject: "Пароль успешно изменен",
-                message: html);
+                    email: user.Email,
+                    subject: "Пароль успешно изменен",
+                    message: sentEmailMessageHtml);
+
+                await _emailService.SendEmailAsync(
+                    email: user.Email,
+                    subject: "Пароль успешно изменен",
+                    message: html);
             }
 
             return new ContentResult
