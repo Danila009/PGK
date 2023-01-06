@@ -2,7 +2,7 @@
 {
     public interface IImageRepository
     {
-        string Save(byte[] imgBytes, string path, string? imageId = null);
+        string Save(byte[] imgBytes, string path, string? imageId = null, string extension = "jpg");
 
         byte[]? Get(string path);
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PGK.Application.Common;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Application.Security;
@@ -21,8 +22,6 @@ namespace PGK.Application.App.User.Commands.EmailVerification
         public async Task<ContentResult> Handle(EmailVerificationCommand request,
             CancellationToken cancellationToken)
         {
-            var htmlContent = string.Empty;
-
             var user = await _dbContext.Users.FindAsync(request.UserId);
 
             if (user == null)
@@ -32,11 +31,16 @@ namespace PGK.Application.App.User.Commands.EmailVerification
 
             if (user.EmailVerification)
             {
-                htmlContent = "<h1>Email уже подвержден</h1>";
+                var htmlContent = File.ReadAllText("Html/user_message.html");
+
+                htmlContent = htmlContent.Replace("{{username}}", user.FirstName);
+                htmlContent = htmlContent.Replace("{{message}}", "Email уже подвержден");
+
+                htmlContent = htmlContent.Replace("{{image_src}}", GetPgkIconUrl());
 
                 return new ContentResult
                 {
-                    ContentType = "text/html",
+                    ContentType = "text/html; charset=utf-8",
                     Content = htmlContent,
                     StatusCode = (int)HttpStatusCode.BadRequest,
                 };
@@ -56,14 +60,32 @@ namespace PGK.Application.App.User.Commands.EmailVerification
             user.SendEmailToken = null;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            htmlContent = $"<h1>{user.EmailVerification}</h1>";
+            var html = File.ReadAllText("Html/email_addres_verification_web.html");
+
+            html = html.Replace("{{username}}", user.FirstName);
+
+            html = html.Replace("{{image_src}}", GetPgkIconUrl());
 
             return new ContentResult
             {
-                ContentType = "text/html",
-                Content = htmlContent,
+                ContentType = "text/html; charset=utf-8",
+                Content = html,
                 StatusCode = (int)HttpStatusCode.OK,
             };
+        }
+
+        private string GetPgkIconUrl()
+        {
+            var date = DateTime.Now.Date;
+
+            if ((date.Month == 12 && date.Day >= 20) || (date.Month == 1 && date.Day <= 15))
+            {
+                return $"{Constants.BASE_URL}/Image/new_year_pgk_icon.png";
+            }
+            else
+            {
+                return $"{Constants.BASE_URL}/Image/pgk_icon.png";
+            }
         }
     }
 }

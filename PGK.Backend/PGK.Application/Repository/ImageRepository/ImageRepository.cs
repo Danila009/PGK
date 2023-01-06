@@ -19,7 +19,7 @@ namespace PGK.Application.Repository.ImageRepository
                 return null;
         }
 
-        public string Save(byte[] imgBytes, string path, string? imageId)
+        public string Save(byte[] imgBytes, string path, string? imageId, string extension = "jpg")
         {
             var image = Image.Load(imgBytes);
             var id = imageId ?? Guid.NewGuid().ToString();
@@ -37,9 +37,9 @@ namespace PGK.Application.Repository.ImageRepository
                  )
             );
 
-            image.Save($"{path}{id}.jpg");
+            image.Save($"{path}{id}.{extension}");
 
-            return $"{path}{id}.jpg";
+            return $"{path}{id}.{extension}";
         }
     }
 }

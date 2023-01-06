@@ -2,8 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PGK.Application.Common.Paged;
 using PGK.Application.Interfaces;
+using PGK.Application.Common.Exceptions;
 using PGK.Domain.TechnicalSupport;
 
 namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
@@ -58,7 +58,23 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetMessageList
 
             if(request.UserId != null)
             {
-                query = query.Where(u => u.User.Id == request.UserId);
+                var user = await _dbContext.Users
+                    .Include(u => u.TechnicalSupportChat)
+                    .FirstOrDefaultAsync(u => u.Id == request.UserId);
+
+                if(user == null)
+                {
+                    throw new NotFoundException(nameof(Domain.User.User), request.UserId);
+                }
+
+                if(user.TechnicalSupportChat == null)
+                {
+                    query = Enumerable.Empty<Message>().AsQueryable();
+                }
+                else
+                {
+                    query = query.Where(u => u.Chat.Id == user.TechnicalSupportChat.Id);
+                }
             }
 
             if (request.ChatId != null)

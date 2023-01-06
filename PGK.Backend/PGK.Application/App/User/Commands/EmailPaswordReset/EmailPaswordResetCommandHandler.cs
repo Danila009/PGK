@@ -48,12 +48,26 @@ namespace PGK.Application.App.User.Commands.EmailPaswordReset
             user.SendEmailToken = null;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            htmlContent = $"<h1>New passoword: {newPassword}</h1>";
+            var date = DateTime.Now.Date;
+
+            var html = File.ReadAllText("Html/email_addres_password_reset_web.html");
+
+            html = html.Replace("{{username}}", user.FirstName);
+            html = html.Replace("{{password}}", newPassword);
+
+            if ((date.Month == 12 && date.Day >= 20) || (date.Month == 1 && date.Day <= 15))
+            {
+                html = html.Replace("{{image_src}}", $"{Constants.BASE_URL}/Image/new_year_pgk_icon.png");
+            }
+            else
+            {
+                html = html.Replace("{{image_src}}", $"{Constants.BASE_URL}/Image/pgk_icon.png");
+            }
 
             return new ContentResult
             {
-                ContentType = "text/html",
-                Content = htmlContent,
+                ContentType = "text/html; charset=utf-8",
+                Content = html,
                 StatusCode = (int)HttpStatusCode.OK,
             };
         }

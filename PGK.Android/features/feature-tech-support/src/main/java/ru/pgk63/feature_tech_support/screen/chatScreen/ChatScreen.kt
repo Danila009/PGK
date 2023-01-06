@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.emoji.EmojiDialog
+import com.maxkeppeler.sheets.emoji.models.EmojiSelection
 import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.techSupport.model.*
 import ru.pgk63.core_common.common.response.Result
@@ -56,7 +60,7 @@ internal fun ChatRoute(
     var searchMode by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
 
-    var pinMode by remember { mutableStateOf<Boolean>(false) }
+    var pinMode by remember { mutableStateOf(false) }
 
     viewModel.user.onEach {
         user = it
@@ -317,6 +321,7 @@ private fun BottomBarUi(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SentMessageTextField(
     messageText:String,
@@ -324,6 +329,15 @@ private fun SentMessageTextField(
     sendMessage: () -> Unit = {},
     openAttachMenu: (() -> Unit)? = null
 ) {
+    val emojiDialogState = rememberSheetState()
+
+    EmojiDialog(
+        state = emojiDialogState,
+        selection = EmojiSelection.Emoji { emoji ->
+            onMessageChange(messageText + emoji.toString())
+        }
+    )
+
     TextField(
         value = messageText,
         onValueChange = onMessageChange,
@@ -337,6 +351,15 @@ private fun SentMessageTextField(
         colors = rememberTextFieldColors(
             focusedIndicatorColor = PgkTheme.colors.primaryBackground
         ),
+        leadingIcon = {
+            IconButton(onClick = { emojiDialogState.show() }) {
+                Icon(
+                    imageVector = Icons.Default.EmojiEmotions,
+                    contentDescription = null,
+                    tint = PgkTheme.colors.primaryText
+                )
+            }
+        },
         trailingIcon = {
             Row {
                 AnimatedVisibility(

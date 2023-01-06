@@ -40,10 +40,27 @@ namespace PGK.Application.App.User.Commands.SendEmailVerification
             user.SendEmailToken = token;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
+            var date = DateTime.Now.Date;
+
+            var html = File.ReadAllText("Html/send_email_verification_message.html");
+
+            html = html.Replace("{{username}}", user.FirstName);
+            html = html.Replace("{{email}}", user.Email);
+            html = html.Replace("{{url}}", $"{Constants.BASE_URL}/User/{user.Id}/Email/Pasword/Reset.html?token={token}");
+
+            if ((date.Month == 12 && date.Day >= 20) || (date.Month == 1 && date.Day <= 15))
+            {
+                html = html.Replace("{{image_src}}", $"{Constants.BASE_URL}/Image/new_year_pgk_icon.png");
+            }
+            else
+            {
+                html = html.Replace("{{image_src}}", $"{Constants.BASE_URL}/Image/pgk_icon.png");
+            }
+
             await _emailService.SendEmailAsync(
                 email: user.Email,
                 subject: "Подтверждение адреса электронной почты для входа в приложение ПГК",
-                message: $"<h1>{Constants.BASE_URL}/User/{user.Id}/Email/Verification/{token}.html</h1>");
+                message: html);
 
             return Unit.Value;
         }

@@ -24,4 +24,9 @@
     <ProjectReference Include="..\PGK.Persistence\PGK.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="resources\" />
+    <Folder Include="resources\images\" />
+  </ItemGroup>
+
 </Project>

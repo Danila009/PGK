@@ -21,13 +21,9 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
         
         [Required] public Domain.Language.Language? Language { get; set; }
 
-        [Required] public bool IncludedNotifications { get; set; } = true;
-        [Required] public bool SoundNotifications { get; set; } = true;
-        [Required] public bool VibrationNotifications { get; set; } = true;
-        [Required] public bool IncludedSchedulesNotifications { get; set; } = true;
-        [Required] public bool IncludedJournalNotifications { get; set; } = true;
-        [Required] public bool IncludedRaportichkaNotifications { get; set; } = true;
-        [Required] public bool IncludedTechnicalSupportNotifications { get; set; } = true;
+        [MaxLength(256)] public string? Email { get; set; } = string.Empty;
+        [Required] public bool EmailVerification { get; set; } = false;
 
+        public int? TelegramId { get; set; }
     }
 }

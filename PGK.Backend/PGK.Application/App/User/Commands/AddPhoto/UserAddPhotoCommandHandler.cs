@@ -31,7 +31,10 @@ namespace PGK.Application.App.User.Commands.AddPhoto
 
             var imagePath = Constants.USER_PHOTO_PATH;
 
-            _imageRepository.Save(memoryStream.ToArray(), imagePath, request.UserId.ToString());
+            _imageRepository.Save(
+                memoryStream.ToArray(),
+                imagePath,
+                request.UserId.ToString());
 
             var url = $"{Constants.BASE_URL}/User/Photo/{request.UserId}.jpg";
 

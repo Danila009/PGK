@@ -20,12 +20,12 @@ using PGK.Application.App.User.Commands.UpdateThemeFontSize;
 using PGK.Application.App.User.Commands.UpdateThemeCorners;
 using PGK.Application.App.User.Commands.UpdateLanguage;
 using PGK.Application.App.User.Queries.GetUserById;
-using PGK.Application.App.User.Queries.GetUserLits;
 using PGK.Application.App.User.Commands.UpdateNotificationsSettings;
 using PGK.Application.App.User.Commands.UpdatePassword;
 using PGK.Application.App.User.Queries.GetTelegramToken;
 using PGK.Application.App.User.Commands.UpdateInformation;
 using PGK.Application.App.User.Commands.UpdateCabinet;
+using PGK.Application.Common.Model;
 
 namespace PGK.WebApi.Controllers
 {
@@ -33,7 +33,7 @@ namespace PGK.WebApi.Controllers
     {
         [Authorize]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDetailsDto))]
         public async Task<ActionResult> GetUser()
         {
             var query = new GetUserByIdQuery
@@ -426,8 +426,8 @@ namespace PGK.WebApi.Controllers
         /// <param name="userId">Индификатор пользователя</param>
         /// <param name="token">Токен электронный почты</param>
         /// <response code="200">Запрос выполнен успешно</response>
-        [HttpGet("{userId}/Email/Verification/{token}.html")]
-        public async Task<ActionResult> EmailVerification(int userId, string token)
+        [HttpGet("{userId}/Email/Verification.html")]
+        public async Task<ContentResult> EmailVerification(int userId, string token)
         {
             var command = new EmailVerificationCommand
             {
@@ -437,7 +437,7 @@ namespace PGK.WebApi.Controllers
 
             var contentResult = await Mediator.Send(command);
 
-            return Ok(contentResult);
+            return contentResult;
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace PGK.WebApi.Controllers
         /// <param name="userId">Индификатор пользователя</param>
         /// <param name="token">Токен электронный почты</param>
         /// <response code="200">Запрос выполнен успешно</response>
-        [HttpGet("{userId}/Email/Pasword/Reset/{token}.html")]
+        [HttpGet("{userId}/Email/Pasword/Reset.html")]
         public async Task<ActionResult> PassowrdReset(int userId, string token)
         {
             var command = new EmailPaswordResetCommand
@@ -476,7 +476,7 @@ namespace PGK.WebApi.Controllers
 
             var contentResult = await Mediator.Send(command);
 
-            return Ok(contentResult);
+            return contentResult;
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace PGK.WebApi.Controllers
         /// <response code="401">Пустой или неправильный токен</response>
         [Authorize]
         [HttpPatch("Email")]
-        public async Task<ActionResult> UpdateEmail(string newEmail)
+        public async Task<ActionResult<MessageModel>> UpdateEmail(string newEmail)
         {
             var coomand = new UserUpdateEmailCommand
             {
@@ -495,9 +495,9 @@ namespace PGK.WebApi.Controllers
                 Email = newEmail
             };
 
-            await Mediator.Send(coomand);
+            var model = await Mediator.Send(coomand);
 
-            return Ok("Новая почта сохранен, мы отправили письмо для подтверждения почты");
+            return Ok(model);
         }
     }
 }

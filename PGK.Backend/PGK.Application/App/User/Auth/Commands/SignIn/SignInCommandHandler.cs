@@ -79,13 +79,9 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
                 ThemeFontSize = user.ThemeFontSize,
                 ThemeCorners = user.ThemeCorners,
                 Language = user.Language,
-                IncludedNotifications = user.IncludedNotifications,
-                SoundNotifications = user.SoundNotifications,
-                VibrationNotifications = user.VibrationNotifications,
-                IncludedSchedulesNotifications = user.IncludedSchedulesNotifications,
-                IncludedJournalNotifications = user.IncludedJournalNotifications,
-                IncludedRaportichkaNotifications = user.IncludedRaportichkaNotifications,
-                IncludedTechnicalSupportNotifications = user.IncludedTechnicalSupportNotifications,
+                Email = user.Email,
+                EmailVerification = user.EmailVerification,
+                TelegramId = user.TelegramId,
                 RefreshToken = refreshToken,
                 AccessToken = accessToken
             };
