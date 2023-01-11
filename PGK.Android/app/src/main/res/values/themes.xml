@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.PGK" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:statusBarColor">#FF0F0F0F</item>
+        <item name="android:navigationBarColor">#FF0F0F0F</item>
     </style>
 </resources>

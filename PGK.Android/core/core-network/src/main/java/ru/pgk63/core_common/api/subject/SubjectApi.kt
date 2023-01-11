@@ -13,6 +13,7 @@ interface SubjectApi {
     @GET("/pgk63/api/Subject")
     suspend fun getAll(
         @Query("search") search:String? = null,
+        @Query("teacherIds") teacherIds:List<Int>? = null,
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = Constants.PAGE_SIZE
     ): SubjectResponse

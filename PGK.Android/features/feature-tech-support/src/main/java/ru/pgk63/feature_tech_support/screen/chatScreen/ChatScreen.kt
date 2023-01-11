@@ -55,7 +55,14 @@ internal fun ChatRoute(
 
     var messageText by remember { mutableStateOf("") }
     var messagesResult by remember { mutableStateOf<Result<MessageResponse>>(Result.Loading()) }
-    val messagesParameter by remember { mutableStateOf(MessageListParameters(chatId = chatId)) }
+    val messagesParameter by remember {
+        mutableStateOf(
+            MessageListParameters(
+                chatId = chatId,
+                userId = if (chatId == null) user.userId else null
+            )
+        )
+    }
 
     var searchMode by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -70,10 +77,8 @@ internal fun ChatRoute(
         messagesResult = it
     }.launchWhenStarted()
 
-    LaunchedEffect(key1 = user, block = {
-        user.userId?.let {
-
-        }
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.messagesParameters(messagesParameter)
         viewModel.webSocketConnect()
     })
 
@@ -222,7 +227,7 @@ private fun ChatScreen(
                     }
 
                     Messages(
-                        messages = messagesResult.data!!.results,
+                        messages = messagesResult.data!!.messages,
                         user = user,
                         bottomBarPadding = paddingValues.calculateBottomPadding(),
                         pinMessage = pinMessage,
@@ -333,8 +338,8 @@ private fun SentMessageTextField(
 
     EmojiDialog(
         state = emojiDialogState,
-        selection = EmojiSelection.Emoji { emoji ->
-            onMessageChange(messageText + emoji.toString())
+        selection = EmojiSelection.Unicode { emoji ->
+            onMessageChange(messageText + emoji)
         }
     )
 

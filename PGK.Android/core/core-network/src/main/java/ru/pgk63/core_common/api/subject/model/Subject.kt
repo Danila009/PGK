@@ -13,4 +13,8 @@ data class SubjectResponse(
 data class Subject(
     val id:Int,
     val subjectTitle:String
-)
+){
+    override fun toString(): String {
+        return subjectTitle
+    }
+}

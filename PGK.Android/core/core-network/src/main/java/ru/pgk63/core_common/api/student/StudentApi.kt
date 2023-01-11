@@ -13,6 +13,7 @@ interface StudentApi {
     @GET("/pgk63/api/Student")
     suspend fun getAll(
         @Query("search") search:String? = null,
+        @Query("groupIds") groupIds:List<Int>? = null,
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = Constants.PAGE_SIZE
     ): StudentResponse

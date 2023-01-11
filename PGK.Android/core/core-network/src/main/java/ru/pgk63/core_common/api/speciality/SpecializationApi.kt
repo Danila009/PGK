@@ -13,6 +13,7 @@ interface SpecializationApi {
     @GET("/pgk63/api/Speciality")
     suspend fun getAll(
         @Query("search") search:String? = null,
+        @Query("departmentIds") departmentIds:List<Int>? = null,
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = Constants.PAGE_SIZE
     ): SpecializationResponse

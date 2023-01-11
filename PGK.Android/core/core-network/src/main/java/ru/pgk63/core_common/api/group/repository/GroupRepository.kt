@@ -1,9 +1,13 @@
 package ru.pgk63.core_common.api.group.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.GroupApi
 import ru.pgk63.core_common.api.group.model.Group
-import ru.pgk63.core_common.api.group.model.GroupResponse
+import ru.pgk63.core_common.api.group.paging.GroupPagingSource
 import ru.pgk63.core_common.api.student.model.StudentResponse
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
@@ -13,7 +17,7 @@ class GroupRepository @Inject constructor(
     private val groupApi: GroupApi,
 ) : ApiResponse() {
 
-    suspend fun getAll(
+    fun getAll(
         search: String? = null,
         course: List<Int>? = null,
         number: List<Int>? = null,
@@ -21,22 +25,21 @@ class GroupRepository @Inject constructor(
         departmentIds: List<Int>? = null,
         classroomTeacherIds: List<Int>? = null,
         deputyHeadmaIds: List<Int>? = null,
-        headmanIds: List<Int>? = null,
-        pageNumber: Int = 1,
-        pageSize: Int = PAGE_SIZE,
-    ): GroupResponse {
-        return groupApi.getAll(
-            search = search,
-            course = course,
-            number = number,
-            specialityIds = specialityIds,
-            departmentIds = departmentIds,
-            classroomTeacherIds = classroomTeacherIds,
-            deputyHeadmaIds = deputyHeadmaIds,
-            headmanIds = headmanIds,
-            pageNumber = pageNumber,
-            pageSize = pageSize
-        )
+        headmanIds: List<Int>? = null
+    ): Flow<PagingData<Group>> {
+        return Pager(PagingConfig(pageSize = PAGE_SIZE)){
+            GroupPagingSource(
+                groupApi = groupApi,
+                search = search,
+                course = course,
+                number = number,
+                specialityIds = specialityIds,
+                departmentIds = departmentIds,
+                classroomTeacherIds = classroomTeacherIds,
+                deputyHeadmaIds = deputyHeadmaIds,
+                headmanIds = headmanIds,
+            )
+        }.flow
     }
 
     suspend fun getById(id: Int): Result<Group> {
@@ -48,4 +51,6 @@ class GroupRepository @Inject constructor(
         pageNumber: Int = 1,
         pageSize: Int = PAGE_SIZE
     ): StudentResponse = groupApi.getStudentByGroupId(id, pageNumber, pageSize)
+
+    suspend fun createRaportichka(groupId:Int) = safeApiCall { groupApi.createRaportichka(groupId) }
 }

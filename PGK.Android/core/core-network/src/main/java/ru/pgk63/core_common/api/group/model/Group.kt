@@ -24,4 +24,9 @@ data class Group(
     val classroomTeacher: Teacher,
     val headman: Student? = null,
     val deputyHeadma: Student? = null
-)
+){
+    override fun toString(): String {
+        return speciality.nameAbbreviation +
+                "-${course}" + "$number"
+    }
+}

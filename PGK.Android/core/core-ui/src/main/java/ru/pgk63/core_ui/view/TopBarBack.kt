@@ -18,11 +18,15 @@ fun TopBarBack(
     scrollBehavior: CollapsingToolbarScrollBehavior? = null,
     onBackClick: () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
+    additionalContent: (@Composable () -> Unit)? = null,
+    centralContent: (@Composable () -> Unit)? = null
 ) {
     CollapsingToolbar(
         collapsingTitle = collapsingTitle,
         scrollBehavior = scrollBehavior,
+        additionalContent = additionalContent,
+        centralContent = centralContent,
         navigationIcon = {
 
             IconButton(onClick = onBackClick) {

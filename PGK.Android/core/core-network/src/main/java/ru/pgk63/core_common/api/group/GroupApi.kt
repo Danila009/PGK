@@ -2,6 +2,7 @@ package ru.pgk63.core_common.api.group
 
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.pgk63.core_common.Constants.PAGE_SIZE
@@ -34,4 +35,9 @@ interface GroupApi {
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = PAGE_SIZE
     ): StudentResponse
+
+
+    @POST("/pgk63/api/Group/{id}/Raportichka")
+    suspend fun createRaportichka(@Path("id") groupId:Int):Response<Unit?>
+
 }

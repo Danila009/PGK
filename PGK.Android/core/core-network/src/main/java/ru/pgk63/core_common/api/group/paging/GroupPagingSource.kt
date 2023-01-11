@@ -2,11 +2,12 @@ package ru.pgk63.core_common.api.group.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import ru.pgk63.core_common.Constants
+import ru.pgk63.core_common.api.group.GroupApi
 import ru.pgk63.core_common.api.group.model.Group
-import ru.pgk63.core_common.api.group.repository.GroupRepository
 
 class GroupPagingSource (
-    private val groupRepository: GroupRepository,
+    private val groupApi: GroupApi,
     private val search: String? = null,
     private val course: List<Int>? = null,
     private val number: List<Int>? = null,
@@ -18,14 +19,16 @@ class GroupPagingSource (
 ) : PagingSource<Int, Group>() {
 
     override fun getRefreshKey(state: PagingState<Int, Group>): Int? {
-        return state.anchorPosition
+        val anchorPosition = state.anchorPosition ?: return null
+        val page = state.closestPageToPosition(anchorPosition) ?: return null
+        return page.prevKey?.plus(1) ?: page.nextKey?.minus(1)
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Group> {
         return try {
-            val nextPage = params.key ?: 1
+            val page = params.key ?: 1
 
-            val groups = groupRepository.getAll(
+            val groups = groupApi.getAll(
                 search = search,
                 course = course,
                 number = number,
@@ -34,13 +37,13 @@ class GroupPagingSource (
                 classroomTeacherIds = classroomTeacherIds,
                 deputyHeadmaIds = deputyHeadmaIds,
                 headmanIds = headmanIds,
-                pageNumber = nextPage
+                pageNumber = page
             )
 
             LoadResult.Page(
                 data = groups.results,
-                prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = nextPage.plus(1)
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if(groups.results.size < Constants.PAGE_SIZE) null else page + 1
             )
         }catch (e:Exception){
             LoadResult.Error(e)

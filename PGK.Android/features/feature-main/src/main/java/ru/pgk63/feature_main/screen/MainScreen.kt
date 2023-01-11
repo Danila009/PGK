@@ -44,6 +44,7 @@ internal fun MainRoute(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
+    onRaportichkaScreen: (userRole: UserRole) -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -71,6 +72,7 @@ internal fun MainRoute(
         onStudentListScreen = onStudentListScreen,
         onProfileScreen = onProfileScreen,
         onDepartmentListScreen = onDepartmentListScreen,
+        onRaportichkaScreen = onRaportichkaScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -90,7 +92,8 @@ private fun MainScreen(
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
-    onDepartmentListScreen: () -> Unit
+    onDepartmentListScreen: () -> Unit,
+    onRaportichkaScreen: (userRole: UserRole) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
@@ -125,7 +128,8 @@ private fun MainScreen(
                 onSubjectListScreen = onSubjectListScreen,
                 onStudentListScreen = onStudentListScreen,
                 onProfileScreen = onProfileScreen,
-                onDepartmentListScreen = onDepartmentListScreen
+                onDepartmentListScreen = onDepartmentListScreen,
+                onRaportichkaScreen = onRaportichkaScreen
             )
         },
         content = { paddingValues ->
@@ -201,7 +205,8 @@ private fun DrawerContentUi(
     onSubjectListScreen: () -> Unit,
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
-    onDepartmentListScreen: () -> Unit
+    onDepartmentListScreen: () -> Unit,
+    onRaportichkaScreen: (userRole: UserRole) -> Unit
 ) {
     LazyColumn {
         item {
@@ -252,6 +257,7 @@ private fun DrawerContentUi(
                         .fillMaxWidth()
                         .padding(5.dp),
                     backgroundColor = Color.Transparent,
+                    elevation = 0.dp,
                     onClick = {
                         when (drawerContent) {
                             DrawerContent.PROFILE -> onProfileScreen()
@@ -262,7 +268,7 @@ private fun DrawerContentUi(
                             DrawerContent.SUBJECTS -> onSubjectListScreen()
                             DrawerContent.GROUPS -> onGroupScreen()
                             DrawerContent.JOURNAL -> Unit
-                            DrawerContent.RAPORTICHKA -> Unit
+                            DrawerContent.RAPORTICHKA -> userRole?.let { onRaportichkaScreen(it) }
                             DrawerContent.SETTINGS -> onSettingsScreen()
                             DrawerContent.HELP -> userRole?.let { onTechSupportChatScreen(it) }
                         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,7 +34,11 @@ internal fun GroupListRoute(
     onBackScreen: () -> Unit,
     onGroupDetailsScreen: (groupId: Int) -> Unit
 ) {
-    val groups = viewModel.groups.collectAsLazyPagingItems()
+    val groups = viewModel.responseGroup.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getGroups()
+    })
 
     GroupListScreen(
         groups = groups,

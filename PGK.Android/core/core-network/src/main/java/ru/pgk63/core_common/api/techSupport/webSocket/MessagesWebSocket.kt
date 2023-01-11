@@ -1,6 +1,5 @@
 package ru.pgk63.core_common.api.techSupport.webSocket
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -69,7 +68,6 @@ class MessagesWebSocket (
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) = Unit
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        Log.e("onFailure webSocket", "message: ${text}")
         messageResponse.value = Result.Success(text.decodeFromString())
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -80,6 +78,5 @@ class MessagesWebSocket (
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         messageResponse.value = Result.Error(response?.message ?: t.message ?: "")
-        Log.e("onFailure webSocket", "message: ${response?.message ?: t.message}")
     }
 }

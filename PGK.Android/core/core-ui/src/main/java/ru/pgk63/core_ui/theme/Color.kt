@@ -14,13 +14,13 @@ val baseLightPalette = PgkColors(
 )
 
 val baseDarkPalette = PgkColors(
-    primaryBackground = Color(0xFF000000),
+    primaryBackground = Color(0xFF0F0F0F),
     primaryText = Color(0xFFE0E0E0),
     secondaryBackground = Color(0xFF141414),
     secondaryText = Color(0xFF7E7C7F),
     tintColor = Color.Magenta,
     controlColor = Color(0xFF7A8A99),
-    drawerBackground = Color(0xFF000000),
+    drawerBackground = Color(0xFF0F0F0F),
     errorColor = Color(0xFFFF6699)
 )
 

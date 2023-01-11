@@ -3,13 +3,11 @@ package ru.pgk63.core_common.api.techSupport.model
 import ru.pgk63.core_common.kotlinxSerialization.DateSerialization
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import ru.pgk63.core_common.api.user.model.User
-import java.util.Date
 
 @Serializable
 data class MessageResponse(
-    @SerialName("Results")
-    val results:List<Message>
+    @SerialName("Messages")
+    val messages:List<Message>
 )
 
 @Serializable

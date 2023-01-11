@@ -16,6 +16,10 @@ import ru.pgk63.feature_group.navigation.groupNavigation
 import ru.pgk63.feature_main.navigation.mainNavigation
 import ru.pgk63.feature_profile.navigation.ProfileDestination
 import ru.pgk63.feature_profile.navigation.profileNavigation
+import ru.pgk63.feature_raportichka.navigation.RaportichkaAddRowDestination
+import ru.pgk63.feature_raportichka.navigation.RaportichkaListDestination
+import ru.pgk63.feature_raportichka.navigation.RaportichkaSortingDestination
+import ru.pgk63.feature_raportichka.navigation.raportichkaNavigation
 import ru.pgk63.feature_settings.navigation.*
 import ru.pgk63.feature_specialization.navigation.SpecializationDetailsDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationListDestination
@@ -56,6 +60,13 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onDepartmentListScreen = {
             navController.navigate(DepartmentListDestination.route)
+        },
+        onRaportichkaScreen = { userRole ->
+            if(userRole != UserRole.STUDENT && userRole != UserRole.HEADMAN &&userRole != UserRole.DEPUTY_HEADMAN){
+                navController.navigate(RaportichkaSortingDestination.route)
+            }else {
+                navController.navigate(RaportichkaListDestination.route)
+            }
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
@@ -129,6 +140,51 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onGroupDetailsScreen = { id ->
             navController.navigate("${GroupDetailsDestination.route}/$id")
+        }
+    )
+
+    raportichkaNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onStudentDetailsScreen = { studentId ->
+            navController.navigate("${StudentDetailsDestination.route}/$studentId")
+        },
+        onTeacherDetailsScreen = { teacherId ->
+
+        },
+        onSubjectDetailsScreen = { subjectId ->
+            navController.navigate("${SubjectDetailsDestination.route}/$subjectId")
+        },
+        onRaportichkaScreen = { studentId, groupsId, subjectsId, teacherId, startDate, endDate, onlyDate ->
+            navController.navigate(
+                RaportichkaListDestination.route +
+                        "?${RaportichkaListDestination.studentIds}=$studentId" +
+                        "&${RaportichkaListDestination.groupIds}=$groupsId" +
+                        "&${RaportichkaListDestination.subjectIds}=$subjectsId" +
+                        "&${RaportichkaListDestination.teacherIds}=$teacherId" +
+                        "&${RaportichkaListDestination.startDate}=$startDate" +
+                        "&${RaportichkaListDestination.endDate}=$endDate" +
+                        "&${RaportichkaListDestination.onlyDate}=$onlyDate"
+            )
+        },
+        onRaportichkaAddRowScreen = { raportichkaId, groupId ->
+            navController.navigate(
+                "${RaportichkaAddRowDestination.route}/$raportichkaId?" +
+                        "${RaportichkaAddRowDestination.groupId}=$groupId"
+            )
+        },
+
+        onRaportichkaUpdateRowScreen = { raportichkaId, groupId, rowId, updateTeacherId,
+                                         updateNumberLesson, updateCountHours, updateStudentId, updateSubjectId ->
+            navController.navigate(
+                "${RaportichkaAddRowDestination.route}/$raportichkaId?" +
+                        "${RaportichkaAddRowDestination.groupId}=$groupId" +
+                        "&${RaportichkaAddRowDestination.raportichkaRowId}=$rowId" +
+                        "&${RaportichkaAddRowDestination.updateTeacherId}=$updateTeacherId" +
+                        "&${RaportichkaAddRowDestination.updateNumberLesson}=$updateNumberLesson" +
+                        "&${RaportichkaAddRowDestination.updateCountHours}=$updateCountHours" +
+                        "&${RaportichkaAddRowDestination.updateStudentId}=$updateStudentId" +
+                        "&${RaportichkaAddRowDestination.updateSubjectId}=$updateSubjectId"
+            )
         }
     )
 

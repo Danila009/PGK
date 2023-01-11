@@ -12,9 +12,10 @@ class SpecializationRepository @Inject constructor(
 
     suspend fun getAll(
         search:String? = null,
+        departmentIds:List<Int>? = null,
         pageNumber: Int = 1,
         pageSize: Int = Constants.PAGE_SIZE
-    ): SpecializationResponse = specializationApi.getAll(search,pageNumber, pageSize)
+    ): SpecializationResponse = specializationApi.getAll(search,departmentIds,pageNumber, pageSize)
 
     suspend fun getById(id:Int) = safeApiCall { specializationApi.getById(id) }
 }

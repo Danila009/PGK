@@ -1,5 +1,6 @@
 package ru.pgk63.core_ui.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,8 @@ fun ErrorUi(message: String? = null) {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
+
+        Log.e("message", message.toString())
 
         if(message != null){
             Text(

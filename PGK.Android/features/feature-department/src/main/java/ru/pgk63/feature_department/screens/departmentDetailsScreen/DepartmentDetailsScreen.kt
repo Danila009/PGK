@@ -53,7 +53,7 @@ internal fun DepartmentDetailsRoute(
     val specializations = viewModel.getSpecialization(departmentId = departmentId)
         .collectAsLazyPagingItems()
 
-    val groups = viewModel.getGroups(departmentId = departmentId).collectAsLazyPagingItems()
+    val groups = viewModel.responseGroup.collectAsLazyPagingItems()
 
     viewModel.responseDepartment.onEach { result ->
         departmentResult = result
@@ -61,6 +61,7 @@ internal fun DepartmentDetailsRoute(
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getDepartmentById(departmentId)
+        viewModel.getGroups(departmentId = departmentId)
     })
 
     DepartmentDetailsScreen(

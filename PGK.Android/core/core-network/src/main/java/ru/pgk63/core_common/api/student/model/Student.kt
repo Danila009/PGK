@@ -19,4 +19,21 @@ data class Student(
     val middleName:String? = null,
     val photoUrl:String? = null,
     val group:Group
-)
+){
+    override fun toString(): String {
+        return fioAbbreviated()
+    }
+
+    fun fioAbbreviated():String{
+
+        val middleName = if(middleName == null)
+            ""
+        else
+            " ${middleName[0]}."
+
+        return lastName + " ${firstName[0]}." + middleName
+    }
+
+    fun fio():String = lastName + " $firstName " + (middleName ?: "")
+
+}

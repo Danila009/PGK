@@ -20,4 +20,7 @@
     <string name="educational_sector">Учебный сектор</string>
     <string name="department_head">Зав отделения</string>
     <string name="admin">Админ</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="tomorrow">Завтра</string>
 </resources>

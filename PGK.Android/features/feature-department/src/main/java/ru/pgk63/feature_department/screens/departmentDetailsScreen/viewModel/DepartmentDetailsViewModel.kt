@@ -15,7 +15,6 @@ import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.department.model.Department
 import ru.pgk63.core_common.api.department.repository.DepartmentRepository
 import ru.pgk63.core_common.api.group.model.Group
-import ru.pgk63.core_common.api.group.paging.GroupPagingSource
 import ru.pgk63.core_common.api.group.repository.GroupRepository
 import ru.pgk63.core_common.api.speciality.model.Specialization
 import ru.pgk63.core_common.api.speciality.paging.SpecializationPagingSource
@@ -33,6 +32,9 @@ internal class DepartmentDetailsViewModel @Inject constructor(
     private val _responseDepartment = MutableStateFlow<Result<Department>>(Result.Loading())
     val responseDepartment = _responseDepartment.asStateFlow()
 
+    private val _responseGroup = MutableStateFlow<PagingData<Group>>(PagingData.empty())
+    val responseGroup = _responseGroup.asStateFlow()
+
     fun getDepartmentById(id:Int) {
         viewModelScope.launch {
             _responseDepartment.value = departmentRepository.getById(id = id)
@@ -42,17 +44,18 @@ internal class DepartmentDetailsViewModel @Inject constructor(
     fun getSpecialization(departmentId: Int): Flow<PagingData<Specialization>> {
         return Pager(PagingConfig(pageSize = PAGE_SIZE)){
             SpecializationPagingSource(
-                specializationRepository = specializationRepository
+                specializationRepository = specializationRepository,
+                departmentIds = listOf(departmentId)
             )
         }.flow.cachedIn(viewModelScope)
     }
 
-    fun getGroups(departmentId: Int): Flow<PagingData<Group>> {
-        return Pager(PagingConfig(pageSize = PAGE_SIZE)){
-            GroupPagingSource(
-                groupRepository = groupRepository,
-                departmentIds = listOf(departmentId)
-            )
-        }.flow.cachedIn(viewModelScope)
+    fun getGroups(departmentId: Int)  {
+        viewModelScope.launch {
+            groupRepository.getAll(departmentIds = listOf(departmentId))
+                .cachedIn(viewModelScope).collect {
+                    _responseGroup.value = it
+                }
+        }
     }
 }

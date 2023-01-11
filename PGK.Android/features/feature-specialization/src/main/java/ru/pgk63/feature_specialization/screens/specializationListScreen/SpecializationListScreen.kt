@@ -188,9 +188,7 @@ private fun SpecializationCardUi(
                 }
 
                 Text(
-                    text = specialization.department.departmentHead.lastName +
-                            " ${specialization.department.departmentHead.firstName} " +
-                            (specialization.department.departmentHead.middleName ?: ""),
+                    text = specialization.department.departmentHead.fio(),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,

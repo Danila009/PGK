@@ -48,7 +48,7 @@ internal fun SpecializationDetailsRoute(
 
     var resultSpecialization by remember { mutableStateOf<Result<Specialization>>(Result.Loading()) }
 
-    val groups = viewModel.getGroups(specialityId = specializationId).collectAsLazyPagingItems()
+    val groups = viewModel.responseGroup.collectAsLazyPagingItems()
     
     viewModel.responseSpecialization.onEach { result ->
         resultSpecialization = result
@@ -56,6 +56,7 @@ internal fun SpecializationDetailsRoute(
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getById(specializationId)
+        viewModel.getGroups(specializationId)
     })
 
     SpecializationDetailsScreen(

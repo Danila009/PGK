@@ -6,4 +6,17 @@ data class DepartmentHead(
     val lastName:String,
     val middleName:String?,
     val photoUrl:String?
-)
+){
+    fun fioAbbreviated():String{
+
+        val middleName = if(middleName?.getOrNull(0) == null)
+            ""
+        else
+            "${middleName[0]}."
+
+        return lastName + " ${firstName[0]}." + " $middleName."
+    }
+
+    fun fio():String = lastName + " $firstName " + (middleName ?: "")
+
+}

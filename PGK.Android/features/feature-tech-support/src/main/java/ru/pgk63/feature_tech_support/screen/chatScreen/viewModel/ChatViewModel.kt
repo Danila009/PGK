@@ -1,5 +1,6 @@
 package ru.pgk63.feature_tech_support.screen.chatScreen.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,12 +31,11 @@ internal class ChatViewModel @Inject constructor(
     val responseMessages = messagesWebSocket.messageResponse.asStateFlow()
 
     fun webSocketConnect() {
-        messagesParameters()
-
         messagesWebSocket.connect()
     }
 
     fun messagesParameters(parameters: MessageListParameters = MessageListParameters()) {
+        Log.e("messagesParameters",parameters.toString())
         messagesWebSocket.setMessagesParameters(parameters)
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -32,7 +33,11 @@ internal fun SubjectListRoute(
     onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
 
-    val subjects = viewModel.getSubjectAll().collectAsLazyPagingItems()
+    val subjects = viewModel.responseSubject.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getSubjectAll()
+    })
 
     SubjectListScreen(
         subjects = subjects,
@@ -99,7 +104,9 @@ private fun SubjectCard(subject: Subject, onSubjectDetailsScreen: (subjectId: In
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(10.dp).align(Alignment.Center)
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.Center)
             )
         }
     }

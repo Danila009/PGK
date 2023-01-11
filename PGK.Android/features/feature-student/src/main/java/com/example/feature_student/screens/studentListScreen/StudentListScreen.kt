@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -35,7 +36,11 @@ internal fun StudentListRoute(
     onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
 
-    val students = viewModel.getStudents().collectAsLazyPagingItems()
+    val students = viewModel.responseStudent.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getStudents()
+    })
 
     StudentListScreen(
         students = students,
