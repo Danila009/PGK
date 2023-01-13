@@ -21,7 +21,8 @@ fun NavGraphBuilder.mainNavigation(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
-    onRaportichkaScreen: (userRole: UserRole) -> Unit
+    onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
 ) {
     composable(
         route = MainDestination.route
@@ -35,7 +36,8 @@ fun NavGraphBuilder.mainNavigation(
             onStudentListScreen = onStudentListScreen,
             onProfileScreen = onProfileScreen,
             onDepartmentListScreen = onDepartmentListScreen,
-            onRaportichkaScreen = onRaportichkaScreen
+            onRaportichkaScreen = onRaportichkaScreen,
+            onJournalScreen = onJournalScreen,
         )
     }
 }

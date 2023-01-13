@@ -44,7 +44,8 @@ internal fun MainRoute(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
-    onRaportichkaScreen: (userRole: UserRole) -> Unit,
+    onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -73,6 +74,7 @@ internal fun MainRoute(
         onProfileScreen = onProfileScreen,
         onDepartmentListScreen = onDepartmentListScreen,
         onRaportichkaScreen = onRaportichkaScreen,
+        onJournalScreen = onJournalScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         }
@@ -93,7 +95,8 @@ private fun MainScreen(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
-    onRaportichkaScreen: (userRole: UserRole) -> Unit
+    onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
@@ -129,7 +132,8 @@ private fun MainScreen(
                 onStudentListScreen = onStudentListScreen,
                 onProfileScreen = onProfileScreen,
                 onDepartmentListScreen = onDepartmentListScreen,
-                onRaportichkaScreen = onRaportichkaScreen
+                onRaportichkaScreen = onRaportichkaScreen,
+                onJournalScreen = onJournalScreen
             )
         },
         content = { paddingValues ->
@@ -206,7 +210,8 @@ private fun DrawerContentUi(
     onStudentListScreen: () -> Unit,
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
-    onRaportichkaScreen: (userRole: UserRole) -> Unit
+    onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit
 ) {
     LazyColumn {
         item {
@@ -267,8 +272,16 @@ private fun DrawerContentUi(
                             DrawerContent.DEPARTMENS -> onDepartmentListScreen()
                             DrawerContent.SUBJECTS -> onSubjectListScreen()
                             DrawerContent.GROUPS -> onGroupScreen()
-                            DrawerContent.JOURNAL -> Unit
-                            DrawerContent.RAPORTICHKA -> userRole?.let { onRaportichkaScreen(it) }
+                            DrawerContent.JOURNAL -> {
+                                if(userRole != null && userResult.data != null){
+                                    onJournalScreen(userRole, userResult.data!!.id)
+                                }
+                            }
+                            DrawerContent.RAPORTICHKA -> {
+                                if(userRole != null && userResult.data != null){
+                                    onRaportichkaScreen(userRole, userResult.data!!.id)
+                                }
+                            }
                             DrawerContent.SETTINGS -> onSettingsScreen()
                             DrawerContent.HELP -> userRole?.let { onTechSupportChatScreen(it) }
                         }

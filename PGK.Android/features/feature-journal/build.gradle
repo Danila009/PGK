@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.pgk63.feature_raportichka'
+    namespace 'ru.lfybkf19.feature_journal'
     compileSdk 33
 
     defaultConfig {
@@ -24,7 +24,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }

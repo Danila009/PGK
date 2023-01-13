@@ -5,6 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import com.example.feature_student.navigation.StudentDetailsDestination
 import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
+import ru.lfybkf19.feature_journal.navigation.JournalDetailsDestination
+import ru.lfybkf19.feature_journal.navigation.JournalListDestination
+import ru.lfybkf19.feature_journal.navigation.journalNavigation
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.authNavigation
 import ru.pgk63.feature_department.navigation.DepartmentDetailsDestination
@@ -61,12 +64,18 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onDepartmentListScreen = {
             navController.navigate(DepartmentListDestination.route)
         },
-        onRaportichkaScreen = { userRole ->
+        onRaportichkaScreen = { userRole, userId ->
             if(userRole != UserRole.STUDENT && userRole != UserRole.HEADMAN &&userRole != UserRole.DEPUTY_HEADMAN){
                 navController.navigate(RaportichkaSortingDestination.route)
             }else {
-                navController.navigate(RaportichkaListDestination.route)
+                navController.navigate(
+                    RaportichkaListDestination.route +
+                            "?${RaportichkaListDestination.studentIds}=${listOf(userId)}"
+                )
             }
+        },
+        onJournalScreen = { userRole, userId ->
+            navController.navigate(JournalListDestination.route)
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
@@ -185,6 +194,15 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                         "&${RaportichkaAddRowDestination.updateStudentId}=$updateStudentId" +
                         "&${RaportichkaAddRowDestination.updateSubjectId}=$updateSubjectId"
             )
+        }
+    )
+
+    journalNavigation(
+        onBackScreen = {
+            navController.navigateUp()
+        },
+        onJournalDetailsScreen = { journalId ->
+            navController.navigate("${JournalDetailsDestination.route}/$journalId")
         }
     )
 

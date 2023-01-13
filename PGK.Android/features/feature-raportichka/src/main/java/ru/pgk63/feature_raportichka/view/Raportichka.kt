@@ -27,7 +27,7 @@ import ru.pgk63.core_ui.view.table.Table
 import ru.pgk63.core_ui.view.table.TableCell
 
 @Composable
-fun BoxScope.RaportichkaUi(
+internal fun BoxScope.RaportichkaTable(
     modifier: Modifier = Modifier,
     verticalLazyListState: LazyListState = rememberLazyListState(),
     rows:List<RaportichkaRow>,
@@ -131,7 +131,7 @@ private fun getBorderRaportichkaRow(
 
 @Preview(showBackground = false)
 @Composable
-private fun RaportichkaUi() {
+private fun RaportichkaTable() {
 
     val subject = Subject(
         id = 1,
@@ -211,7 +211,7 @@ private fun RaportichkaUi() {
             color = PgkTheme.colors.primaryBackground
         ) {
             Box {
-                RaportichkaUi(rows = rows)
+                RaportichkaTable(rows = rows)
             }
         }
     }

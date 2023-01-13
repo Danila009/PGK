@@ -15,6 +15,7 @@ data class PgkColors(
     val tintColor: Color,
     val drawerBackground: Color,
     val controlColor: Color,
+    val journalColor: Color,
     val errorColor: Color
 )
 

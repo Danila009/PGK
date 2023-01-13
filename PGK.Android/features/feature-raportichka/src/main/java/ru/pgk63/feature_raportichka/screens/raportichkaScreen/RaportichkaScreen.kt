@@ -40,7 +40,7 @@ import ru.pgk63.feature_raportichka.screens.raportichkaScreen.model.AddRaportich
 import ru.pgk63.feature_raportichka.screens.raportichkaScreen.model.RaportichkaRowMenu
 import ru.pgk63.feature_raportichka.screens.raportichkaScreen.model.RaportichkaSheetType
 import ru.pgk63.feature_raportichka.screens.raportichkaScreen.viewModel.RaportichkaViewModel
-import ru.pgk63.feature_raportichka.view.RaportichkaUi
+import ru.pgk63.feature_raportichka.view.RaportichkaTable
 import ru.pgk63.feature_raportichka.view.SortingItem
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
@@ -495,7 +495,7 @@ private fun RaportichkaList(
             val raportichka = raportichkaList[pageIndex]
 
             if(raportichka?.rows != null){
-                RaportichkaUi(
+                RaportichkaTable(
                     rows = raportichka.rows,
                     searchByStudentId = searchByStudentId,
                     searchByGroupsId = searchByGroupsId,
