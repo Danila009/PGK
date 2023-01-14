@@ -3,11 +3,11 @@ package ru.pgk63.core_common.api.speciality.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.pgk63.core_common.Constants
+import ru.pgk63.core_common.api.speciality.SpecializationApi
 import ru.pgk63.core_common.api.speciality.model.Specialization
-import ru.pgk63.core_common.api.speciality.repository.SpecializationRepository
 
 class SpecializationPagingSource(
-    private val specializationRepository: SpecializationRepository,
+    private val specializationApi: SpecializationApi,
     private val search:String? = null,
     private val departmentIds:List<Int>? = null,
 ):PagingSource<Int, Specialization>() {
@@ -23,7 +23,7 @@ class SpecializationPagingSource(
 
             val page = params.key ?: 1
 
-            val data = specializationRepository.getAll(
+            val data = specializationApi.getAll(
                 pageNumber = page,
                 search = search,
                 departmentIds = departmentIds

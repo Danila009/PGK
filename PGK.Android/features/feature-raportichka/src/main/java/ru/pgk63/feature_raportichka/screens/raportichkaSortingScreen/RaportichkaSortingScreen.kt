@@ -29,7 +29,7 @@ import ru.pgk63.core_ui.view.dialog.calendar.CalendarDialog
 import ru.pgk63.core_ui.view.dialog.calendar.models.CalendarSelection
 import ru.pgk63.core_ui.view.dialog.rememberSheetState
 import ru.pgk63.feature_raportichka.screens.raportichkaSortingScreen.viewModel.RaportichkaSortingViewModel
-import ru.pgk63.feature_raportichka.view.SortingItem
+import ru.pgk63.core_ui.view.SortingItem
 import java.time.LocalDate
 
 @Composable

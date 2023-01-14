@@ -58,6 +58,7 @@ fun TopBarBack(
 ) {
     TopAppBar(
         modifier = modifier,
+        backgroundColor = PgkTheme.colors.primaryBackground,
         title = {
             Text(
                 text = title,

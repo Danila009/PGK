@@ -2,32 +2,35 @@ package ru.pgk63.core_common.api.department.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import ru.pgk63.core_common.Constants
+import ru.pgk63.core_common.api.department.DepartmentApi
 import ru.pgk63.core_common.api.department.model.Department
-import ru.pgk63.core_common.api.department.repository.DepartmentRepository
 
 class DepartmentPagingSource(
-    private val departmentRepository: DepartmentRepository,
+    private val departmentApi: DepartmentApi,
     private val search: String? = null
 ): PagingSource<Int, Department>() {
 
     override fun getRefreshKey(state: PagingState<Int, Department>): Int? {
-        return state.anchorPosition
+        val anchorPosition = state.anchorPosition ?: return null
+        val page = state.closestPageToPosition(anchorPosition) ?: return null
+        return page.prevKey?.plus(1) ?: page.nextKey?.minus(1)
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Department> {
         return try {
 
-            val nextPage = params.key ?: 1
+            val page = params.key ?: 1
 
-            val data = departmentRepository.getAll(
+            val data = departmentApi.getAll(
                 search = search,
-                pageNumber = nextPage
+                pageNumber = page
             )
 
             LoadResult.Page(
                 data = data.results,
-                prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = nextPage.plus(1)
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if(data.results.size < Constants.PAGE_SIZE) null else page + 1
             )
         }catch (e:Exception){
             LoadResult.Error(e)

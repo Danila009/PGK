@@ -1,9 +1,10 @@
-package ru.pgk63.feature_raportichka.view
+package ru.pgk63.core_ui.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -18,11 +19,10 @@ import androidx.paging.compose.items
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.TextFieldSearch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun<T : Any> SortingItem(
+fun<T : Any> SortingItem(
     modifier: Modifier = Modifier,
     title:String,
     searchText:String,
@@ -104,6 +104,98 @@ internal fun<T : Any> SortingItem(
                             textAlign = TextAlign.Center
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun<T : Any> SortingItem(
+    modifier: Modifier = Modifier,
+    title:String,
+    searchText:String? = null,
+    content: List<T>,
+    onSearchTextChange: ((String) -> Unit)? = null,
+    onClickItem: (T) -> Unit = {},
+    selectedItem: (T) -> Boolean = { false },
+) {
+    val scope = rememberCoroutineScope()
+
+    var searchTextFieldVisible by remember { mutableStateOf(false) }
+    val searchTextFieldFocusRequester = remember { FocusRequester() }
+
+    Column(modifier = modifier) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = title,
+                color = PgkTheme.colors.primaryText,
+                style = PgkTheme.typography.heading,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                modifier = Modifier.padding(5.dp),
+                textAlign = TextAlign.Center
+            )
+
+            AnimatedVisibility(
+                visible = searchTextFieldVisible && searchText != null && onSearchTextChange != null
+            ) {
+                TextFieldSearch(
+                    text = searchText!!,
+                    onTextChanged = onSearchTextChange!!,
+                    modifier = Modifier
+                        .focusRequester(searchTextFieldFocusRequester),
+                    onClose = {
+                        searchTextFieldVisible = false
+                        onSearchTextChange("")
+                    }
+                )
+            }
+
+            AnimatedVisibility(
+                visible = !searchTextFieldVisible && searchText != null && onSearchTextChange != null
+            ) {
+                IconButton(onClick = {
+                    scope.launch {
+                        searchTextFieldVisible = true
+                        delay(100)
+                        searchTextFieldFocusRequester.requestFocus()
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null,
+                        tint = PgkTheme.colors.primaryText
+                    )
+                }
+            }
+        }
+
+        LazyRow {
+            items(content){ item ->
+                Card(
+                    modifier = Modifier.padding(5.dp),
+                    backgroundColor = PgkTheme.colors.secondaryBackground,
+                    elevation = 12.dp,
+                    shape = PgkTheme.shapes.cornersStyle,
+                    border = if(selectedItem.invoke(item))
+                        BorderStroke(1.dp, PgkTheme.colors.tintColor)
+                    else
+                        null,
+                    onClick = { onClickItem(item) }
+                ) {
+                    Text(
+                        text = item.toString(),
+                        color = PgkTheme.colors.primaryText,
+                        style = PgkTheme.typography.body,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        modifier = Modifier.padding(5.dp),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }

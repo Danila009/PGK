@@ -41,9 +41,11 @@ internal fun SpecializationListRoute(
 ) {
     var searchText by remember { mutableStateOf("") }
 
-    val specializations = viewModel.getSpecialization(
-        search = searchText.ifEmpty { null }
-    ).collectAsLazyPagingItems()
+    val specializations = viewModel.responseSpecializationList.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = searchText, block = {
+        viewModel.getSpecialization(search = searchText.ifEmpty { null })
+    })
 
     SpecializationListScreen(
         specializations = specializations,

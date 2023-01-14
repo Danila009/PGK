@@ -36,9 +36,11 @@ internal fun DepartmentListRoute(
 ) {
     var searchText by remember { mutableStateOf("") }
 
-    val departments = viewModel.getDepartments(
-        search = searchText.ifEmpty { null }
-    ).collectAsLazyPagingItems()
+    val departments = viewModel.responseDepartmentList.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = searchText, block = {
+        viewModel.getDepartments(search = searchText.ifEmpty { null })
+    })
 
     DepartmentListScreen(
         departments = departments,

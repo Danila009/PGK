@@ -34,7 +34,7 @@ import ru.pgk63.core_ui.view.TextFieldBase
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_raportichka.screens.raportichkaAddRow.viewModel.RaportichkaAddRowViewModel
-import ru.pgk63.feature_raportichka.view.SortingItem
+import ru.pgk63.core_ui.view.SortingItem
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable

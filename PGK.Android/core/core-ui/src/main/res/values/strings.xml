@@ -107,4 +107,5 @@
     <string name="scd_calendar_dialog_select_year">Выберите год</string>
     <string name="semester">Семестр</string>
     <string name="course">Курс</string>
+    <string name="sorting">Сортирока</string>
 </resources>

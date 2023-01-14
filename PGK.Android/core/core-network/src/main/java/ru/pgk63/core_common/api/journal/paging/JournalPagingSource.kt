@@ -1,5 +1,6 @@
 package ru.pgk63.core_common.api.journal.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.pgk63.core_common.Constants
@@ -25,6 +26,12 @@ class JournalPagingSource(
         return try {
 
             val page = params.key ?: 1
+
+            Log.e("JournalPagingSource",course.toString())
+            Log.e("JournalPagingSource",semesters.toString())
+            Log.e("JournalPagingSource",groupIds.toString())
+            Log.e("JournalPagingSource",specialityIds.toString())
+            Log.e("JournalPagingSource",departmentIds.toString())
 
             val data = journalApi.getAll(
                 course = course,

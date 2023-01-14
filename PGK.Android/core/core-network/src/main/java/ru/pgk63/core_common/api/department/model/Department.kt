@@ -15,4 +15,8 @@ data class Department(
     val id:Int,
     val name:String,
     val departmentHead: DepartmentHead
-)
+){
+    override fun toString(): String {
+        return name
+    }
+}

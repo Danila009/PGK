@@ -8,17 +8,35 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.api.department.model.Department
+import ru.pgk63.core_common.api.department.repository.DepartmentRepository
+import ru.pgk63.core_common.api.group.model.Group
+import ru.pgk63.core_common.api.group.repository.GroupRepository
 import ru.pgk63.core_common.api.journal.model.Journal
 import ru.pgk63.core_common.api.journal.repository.JournalRepository
+import ru.pgk63.core_common.api.speciality.model.Specialization
+import ru.pgk63.core_common.api.speciality.repository.SpecializationRepository
 import javax.inject.Inject
 
 @HiltViewModel
 internal class JournalListViewModel @Inject constructor(
-    private val journalRepository: JournalRepository
+    private val journalRepository: JournalRepository,
+    private val groupRepository: GroupRepository,
+    private val departmentRepository: DepartmentRepository,
+    private val specializationRepository: SpecializationRepository
 ): ViewModel() {
 
     private val _responseJournalList = MutableStateFlow<PagingData<Journal>>(PagingData.empty())
     val responseJournalList = _responseJournalList.asStateFlow()
+
+    private val _responseGroupList = MutableStateFlow<PagingData<Group>>(PagingData.empty())
+    val responseGroupList = _responseGroupList.asStateFlow()
+
+    private val _responseDepartmentList = MutableStateFlow<PagingData<Department>>(PagingData.empty())
+    val responseDepartmentList = _responseDepartmentList.asStateFlow()
+
+    private val _responseSpecializationList = MutableStateFlow<PagingData<Specialization>>(PagingData.empty())
+    val responseSpecializationList = _responseSpecializationList.asStateFlow()
 
     fun getJournalList(
         course:List<Int>? = null,
@@ -36,6 +54,30 @@ internal class JournalListViewModel @Inject constructor(
                 departmentIds = departmentIds
             ).cachedIn(viewModelScope).collect {
                 _responseJournalList.value = it
+            }
+        }
+    }
+
+    fun getGroupList(search: String?) {
+        viewModelScope.launch {
+            groupRepository.getAll(search = search).cachedIn(viewModelScope).collect {
+                _responseGroupList.value = it
+            }
+        }
+    }
+
+    fun getDepartmentList(search: String?) {
+        viewModelScope.launch {
+            departmentRepository.getAll(search = search).cachedIn(viewModelScope).collect {
+                _responseDepartmentList.value = it
+            }
+        }
+    }
+
+    fun getSpecializationList(search: String?) {
+        viewModelScope.launch {
+            specializationRepository.getAll(search = search).cachedIn(viewModelScope).collect {
+                _responseSpecializationList.value = it
             }
         }
     }

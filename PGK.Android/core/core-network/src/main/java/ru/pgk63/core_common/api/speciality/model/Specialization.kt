@@ -18,4 +18,8 @@ data class Specialization(
     val nameAbbreviation:String,
     val qualification:String,
     val department: Department
-)
+){
+    override fun toString(): String {
+        return nameAbbreviation
+    }
+}

@@ -41,7 +41,7 @@ import ru.pgk63.feature_raportichka.screens.raportichkaScreen.model.RaportichkaR
 import ru.pgk63.feature_raportichka.screens.raportichkaScreen.model.RaportichkaSheetType
 import ru.pgk63.feature_raportichka.screens.raportichkaScreen.viewModel.RaportichkaViewModel
 import ru.pgk63.feature_raportichka.view.RaportichkaTable
-import ru.pgk63.feature_raportichka.view.SortingItem
+import ru.pgk63.core_ui.view.SortingItem
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 @SuppressLint("FlowOperatorInvokedInComposition")
