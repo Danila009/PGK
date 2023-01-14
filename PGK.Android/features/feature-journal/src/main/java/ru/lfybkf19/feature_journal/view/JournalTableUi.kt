@@ -29,7 +29,7 @@ internal fun BoxScope.JournalTableUi(
         rowModifier = Modifier.height(IntrinsicSize.Min),
         verticalLazyListState = verticalLazyListState,
         columnCount = dates.size + 1,
-        rowCount = students.itemCount + 1, // + 1
+        rowCount = students.itemCount + 1,
     ){ columnIndex, rowIndex ->
 
         if(rowIndex == 0 && columnIndex == 0){

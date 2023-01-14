@@ -14,6 +14,8 @@
     <string name="number_lesson">Номер пары</string>
     <string name="count_hours">Количество часов</string>
     <string name="count_topics">Количество тем</string>
+    <string name="topics">Темы</string>
+    <string name="journal_topics">Журнал темы</string>
     <string name="raportichka_sorting_body">Выберите параметры для поиска рапортички и нажмите искать</string>
     <string name="raportichka_notifications_settings_body">Если вас отметят в рапортичке вам придет уведомления</string>
     <string name="settings">Настройки</string>
@@ -94,6 +96,9 @@
     <string name="ok">Выбрать</string>
     <string name="cancel">Отмена</string>
     <string name="select_date">Выберите дату</string>
+    <string name="date">Дата</string>
+    <string name="title">Тема</string>
+    <string name="home_work">Задано на дом</string>
     <string name="scd_calendar_dialog_select_month">Выберите месяц</string>
     <string name="scd_calendar_dialog_next_month">В следующем месяце</string>
     <string name="scd_calendar_dialog_prev_month">В следующем месяце</string>

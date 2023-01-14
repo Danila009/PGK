@@ -15,7 +15,7 @@ data class JournalTopicResponse(
 data class JournalTopic(
     val id:Int,
     val title:String,
-    val homeWork:String,
+    val homeWork:String?,
     val hours:Int,
     val date:Date
 )

@@ -7,6 +7,7 @@ import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
 import ru.lfybkf19.feature_journal.navigation.JournalDetailsDestination
 import ru.lfybkf19.feature_journal.navigation.JournalListDestination
+import ru.lfybkf19.feature_journal.navigation.JournalTopicTableDestination
 import ru.lfybkf19.feature_journal.navigation.journalNavigation
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.authNavigation
@@ -203,6 +204,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onJournalDetailsScreen = { journalId ->
             navController.navigate("${JournalDetailsDestination.route}/$journalId")
+        },
+        onJournalTopicTableScreen = { journalSubjectId, maxSubjectHours ->
+            navController.navigate(
+                "${JournalTopicTableDestination.route}/$journalSubjectId" +
+                        "?${JournalTopicTableDestination.maxSubjectHours}=$maxSubjectHours"
+            )
         }
     )
 
