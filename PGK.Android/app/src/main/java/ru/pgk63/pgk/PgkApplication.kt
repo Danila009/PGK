@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import dagger.hilt.android.HiltAndroidApp
+import ru.pgk63.pgk.services.fcm.FCM
 import ru.pgk63.pgk.utils.FirebaseConstants
 
 @HiltAndroidApp
@@ -19,5 +20,7 @@ class PgkApplication: Application() {
             .build()
 
         Firebase.initialize(this, options, FirebaseConstants.PROJECT_ID)
+
+        FCM.saveToken(this)
     }
 }

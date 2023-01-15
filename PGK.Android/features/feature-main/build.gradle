@@ -61,6 +61,9 @@ dependencies {
     //Navigation
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanist_navigation_animation_version")
 
+    //Paging
+    implementation "androidx.paging:paging-compose:$paging_compose_version"
+
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"

@@ -17,6 +17,7 @@ import ru.pgk63.feature_department.navigation.departmentNavigation
 import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
+import ru.pgk63.feature_main.navigation.NotificationListDestination
 import ru.pgk63.feature_main.navigation.mainNavigation
 import ru.pgk63.feature_profile.navigation.ProfileDestination
 import ru.pgk63.feature_profile.navigation.profileNavigation
@@ -39,6 +40,10 @@ fun NavGraphBuilder.mainNavGraphBuilder(
     navController: NavController
 ){
     mainNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onNotificationListScreen = {
+            navController.navigate(NotificationListDestination.route)
+        },
         onTechSupportChatScreen = { userRole ->
             navController.navigate(
                 if(userRole != UserRole.ADMIN)

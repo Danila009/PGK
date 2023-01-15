@@ -1,12 +1,19 @@
 package ru.pgk63.core_common.api.user.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.user.UserApi
+import ru.pgk63.core_common.api.user.model.Notification
 import ru.pgk63.core_common.api.user.model.UpdateUserPhotoResponse
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserSettings
+import ru.pgk63.core_common.api.user.paging.NotificationPageSourse
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.theme.ThemeCorners
@@ -23,6 +30,15 @@ class UserRepository @Inject constructor(
 ): ApiResponse() {
 
     suspend fun get(): Result<User> = safeApiCall { userApi.get() }
+
+    fun getNotifications(search: String? = null): Flow<PagingData<Notification>> {
+        return Pager(PagingConfig(pageSize = PAGE_SIZE)){
+            NotificationPageSourse(
+                userApi = userApi,
+                search = search
+            )
+        }.flow
+    }
 
     suspend fun updatePassword(): Result<String> = safeApiCall { userApi.updatePassword() }
 

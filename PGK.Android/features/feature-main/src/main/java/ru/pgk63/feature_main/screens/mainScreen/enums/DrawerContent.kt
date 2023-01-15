@@ -1,4 +1,4 @@
-package ru.pgk63.feature_main.screen.enums
+package ru.pgk63.feature_main.screens.mainScreen.enums
 
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.icon.ResIcons

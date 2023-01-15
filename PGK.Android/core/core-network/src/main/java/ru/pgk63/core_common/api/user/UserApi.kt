@@ -8,6 +8,8 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
+import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.user.model.NotificationResponse
 import ru.pgk63.core_common.api.user.model.UpdateUserPhotoResponse
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserSettings
@@ -20,6 +22,13 @@ interface UserApi {
 
     @GET("/pgk63/api/User")
     suspend fun get(): Response<User>
+
+    @GET("/pgk63/api/User/Notifications")
+    suspend fun getNotifications(
+        @Query("search") search:String? = null,
+        @Query("pageNumber") pageNumber:Int,
+        @Query("pageSize") pageSize:Int = PAGE_SIZE
+    ): NotificationResponse
 
     @PATCH("/pgk63/api/User/Password")
     suspend fun updatePassword(): Response<String>

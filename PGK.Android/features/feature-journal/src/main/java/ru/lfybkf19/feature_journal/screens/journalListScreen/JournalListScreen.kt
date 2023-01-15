@@ -215,39 +215,35 @@ private fun JournalListScreen(
                     drawerShape = PgkTheme.shapes.cornersStyle,
                     gesturesEnabled = bottomDrawerState.isOpen,
                     drawerContent = {
-                        if(journals.itemCount > 0) {
-                            BottomDrawerContent(
-                                type = journalListBottomDrawerType,
-                                courseSelected = courseSelected,
-                                semestersSelected = semestersSelected,
-                                groups = groups,
-                                departments = departments,
-                                specialties = specialties,
-                                groupsIdSelected = groupsIdSelected,
-                                departmentsIdSelected = departmentsIdSelected,
-                                specialtiesIdSelected = specialtiesIdSelected,
-                                groupSearchText = groupSearchText,
-                                departmentSearchText = departmentSearchText,
-                                specialitySearchText = specialitySearchText,
-                                onClickCourseItem = onClickCourseItem,
-                                onClickSemesterItem = onClickSemesterItem,
-                                onClickGroupItem = onClickGroupItem,
-                                onClickDepartmentItem = onClickDepartmentItem,
-                                onClickSpecializationItem = onClickSpecializationItem,
-                                onGroupSearchTextChange = onGroupSearchTextChange,
-                                onDepartmentSearchTextChange = onDepartmentSearchTextChange,
-                                onSpecializationSearchTextChange = onSpecializationSearchTextChange,
-                                onSortingJournal = {
-                                    scope.launch {
-                                        onSortingJournal()
-                                        journalListBottomDrawerType = null
-                                        bottomDrawerState.close()
-                                    }
+                        BottomDrawerContent(
+                            type = journalListBottomDrawerType,
+                            courseSelected = courseSelected,
+                            semestersSelected = semestersSelected,
+                            groups = groups,
+                            departments = departments,
+                            specialties = specialties,
+                            groupsIdSelected = groupsIdSelected,
+                            departmentsIdSelected = departmentsIdSelected,
+                            specialtiesIdSelected = specialtiesIdSelected,
+                            groupSearchText = groupSearchText,
+                            departmentSearchText = departmentSearchText,
+                            specialitySearchText = specialitySearchText,
+                            onClickCourseItem = onClickCourseItem,
+                            onClickSemesterItem = onClickSemesterItem,
+                            onClickGroupItem = onClickGroupItem,
+                            onClickDepartmentItem = onClickDepartmentItem,
+                            onClickSpecializationItem = onClickSpecializationItem,
+                            onGroupSearchTextChange = onGroupSearchTextChange,
+                            onDepartmentSearchTextChange = onDepartmentSearchTextChange,
+                            onSpecializationSearchTextChange = onSpecializationSearchTextChange,
+                            onSortingJournal = {
+                                scope.launch {
+                                    onSortingJournal()
+                                    journalListBottomDrawerType = null
+                                    bottomDrawerState.close()
                                 }
-                            )
-                        }else {
-                            EmptyUi()
-                        }
+                            }
+                        )
                     }
                 ){
                     JournalList(

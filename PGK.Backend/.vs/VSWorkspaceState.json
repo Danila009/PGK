@@ -11,6 +11,6 @@
     "\\PGK.WebApi",
     "\\PGK.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\PGK.Backend.sln",
+  "SelectedNode": "\\PGK.Application\\App\\User\\Commands\\UpdateEmail\\UserUpdateEmailCommandHandler.cs",
   "PreviewInSolutionExplorer": false
 }

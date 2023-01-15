@@ -5,14 +5,21 @@ import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_navigation.NavigationDestination
-import ru.pgk63.feature_main.screen.MainRoute
+import ru.pgk63.feature_main.screens.mainScreen.MainRoute
+import ru.pgk63.feature_main.screens.notificationListScreen.NotificationListRoute
 
 object MainDestination : NavigationDestination {
     override val route = "main_screen"
 }
 
+object NotificationListDestination : NavigationDestination {
+    override val route: String = "notification_list_screen"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.mainNavigation(
+    onBackScreen: () -> Unit,
+    onNotificationListScreen: () -> Unit,
     onGroupScreen: () -> Unit,
     onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
@@ -28,6 +35,7 @@ fun NavGraphBuilder.mainNavigation(
         route = MainDestination.route
     ){
         MainRoute(
+            onNotificationListScreen = onNotificationListScreen,
             onGroupScreen = onGroupScreen,
             onTechSupportChatScreen = onTechSupportChatScreen,
             onSettingsScreen = onSettingsScreen,
@@ -38,6 +46,14 @@ fun NavGraphBuilder.mainNavigation(
             onDepartmentListScreen = onDepartmentListScreen,
             onRaportichkaScreen = onRaportichkaScreen,
             onJournalScreen = onJournalScreen,
+        )
+    }
+
+    composable(
+        route = NotificationListDestination.route
+    ){
+        NotificationListRoute(
+            onBackScreen = onBackScreen
         )
     }
 }

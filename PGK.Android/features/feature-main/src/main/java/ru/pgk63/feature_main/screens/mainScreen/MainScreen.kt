@@ -1,4 +1,4 @@
-package ru.pgk63.feature_main.screen
+package ru.pgk63.feature_main.screens.mainScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -29,13 +29,14 @@ import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingTitle
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbar
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbarScrollBehavior
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
-import ru.pgk63.feature_main.screen.enums.DrawerContent
-import ru.pgk63.feature_main.viewModel.MainViewModel
+import ru.pgk63.feature_main.screens.mainScreen.enums.DrawerContent
+import ru.pgk63.feature_main.screens.mainScreen.viewModel.MainViewModel
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel(),
+    onNotificationListScreen: () -> Unit,
     onGroupScreen: () -> Unit,
     onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
@@ -65,6 +66,7 @@ internal fun MainRoute(
     MainScreen(
         userResult = userResult,
         userRole = userRole,
+        onNotificationListScreen = onNotificationListScreen,
         onGroupScreen = onGroupScreen,
         onTechSupportChatScreen = onTechSupportChatScreen,
         onSettingsScreen = onSettingsScreen,
@@ -87,6 +89,7 @@ private fun MainScreen(
     userResult: Result<User>,
     userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
+    onNotificationListScreen: () -> Unit,
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: (userRole: UserRole) -> Unit,
     onSettingsScreen: () -> Unit,
@@ -109,6 +112,7 @@ private fun MainScreen(
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,
+                onNotificationListScreen = onNotificationListScreen,
                 onClickIconMenu = {
                     scope.launch {
                         scaffoldState.drawerState.open()
@@ -152,7 +156,8 @@ private fun MainScreen(
 @Composable
 private fun TopBar(
     scrollBehavior: CollapsingToolbarScrollBehavior,
-    onClickIconMenu:() -> Unit
+    onClickIconMenu:() -> Unit,
+    onNotificationListScreen: () -> Unit
 ) {
     CollapsingToolbar(
         collapsingTitle = CollapsingTitle.large(titleText = "Доброе утро"),
@@ -182,9 +187,7 @@ private fun TopBar(
 
             IconButton(
                 modifier = Modifier.padding(5.dp),
-                onClick = {
-
-                }
+                onClick = onNotificationListScreen
             ) {
                 Icon(
                     imageVector = Icons.Default.Notifications,
