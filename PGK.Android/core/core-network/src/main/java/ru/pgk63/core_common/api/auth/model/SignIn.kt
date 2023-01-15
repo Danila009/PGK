@@ -26,8 +26,5 @@ data class SignInResponse(
     val themeFontSize: ThemeFontSize = ThemeFontSize.Medium,
     val themeCorners: ThemeCorners = ThemeCorners.Rounded,
     val language: Language?,
-    @SerializedName("Message")
-    val errorMessage:String? = null,
-    @SerializedName("Code")
-    val errorCode: Int? = null
+    val errorMessage:String? = null
 )

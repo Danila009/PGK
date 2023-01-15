@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -12,8 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,7 +42,8 @@ import ru.pgk63.core_common.validation.passwordValidation
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun AuthRoute(
-    viewModel: AuthViewModel = hiltViewModel()
+    viewModel: AuthViewModel = hiltViewModel(),
+    onForgotPasswordScreen: () -> Unit
 ) {
     var firstName by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
@@ -81,7 +87,8 @@ internal fun AuthRoute(
         },
         onFirstNameChange = { firstName = it },
         onLastNameChange = { lastName = it },
-        onPasswordChange = { password = it }
+        onPasswordChange = { password = it },
+        onForgotPasswordScreen = onForgotPasswordScreen
     )
 }
 
@@ -98,87 +105,122 @@ private fun AuthScreen(
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onForgotPasswordScreen: () -> Unit = {}
 ) {
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
+
+    val focusManager = LocalFocusManager.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = PgkTheme.colors.primaryBackground
     ) {
-        LazyColumn {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             item {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    BaseLottieAnimation(
-                        type = LottieAnimationType.WELCOME,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .width((screenWidthDp / 1.5).dp)
-                            .height((screenHeightDp / 2).dp)
-                    )
+                BaseLottieAnimation(
+                    type = LottieAnimationType.WELCOME,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .width((screenWidthDp / 1.5).dp)
+                        .height((screenHeightDp / 2).dp)
+                )
 
-                    Text(
-                        text = stringResource(id = R.string.welcome),
-                        color = PgkTheme.colors.primaryText,
-                        fontFamily = PgkTheme.fontFamily.fontFamily,
-                        style = PgkTheme.typography.heading,
+                Text(
+                    text = stringResource(id = R.string.welcome),
+                    color = PgkTheme.colors.primaryText,
+                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                    style = PgkTheme.typography.heading,
+                    modifier = Modifier.padding(5.dp)
+                )
+
+                if(resultSignIn is Result.Loading){
+                    CircularProgressIndicator(
+                        color = PgkTheme.colors.tintColor,
                         modifier = Modifier.padding(5.dp)
                     )
-
-                    if(resultSignIn is Result.Loading){
-                        CircularProgressIndicator(
-                            color = PgkTheme.colors.tintColor,
-                            modifier = Modifier.padding(5.dp)
-                        )
-                    }else if(resultSignIn is Result.Error){
-                        Text(
-                            text =  resultSignIn.data?.errorMessage ?: stringResource(id = R.string.authorization_error),
-                            color = PgkTheme.colors.errorColor,
-                            fontFamily = PgkTheme.fontFamily.fontFamily,
-                            style = PgkTheme.typography.body,
-                            modifier = Modifier.padding(5.dp)
-                        )
-                    }
-                    
-                    TextFieldBase(
-                        text = firstName,
-                        onTextChanged = onFirstNameChange,
-                        maxChar = 256,
-                        label = stringResource(id = R.string.firstName),
-                        modifier = Modifier.padding(5.dp),
-                        errorText = if(firstNameValidation?.second != null)
-                            stringResource(id = firstNameValidation.second!!) else null,
-                        hasError = !(firstNameValidation?.first ?: true),
+                }else if(resultSignIn is Result.Error || resultSignIn?.data?.errorMessage != null){
+                    Text(
+                        text =  resultSignIn.data?.errorMessage ?: stringResource(id = R.string.authorization_error),
+                        color = PgkTheme.colors.errorColor,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        style = PgkTheme.typography.body,
+                        modifier = Modifier.padding(5.dp)
                     )
+                }
 
-                    TextFieldBase(
-                        text = lastName,
-                        onTextChanged = onLastNameChange,
-                        maxChar = 256,
-                        label = stringResource(id = R.string.lastName),
-                        modifier = Modifier.padding(5.dp),
-                        errorText = if (lastNameValidation?.second != null)
-                            stringResource(id = lastNameValidation.second!!) else null,
-                        hasError = !(lastNameValidation?.first ?: true),
-                    )
+                TextFieldBase(
+                    text = firstName,
+                    onTextChanged = onFirstNameChange,
+                    maxChar = 256,
+                    label = stringResource(id = R.string.firstName),
+                    modifier = Modifier.padding(5.dp),
+                    errorText = if(firstNameValidation?.second != null)
+                        stringResource(id = firstNameValidation.second!!) else null,
+                    hasError = !(firstNameValidation?.first ?: true),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    })
+                )
 
+                TextFieldBase(
+                    text = lastName,
+                    onTextChanged = onLastNameChange,
+                    maxChar = 256,
+                    label = stringResource(id = R.string.lastName),
+                    modifier = Modifier.padding(5.dp),
+                    errorText = if (lastNameValidation?.second != null)
+                        stringResource(id = lastNameValidation.second!!) else null,
+                    hasError = !(lastNameValidation?.first ?: true),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    })
+                )
+
+                Column {
                     TextFieldPassword(
                         text = password,
                         onTextChanged = onPasswordChange,
-                        modifier = Modifier.padding(5.dp),
-                        validation = passwordValidation
+                        modifier = Modifier.padding(
+                            top = 5.dp,
+                            start = 5.dp,
+                            end = 5.dp
+                        ),
+                        validation = passwordValidation,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = {
+                            focusManager.clearFocus()
+                        })
                     )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
+                    TextButton(
+                        modifier = Modifier
+                            .padding(
+                                start = 5.dp,
+                                end = 5.dp,
+                                bottom = 5.dp
+                            ).align(Alignment.End),
+                        onClick = onForgotPasswordScreen
                     ) {
-                        SignInButton(onClick = signIn)
+                        Text(
+                            text = stringResource(id = R.string.forgot_password),
+                            color = PgkTheme.colors.primaryText,
+                            style = PgkTheme.typography.caption,
+                            fontFamily = PgkTheme.fontFamily.fontFamily,
+                        )
                     }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    SignInButton(onClick = signIn)
                 }
             }
         }

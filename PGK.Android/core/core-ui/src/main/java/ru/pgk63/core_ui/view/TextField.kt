@@ -206,7 +206,8 @@ fun TextFieldPassword(
     modifier: Modifier = Modifier,
     validation: Pair<Boolean, Int?>? = passwordValidation(text),
     label: String = stringResource(id = R.string.password),
-    onNext: (KeyboardActionScope.() -> Unit)? = null
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions()
 ) {
     var showPassword by remember { mutableStateOf(false) }
 
@@ -219,10 +220,8 @@ fun TextFieldPassword(
         modifier = modifier,
         label = label,
         visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(onNext = onNext),
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         trailingIcon = {
             AnimatedVisibility(text.isNotEmpty()) {
                 IconButton(onClick = { showPassword = !showPassword }) {

@@ -23,6 +23,8 @@ internal class AuthViewModel @Inject constructor(
     fun signIn(body: SignIn) {
         viewModelScope.launch {
             try {
+                _responseSignIn.value = Result.Loading()
+
                 _responseSignIn.value = authRepository.signIn(body)
             } catch (e: Exception) {
                 _responseSignIn.value = Result.Error(e.message ?: "")

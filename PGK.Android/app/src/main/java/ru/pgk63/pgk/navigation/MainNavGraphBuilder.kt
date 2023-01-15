@@ -10,6 +10,7 @@ import ru.lfybkf19.feature_journal.navigation.JournalListDestination
 import ru.lfybkf19.feature_journal.navigation.JournalTopicTableDestination
 import ru.lfybkf19.feature_journal.navigation.journalNavigation
 import ru.pgk63.core_common.enums.user.UserRole
+import ru.pgk63.feature_auth.navigation.ForgotPasswordDestination
 import ru.pgk63.feature_auth.navigation.authNavigation
 import ru.pgk63.feature_department.navigation.DepartmentDetailsDestination
 import ru.pgk63.feature_department.navigation.DepartmentListDestination
@@ -88,7 +89,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         }
     )
 
-    authNavigation()
+    authNavigation(
+        onBackScreen = { navController.navigateUp() },
+        onForgotPasswordScreen = {
+            navController.navigate(ForgotPasswordDestination.route)
+        }
+    )
 
     groupNavigation(
         onGroupDetailsScreen = { id ->

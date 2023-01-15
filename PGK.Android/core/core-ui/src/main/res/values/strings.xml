@@ -108,4 +108,6 @@
     <string name="semester">Семестр</string>
     <string name="course">Курс</string>
     <string name="sorting">Сортирока</string>
+    <string name="forgot_password">Забыл пароль</string>
+    <string name="email_or_telegram_question">Привязывали ли вы свой аккаунт к Email или Телеграмму ?</string>
 </resources>

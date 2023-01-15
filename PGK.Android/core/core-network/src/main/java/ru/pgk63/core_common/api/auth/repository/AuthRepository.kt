@@ -21,7 +21,7 @@ class AuthRepository @Inject constructor(
     suspend fun signIn(body: SignIn): Result<SignInResponse> {
         val response = safeApiCall { authApi.signIn(body) }
 
-        if(response is Result.Success && response.data?.accessToken != null){
+        if(response is Result.Success && response.data?.accessToken != null && response.data.errorMessage == null){
             val userLocalDatabase = UserLocalDatabase(
                 statusRegistration = true,
                 userId = response.data.userId,
