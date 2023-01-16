@@ -62,4 +62,9 @@ interface UserApi {
     suspend fun uploadImage(
         @Part photo: MultipartBody.Part
     ): Response<UpdateUserPhotoResponse>
+
+    @POST("/pgk63/api/User/Email/Pasword/Reset")
+    suspend fun passwordReset(
+        @Query("email") email: String
+    ): Response<Unit?>
 }

@@ -6,7 +6,7 @@ fun emailValidation(email:String): Pair<Boolean, Int?> {
     if(email.isEmpty())
         return false to R.string.field_required
 
-    if(email.any("."::contains) || email.any("@"::contains))
+    if(!email.any("."::contains) || !email.any("@"::contains))
         return false to R.string.incorrect_email
 
     return true to null

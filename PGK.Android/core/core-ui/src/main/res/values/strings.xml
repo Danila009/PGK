@@ -24,6 +24,7 @@
     <string name="technical_support">Техподдержка</string>
     <string name="technical_support_notifications_settings_body">Получать уведомления от техподдержки</string>
     <string name="email">Электронная почта</string>
+    <string name="send_email_success">Письмо отправлено</string>
     <string name="password">Пароль</string>
     <string name="firstName">Имя</string>
     <string name="lastName">Фамилия</string>
@@ -110,5 +111,11 @@
     <string name="course">Курс</string>
     <string name="sorting">Сортирока</string>
     <string name="forgot_password">Забыл пароль</string>
-    <string name="email_or_telegram_question">Привязывали ли вы свой аккаунт к Email или Телеграмму ?</string>
+    <string name="email_or_telegram_question">Привязывали ли вы свой аккаунт к Email или Телеграм ?</string>
+    <string name="restore_access_telegram">Восстановить доступ, через Телеграм бота</string>
+    <string name="restore_access_email">Восстановить доступ, через Email</string>
+    <string name="restore_access_email_body">Вам на Email придет ссылка, перейдя по ней вы увидите свой пароль</string>
+    <string name="restore_access_telegram_body">1. Зайдите в приложение Телеграм\n2. Откройте чат с ботом\n3. Отправьте сообщение\n/password_reset</string>
+    <string name="send_email">Отправить письмо</string>
+    <string name="swipe_to_screen">Проведите пальцем по экрану</string>
 </resources>

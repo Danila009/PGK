@@ -124,4 +124,8 @@ class UserRepository @Inject constructor(
             )
         }
     }
+
+    suspend fun passwordReset(email:String)  = safeApiCall {
+        userApi.passwordReset(email)
+    }
 }
