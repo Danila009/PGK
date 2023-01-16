@@ -27,12 +27,6 @@ class JournalPagingSource(
 
             val page = params.key ?: 1
 
-            Log.e("JournalPagingSource",course.toString())
-            Log.e("JournalPagingSource",semesters.toString())
-            Log.e("JournalPagingSource",groupIds.toString())
-            Log.e("JournalPagingSource",specialityIds.toString())
-            Log.e("JournalPagingSource",departmentIds.toString())
-
             val data = journalApi.getAll(
                 course = course,
                 semesters = semesters,

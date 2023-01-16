@@ -73,4 +73,14 @@ class JournalRepository @Inject constructor(
             )
         }.flow
     }
+
+    suspend fun createJournalTopic(
+        journalSubjectId: Int,
+        body: CreateJournalTopicBody
+    ) = safeApiCall {
+        journalApi.createJournalTopic(
+            journalSubjectId = journalSubjectId,
+            body = body
+        )
+    }
 }

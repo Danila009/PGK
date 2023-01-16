@@ -15,6 +15,7 @@
     <string name="count_hours">Количество часов</string>
     <string name="count_topics">Количество тем</string>
     <string name="topics">Темы</string>
+    <string name="topic">Тема</string>
     <string name="journal_topics">Журнал темы</string>
     <string name="raportichka_sorting_body">Выберите параметры для поиска рапортички и нажмите искать</string>
     <string name="raportichka_notifications_settings_body">Если вас отметят в рапортичке вам придет уведомления</string>
