@@ -67,4 +67,7 @@ interface UserApi {
     suspend fun passwordReset(
         @Query("email") email: String
     ): Response<Unit?>
+
+    @PATCH("/pgk63/api/User/Settings/Language")
+    suspend fun updateLanguage(@Query("languageId") languageId: Int): Response<Unit?>
 }

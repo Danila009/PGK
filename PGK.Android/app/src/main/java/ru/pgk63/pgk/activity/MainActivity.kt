@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.extension.launchWhenStarted
+import ru.pgk63.core_common.language.setLocale
 import ru.pgk63.core_database.user.model.UserLocalDatabase
 import ru.pgk63.core_navigation.LocalNavController
 import ru.pgk63.core_navigation.LocalNavHostController
@@ -49,6 +50,12 @@ class MainActivity : ComponentActivity() {
             mainViewModel.user.onEach {
                 userLocalDatabase = it
             }.launchWhenStarted()
+
+            LaunchedEffect(key1 = userLocalDatabase, block = {
+                if(userLocalDatabase?.languageCode != null){
+                    this@MainActivity.setLocale(userLocalDatabase!!.languageCode!!)
+                }
+            })
 
             Permissions()
 

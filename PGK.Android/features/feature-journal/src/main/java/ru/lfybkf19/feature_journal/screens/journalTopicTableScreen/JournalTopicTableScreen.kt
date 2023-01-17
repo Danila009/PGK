@@ -27,6 +27,7 @@ import ru.pgk63.core_common.api.journal.model.CreateJournalTopicBody
 import ru.pgk63.core_common.api.journal.model.JournalTopic
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.extension.launchWhenStarted
+import ru.pgk63.core_common.extension.parseToBaseDateFormat
 import ru.pgk63.core_common.extension.toDate
 import ru.pgk63.core_common.validation.nameValidation
 import ru.pgk63.core_ui.R
@@ -232,6 +233,7 @@ private fun CreateTopicUi(
             TextFieldBase(
                 text = title,
                 onTextChanged = { title = it },
+                label = stringResource(id = R.string.title),
                 errorText = if(titleValidation.second != null)
                     stringResource(id = titleValidation.second!!) else null,
                 hasError = !titleValidation.first,
@@ -241,7 +243,8 @@ private fun CreateTopicUi(
 
             TextFieldBase(
                 text = homeWork,
-                onTextChanged = { homeWork = it }
+                onTextChanged = { homeWork = it },
+                label = stringResource(id = R.string.home_work)
             )
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -253,13 +256,14 @@ private fun CreateTopicUi(
                 errorText = if(hoursValidation.second != null)
                     stringResource(id = hoursValidation.second!!) else null,
                 hasError = !hoursValidation.first,
+                label = stringResource(id = R.string.hours)
             )
 
             Spacer(modifier = Modifier.height(5.dp))
 
             TextButton(onClick = { calendarState.show() }) {
                 Text(
-                    text = stringResource(id = R.string.select_date),
+                    text = date?.parseToBaseDateFormat() ?: stringResource(id = R.string.select_date),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,

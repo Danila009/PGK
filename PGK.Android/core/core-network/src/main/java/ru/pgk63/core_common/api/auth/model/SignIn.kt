@@ -1,7 +1,7 @@
 package ru.pgk63.core_common.api.auth.model
 
 import com.google.gson.annotations.SerializedName
-import ru.pgk63.core_common.api.user.model.Language
+import ru.pgk63.core_common.api.language.model.Language
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle

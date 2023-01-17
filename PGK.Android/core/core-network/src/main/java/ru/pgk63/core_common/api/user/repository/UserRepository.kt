@@ -125,7 +125,15 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun passwordReset(email:String)  = safeApiCall {
+    suspend fun passwordReset(email:String) = safeApiCall {
         userApi.passwordReset(email)
+    }
+
+    suspend fun updateLanguage(languageId: Int, languageCode: String) {
+        val result = safeApiCall { userApi.updateLanguage(languageId) }
+
+        if(result is Result.Success){
+            userDataSource.updateLanguageCode(languageCode)
+        }
     }
 }
