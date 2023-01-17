@@ -142,6 +142,7 @@ private fun ForgotPasswordScreen(
             count = 3
         ) {
             LazyColumn(
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {

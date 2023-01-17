@@ -17,10 +17,5 @@ data class JournalColumn(
     val id:Int,
     val evaluation:JournalEvaluation,
     val date:Date,
-    val row: JournalRowOnlyStudent
-)
-
-data class JournalRowOnlyStudent(
-    val id:Int,
-    val student: Student
+    val row: JournalRow
 )

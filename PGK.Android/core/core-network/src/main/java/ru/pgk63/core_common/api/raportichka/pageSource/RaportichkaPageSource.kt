@@ -1,13 +1,13 @@
 package ru.pgk63.core_common.api.raportichka.pageSource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.raportichka.RaportichkaApi
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
-import ru.pgk63.core_common.api.raportichka.repository.RaportichkaRepository
 
 class RaportichkaPageSource(
+    private val raportichkaApi: RaportichkaApi,
     private val confirmation:Boolean? = null ,
     private val onlyDate:String? = null,
     private val startDate:String? = null,
@@ -17,8 +17,7 @@ class RaportichkaPageSource(
     private val classroomTeacherIds:List<Int>? = null,
     private val numberLessons:List<Int>? = null,
     private val teacherIds:List<Int>? = null,
-    private val studentIds:List<Int>? = null,
-    private val raportichkaRepository: RaportichkaRepository
+    private val studentIds:List<Int>? = null
 ):PagingSource<Int, Raportichka>() {
 
     override fun getRefreshKey(state: PagingState<Int, Raportichka>): Int? {
@@ -32,7 +31,7 @@ class RaportichkaPageSource(
 
             val page = params.key ?: 1
 
-            val data = raportichkaRepository.getRaportichkaAll(
+            val data = raportichkaApi.getRaportichkaAll(
                 pageNumber = page,
                 confirmation = confirmation,
                 onlyDate = onlyDate,
@@ -52,7 +51,6 @@ class RaportichkaPageSource(
                 nextKey = if(data.results.size < PAGE_SIZE) null else page + 1
             )
         }catch (e:Exception){
-            Log.e("startDate", e.toString())
             LoadResult.Error(e)
         }
     }

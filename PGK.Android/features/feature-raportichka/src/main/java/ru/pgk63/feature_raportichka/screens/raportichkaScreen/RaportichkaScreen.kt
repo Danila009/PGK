@@ -85,20 +85,7 @@ internal fun RaportichkaRoute(
     var user by remember { mutableStateOf(UserLocalDatabase()) }
     val groups = viewModel.responseGroup.collectAsLazyPagingItems()
 
-    val raportichkaList = remember {
-        viewModel.getRaportichka(
-            confirmation = confirmation,
-            onlyDate = onlyDate,
-            startDate = startDate,
-            endDate = endDate,
-            groupIds = groupIds,
-            subjectIds = subjectIds,
-            classroomTeacherIds = classroomTeacherIds,
-            numberLessons = numberLessons,
-            teacherIds = teacherIds,
-            studentIds = studentIds
-        )
-    }.collectAsLazyPagingItems()
+    val raportichkaList = viewModel.responseRaportichkaList.collectAsLazyPagingItems()
 
     viewModel.user.onEach { userLocalDatabase ->
         user = userLocalDatabase
@@ -124,6 +111,21 @@ internal fun RaportichkaRoute(
             null -> Unit
         }
     }.launchWhenStarted()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getRaportichka(
+            confirmation = confirmation,
+            onlyDate = onlyDate,
+            startDate = startDate,
+            endDate = endDate,
+            groupIds = groupIds,
+            subjectIds = subjectIds,
+            classroomTeacherIds = classroomTeacherIds,
+            numberLessons = numberLessons,
+            teacherIds = teacherIds,
+            studentIds = studentIds
+        )
+    })
 
     RaportichkaScreen(
         scaffoldState = scaffoldState,

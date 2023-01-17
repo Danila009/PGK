@@ -2,19 +2,15 @@ package ru.pgk63.feature_raportichka.screens.raportichkaScreen.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.repository.GroupRepository
 import ru.pgk63.core_common.api.headman.repository.HeadmanRepository
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
-import ru.pgk63.core_common.api.raportichka.pageSource.RaportichkaPageSource
 import ru.pgk63.core_common.api.raportichka.repository.RaportichkaRepository
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_database.user.UserDataSource
@@ -38,6 +34,9 @@ internal class RaportichkaViewModel @Inject constructor(
     private val _responseGroup = MutableStateFlow<PagingData<Group>>(PagingData.empty())
     val responseGroup = _responseGroup.asStateFlow()
 
+    private val _responseRaportichkaList = MutableStateFlow<PagingData<Raportichka>>(PagingData.empty())
+    val responseRaportichkaList = _responseRaportichkaList.asStateFlow()
+
     fun getRaportichka(
         confirmation:Boolean? = null ,
         onlyDate:String? = null,
@@ -49,10 +48,9 @@ internal class RaportichkaViewModel @Inject constructor(
         numberLessons:List<Int>? = null,
         teacherIds:List<Int>? = null,
         studentIds:List<Int>? = null
-    ): Flow<PagingData<Raportichka>> {
-        return Pager(PagingConfig(pageSize = PAGE_SIZE)){
-            RaportichkaPageSource(
-                raportichkaRepository = raportichkaRepository,
+    ) {
+        viewModelScope.launch {
+            raportichkaRepository.getRaportichkaAll(
                 confirmation = confirmation,
                 onlyDate = onlyDate,
                 startDate = startDate,
@@ -63,8 +61,10 @@ internal class RaportichkaViewModel @Inject constructor(
                 numberLessons = numberLessons,
                 teacherIds = teacherIds,
                 studentIds = studentIds
-            )
-        }.flow.cachedIn(viewModelScope)
+                ).cachedIn(viewModelScope).collect {
+                    _responseRaportichkaList.value = it
+                }
+        }
     }
 
     fun getGroups(search:String? = null) {

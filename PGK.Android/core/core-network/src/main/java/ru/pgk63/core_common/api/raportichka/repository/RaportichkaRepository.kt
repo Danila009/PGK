@@ -1,10 +1,16 @@
 package ru.pgk63.core_common.api.raportichka.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.pgk63.core_common.Constants
 import ru.pgk63.core_common.api.raportichka.RaportichkaApi
+import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.raportichka.model.RaportichkaAddRowBody
 import ru.pgk63.core_common.api.raportichka.model.RaportichkaResponse
 import ru.pgk63.core_common.api.raportichka.model.RaportichkaUpdateRowBody
+import ru.pgk63.core_common.api.raportichka.pageSource.RaportichkaPageSource
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.extension.isNull
@@ -14,7 +20,7 @@ class RaportichkaRepository @Inject constructor(
     private val raportichkaApi: RaportichkaApi
 ): ApiResponse() {
 
-    suspend fun getRaportichkaAll(
+    fun getRaportichkaAll(
         confirmation:Boolean? = null ,
         onlyDate:String? = null,
         startDate:String? = null,
@@ -24,24 +30,23 @@ class RaportichkaRepository @Inject constructor(
         classroomTeacherIds:List<Int>? = null,
         numberLessons:List<Int>? = null,
         teacherIds:List<Int>? = null,
-        studentIds:List<Int>? = null,
-        pageNumber:Int? = null,
-        pageSize:Int = Constants.PAGE_SIZE
-    ): RaportichkaResponse {
-        return raportichkaApi.getRaportichkaAll(
-            confirmation = confirmation,
-            onlyDate = onlyDate.isNull(),
-            startDate = startDate.isNull(),
-            endDate = endDate.isNull(),
-            groupIds = groupIds,
-            subjectIds = subjectIds,
-            classroomTeacherIds = classroomTeacherIds,
-            numberLessons = numberLessons,
-            teacherIds = teacherIds,
-            studentIds = studentIds,
-            pageNumber = pageNumber,
-            pageSize = pageSize
-        )
+        studentIds:List<Int>? = null
+    ): Flow<PagingData<Raportichka>> {
+        return Pager(PagingConfig(pageSize = Constants.PAGE_SIZE)){
+            RaportichkaPageSource(
+                raportichkaApi = raportichkaApi,
+                confirmation = confirmation,
+                onlyDate = onlyDate,
+                startDate = startDate,
+                endDate = endDate,
+                groupIds = groupIds,
+                subjectIds = subjectIds,
+                classroomTeacherIds = classroomTeacherIds,
+                numberLessons = numberLessons,
+                teacherIds = teacherIds,
+                studentIds = studentIds
+            )
+        }.flow
     }
 
     suspend fun raportichkaAddRow(

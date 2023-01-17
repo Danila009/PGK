@@ -15,22 +15,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.api.journal.model.JournalColumn
+import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.launchWhenStarted
+import ru.pgk63.core_common.extension.parseToBaseDateFormat
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.EmptyUi
+import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingTitle
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbar
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbarScrollBehavior
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_main.screens.mainScreen.enums.DrawerContent
 import ru.pgk63.feature_main.screens.mainScreen.viewModel.MainViewModel
+import ru.pgk63.core_ui.R
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -50,6 +61,9 @@ internal fun MainRoute(
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
+
+    val raportichkaList = viewModel.responseRaportichkaList.collectAsLazyPagingItems()
+    val journalColumnList = viewModel.responseJournalColumnList.collectAsLazyPagingItems()
 
     viewModel.responseUserNetwork.onEach { result ->
         userResult = result
@@ -79,6 +93,34 @@ internal fun MainRoute(
         onJournalScreen = onJournalScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
+        },
+        getRaportichkaList = {
+            LaunchedEffect(key1 = Unit) {
+                viewModel.getRaportichkaList(
+                    studentIds = if(
+                        (userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN
+                                || userRole == UserRole.DEPUTY_HEADMAN) && userResult.data?.id != null)
+                        listOf(userResult.data!!.id)
+                    else
+                        null
+                )
+            }
+
+            raportichkaList
+        },
+        getJournalColumnList = {
+            LaunchedEffect(key1 = Unit){
+                viewModel.getJournalColumnList(
+                    studentIds = if(
+                        (userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN
+                                || userRole == UserRole.DEPUTY_HEADMAN) && userResult.data?.id != null)
+                        listOf(userResult.data!!.id)
+                    else
+                        null
+                )
+            }
+
+            journalColumnList
         }
     )
 }
@@ -99,7 +141,9 @@ private fun MainScreen(
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
-    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
+    getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
+    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
@@ -144,6 +188,19 @@ private fun MainScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
+
+                item {
+                    when(userResult){
+                        is Result.Error -> ErrorUi()
+                        is Result.Loading -> EmptyUi()
+                        is Result.Success -> MainScreenSuccess(
+                            user = userResult.data!!,
+                            userRole = userRole,
+                            getRaportichkaList = getRaportichkaList,
+                            getJournalColumnList = getJournalColumnList
+                        )
+                    }
+                }
 
                 item {
                     Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
@@ -317,9 +374,163 @@ private fun DrawerContentUi(
     }
 }
 
+@Composable
+private fun MainScreenSuccess(
+    user: User,
+    userRole: UserRole?,
+    getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
+    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
+) {
+    if(userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN){
+        MainScreenStudent(
+            user = user,
+            getRaportichkaList = getRaportichkaList,
+            getJournalColumnList = getJournalColumnList
+        )
+    }
+}
 
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+private fun MainScreenStudent(
+    user: User,
+    getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
+    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
+) {
+    val raportichkaList = getRaportichkaList()
+    val journalColumnList = getJournalColumnList()
 
+    if(journalColumnList.itemCount > 0){
 
+        Text(
+            text = stringResource(id = R.string.journal),
+            color = PgkTheme.colors.primaryText,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            style = PgkTheme.typography.heading,
+            modifier = Modifier.padding(15.dp)
+        )
+
+        HorizontalPager(count = journalColumnList.itemCount) {
+
+            val journalColumn = journalColumnList[it]
+
+            if(journalColumn != null){
+                JournalColumnItem(
+                    journalColumn = journalColumn
+                )
+            }
+        }
+    }
+
+    if(raportichkaList.itemCount > 0){
+
+        Text(
+            text = stringResource(id = R.string.raportichka),
+            color = PgkTheme.colors.primaryText,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            style = PgkTheme.typography.heading,
+            modifier = Modifier.padding(15.dp)
+        )
+
+        HorizontalPager(count = raportichkaList.itemCount) {
+
+            val raportichka = raportichkaList[it]
+
+            if(raportichka != null){
+                RaportichkaItem(
+                    raportichka = raportichka
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun JournalColumnItem(
+    modifier: Modifier = Modifier,
+    journalColumn: JournalColumn
+) {
+    val journalSubject = journalColumn.row.journalSubject
+
+    Card(
+        modifier = modifier.padding(6.dp),
+        backgroundColor = PgkTheme.colors.secondaryBackground,
+        elevation = 12.dp,
+        shape = PgkTheme.shapes.cornersStyle
+    ) {
+        Column {
+            Text(
+                text = "${journalSubject.subject} (${journalSubject.teacher})",
+                color = PgkTheme.colors.primaryText,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                style = PgkTheme.typography.body,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = journalColumn.evaluation.text,
+                color = PgkTheme.colors.primaryText,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                style = PgkTheme.typography.body,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Text(
+                text = journalColumn.date.parseToBaseDateFormat(),
+                color = PgkTheme.colors.primaryText,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                style = PgkTheme.typography.caption,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .align(Alignment.End)
+            )
+        }
+    }
+}
+
+@Composable
+private fun RaportichkaItem(
+    modifier: Modifier = Modifier,
+    raportichka: Raportichka,
+) {
+    Card(
+        modifier = modifier.padding(6.dp),
+        backgroundColor = PgkTheme.colors.secondaryBackground,
+        elevation = 12.dp,
+        shape = PgkTheme.shapes.cornersStyle
+    ) {
+        Column {
+            Text(
+                text = raportichka.date.parseToBaseDateFormat(),
+                color = PgkTheme.colors.primaryText,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                style = PgkTheme.typography.body,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                textAlign = TextAlign.Center
+            )
+
+            repeat(raportichka.rows.size){ index ->
+
+                val row = raportichka.rows[index]
+
+                Text(
+                    text = "${row.numberLesson}. ${row.subject.subjectTitle} (${row.teacher.fioAbbreviated()})",
+                    color = PgkTheme.colors.primaryText,
+                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                    style = PgkTheme.typography.caption,
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
+        }
+    }
+}
 
 
 

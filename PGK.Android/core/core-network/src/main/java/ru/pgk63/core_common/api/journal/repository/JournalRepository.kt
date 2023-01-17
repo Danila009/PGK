@@ -7,10 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.journal.JournalApi
 import ru.pgk63.core_common.api.journal.model.*
-import ru.pgk63.core_common.api.journal.paging.JournalPagingSource
-import ru.pgk63.core_common.api.journal.paging.JournalRowPagingSource
-import ru.pgk63.core_common.api.journal.paging.JournalSubjectPagingSource
-import ru.pgk63.core_common.api.journal.paging.JournalTopicPagingSource
+import ru.pgk63.core_common.api.journal.paging.*
 import ru.pgk63.core_common.common.response.ApiResponse
 import javax.inject.Inject
 
@@ -68,6 +65,21 @@ class JournalRepository @Inject constructor(
             JournalRowPagingSource(
                 journalApi = journalApi,
                 journalSubjectId = journalSubjectId,
+                studentIds = studentIds,
+                evaluation = evaluation
+            )
+        }.flow
+    }
+
+    fun getJournalColumn(
+        journalRowId:Int? = null,
+        studentIds:List<Int>? = null,
+        evaluation:JournalEvaluation? = null
+    ): Flow<PagingData<JournalColumn>> {
+        return Pager(PagingConfig(pageSize = PAGE_SIZE)){
+            JournalColumnPagingSourse(
+                journalApi = journalApi,
+                journalRowId = journalRowId,
                 studentIds = studentIds,
                 evaluation = evaluation
             )

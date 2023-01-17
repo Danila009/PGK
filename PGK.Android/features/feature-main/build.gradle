@@ -64,6 +64,10 @@ dependencies {
     //Paging
     implementation "androidx.paging:paging-compose:$paging_compose_version"
 
+    //Pager
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_pager_version"
+
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"
