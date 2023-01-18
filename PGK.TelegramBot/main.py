@@ -5,6 +5,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from bot.data.config import BOT_TOKEN
+from bot.handlers.auth.auth_handler import register_auth
+from bot.handlers.errors.errors_handler import register_errors_handler
 from bot.services.setting_commands import set_default_commands
 
 bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
@@ -12,7 +14,9 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 
 def register_all_handlers():
-    pass
+    register_errors_handler(dp)
+
+    register_auth(dp)
 
 
 async def on_startup():
