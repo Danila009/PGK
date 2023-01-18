@@ -1,15 +1,11 @@
 package ru.pgk63.feature_auth.screens.auth
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -28,16 +24,13 @@ import ru.pgk63.core_common.api.auth.model.SignIn
 import ru.pgk63.core_common.api.auth.model.SignInResponse
 import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.TextFieldBase
 import ru.pgk63.feature_auth.screens.auth.viewModel.AuthViewModel
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.MainTheme
-import ru.pgk63.core_ui.view.BaseLottieAnimation
-import ru.pgk63.core_ui.view.LottieAnimationType
-import ru.pgk63.core_ui.view.TextFieldPassword
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.validation.nameValidation
 import ru.pgk63.core_common.validation.passwordValidation
+import ru.pgk63.core_ui.view.*
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -137,14 +130,15 @@ private fun AuthScreen(
                     modifier = Modifier.padding(5.dp)
                 )
 
-                if(resultSignIn is Result.Loading){
+                if (resultSignIn is Result.Loading) {
                     CircularProgressIndicator(
                         color = PgkTheme.colors.tintColor,
                         modifier = Modifier.padding(5.dp)
                     )
-                }else if(resultSignIn is Result.Error || resultSignIn?.data?.errorMessage != null){
+                } else if (resultSignIn is Result.Error || resultSignIn?.data?.errorMessage != null) {
                     Text(
-                        text =  resultSignIn.data?.errorMessage ?: stringResource(id = R.string.authorization_error),
+                        text = resultSignIn.data?.errorMessage
+                            ?: stringResource(id = R.string.authorization_error),
                         color = PgkTheme.colors.errorColor,
                         fontFamily = PgkTheme.fontFamily.fontFamily,
                         style = PgkTheme.typography.body,
@@ -158,7 +152,7 @@ private fun AuthScreen(
                     maxChar = 256,
                     label = stringResource(id = R.string.firstName),
                     modifier = Modifier.padding(5.dp),
-                    errorText = if(firstNameValidation?.second != null)
+                    errorText = if (firstNameValidation?.second != null)
                         stringResource(id = firstNameValidation.second!!) else null,
                     hasError = !(firstNameValidation?.first ?: true),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -204,7 +198,8 @@ private fun AuthScreen(
                                 start = 5.dp,
                                 end = 5.dp,
                                 bottom = 5.dp
-                            ).align(Alignment.End),
+                            )
+                            .align(Alignment.End),
                         onClick = onForgotPasswordScreen
                     ) {
                         Text(
@@ -220,47 +215,13 @@ private fun AuthScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    SignInButton(onClick = signIn)
+                    NextButton(
+                        text = stringResource(id = R.string.entrance),
+                        onClick = signIn
+                    )
                 }
-            }
-        }
-    }
-}
 
-@Composable
-private fun SignInButton(
-    onClick: () -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(10.dp)
-            .clickable {
-                onClick()
-            }
-    ) {
-        Text(
-            modifier = Modifier.padding(5.dp),
-            text = stringResource(id = R.string.entrance),
-            color = PgkTheme.colors.primaryText,
-            fontFamily = PgkTheme.fontFamily.fontFamily,
-            style = PgkTheme.typography.body
-        )
-
-        Card(
-            modifier = Modifier.padding(5.dp),
-            backgroundColor = PgkTheme.colors.primaryText,
-            shape = AbsoluteRoundedCornerShape(90.dp)
-        ) {
-            Box {
-                Icon(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(10.dp),
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = PgkTheme.colors.primaryBackground
-                )
+                Spacer(modifier = Modifier.height(80.dp))
             }
         }
     }

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,7 +27,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.language.model.Language
 import ru.pgk63.core_common.extension.launchWhenStarted
-import ru.pgk63.core_common.language.setLocale
 import ru.pgk63.core_database.user.model.UserLocalDatabase
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
@@ -155,8 +153,6 @@ private fun LanguageListUi(
     contentPadding: PaddingValues,
     updateLanguage:(languageId: Int, languageCode:String) -> Unit
 ) {
-    val context = LocalContext.current
-
     val locale = remember { Locale.getDefault() }
 
     var currentLanguageCode by remember { mutableStateOf<String>(user?.languageCode ?: locale.language) }

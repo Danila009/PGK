@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="field_required">Это поле является обязательным</string>
+    <string name="not_number">Не совсем похоже на число</string>
+    <string name="minimum_three_characters">Минимум три символа</string>
     <string name="incorrect_email">Некорректный email адрес</string>
     <string name="incorrect_password">Минимум 4 символа</string>
     <string name="default_value">По умолчанию</string>
@@ -20,6 +22,7 @@
     <string name="educational_sector">Учебный сектор</string>
     <string name="department_head">Зав отделения</string>
     <string name="admin">Админ</string>
+    <string name="director">Директор</string>
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>
     <string name="tomorrow">Завтра</string>

@@ -10,5 +10,6 @@ enum class UserRole(@StringRes val nameId:Int) {
     TEACHER(R.string.teacher),
     EDUCATIONAL_SECTOR(R.string.educational_sector),
     DEPARTMENT_HEAD(R.string.department_head),
+    DIRECTOR(R.string.director),
     ADMIN(R.string.admin);
 }

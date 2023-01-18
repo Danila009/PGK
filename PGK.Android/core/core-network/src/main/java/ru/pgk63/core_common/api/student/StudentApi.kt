@@ -1,14 +1,19 @@
 package ru.pgk63.core_common.api.student
 
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.pgk63.core_common.Constants
 import ru.pgk63.core_common.api.student.model.Student
+import ru.pgk63.core_common.api.student.model.StudentRegistrationBody
 import ru.pgk63.core_common.api.student.model.StudentResponse
+import ru.pgk63.core_common.api.user.model.UserRegistrationResponse
 
 interface StudentApi {
+
+    @POST("/pgk63/api/Student/Registration")
+    suspend fun registration(
+        @Body body: StudentRegistrationBody
+    ): Response<UserRegistrationResponse>
 
     @GET("/pgk63/api/Student")
     suspend fun getAll(

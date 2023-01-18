@@ -1,11 +1,14 @@
 package ru.pgk63.core_common.api.group
 
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.group.model.CreateGroupBody
+import ru.pgk63.core_common.api.group.model.CreateGroupResponse
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.model.GroupResponse
 import ru.pgk63.core_common.api.student.model.StudentResponse
@@ -26,6 +29,11 @@ interface GroupApi {
         @Query("pageSize") pageSize: Int = PAGE_SIZE
     ): GroupResponse
 
+    @POST("/pgk63/api/Group")
+    suspend fun create(
+        @Body body: CreateGroupBody
+    ): Response<CreateGroupResponse>
+
     @GET("/pgk63/api/Group/{id}")
     suspend fun getById(@Path("id") id: Int): Response<Group>
 
@@ -35,7 +43,6 @@ interface GroupApi {
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = PAGE_SIZE
     ): StudentResponse
-
 
     @POST("/pgk63/api/Group/{id}/Raportichka")
     suspend fun createRaportichka(@Path("id") groupId:Int):Response<Unit?>

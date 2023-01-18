@@ -2,11 +2,14 @@ package ru.pgk63.feature_group.screens.groupDetailsScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +38,7 @@ import ru.pgk63.core_ui.view.ImageCoil
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
+import ru.pgk63.feature_group.screens.groupDetailsScreen.model.GroupDetailsMenu
 import ru.pgk63.feature_group.screens.groupDetailsScreen.viewModel.GroupDetailsViewModel
 
 @SuppressLint("FlowOperatorInvokedInComposition")
@@ -45,7 +49,9 @@ internal fun GroupDetailsRoute(
     onBackScreen: () -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit,
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onRegistrationHeadman: (groupId: Int,deputy: Boolean) -> Unit,
+    onRegistrationStudentScreen: (groupId: Int) -> Unit
 ) {
     var groupResult by remember { mutableStateOf<Result<Group>>(Result.Loading()) }
 
@@ -65,7 +71,11 @@ internal fun GroupDetailsRoute(
         students = students,
         onStudentDetailsScreen = onStudentDetailsScreen,
         onDepartmentDetailsScreen = onDepartmentDetailsScreen,
-        onSpecializationDetailsScreen = onSpecializationDetailsScreen
+        onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+        onRegistrationStudentScreen = onRegistrationStudentScreen,
+        onRegistrationHeadman = { deputy ->
+            onRegistrationHeadman(groupId, deputy)
+        }
     )
 }
 
@@ -76,9 +86,12 @@ private fun GroupDetailsScreen(
     onBackScreen: () -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit,
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onRegistrationHeadman: (deputy: Boolean) -> Unit,
+    onRegistrationStudentScreen: (groupId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
+    var mainMenuVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -93,7 +106,34 @@ private fun GroupDetailsScreen(
             TopBarBack(
                 title = title,
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackScreen
+                onBackClick = onBackScreen,
+                actions = {
+                    Column {
+                        IconButton(onClick = { mainMenuVisible = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = null,
+                                tint = PgkTheme.colors.tintColor
+                            )
+                        }
+
+                        MainManu(
+                            openMenu = mainMenuVisible,
+                            closeMenu = { mainMenuVisible = false },
+                            onClick = { menu ->
+                                when(menu){
+                                    GroupDetailsMenu.ADD_HEADMAN -> onRegistrationHeadman( false)
+                                    GroupDetailsMenu.ADD_DEPUTY_HEADMAN -> onRegistrationHeadman( true)
+                                    GroupDetailsMenu.ADD_STUDENT -> {
+                                        if(groupResult.data?.id != null){
+                                            onRegistrationStudentScreen(groupResult.data!!.id)
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
             )
         },
         content = { paddingValues ->
@@ -167,6 +207,44 @@ private fun GroupDetailsScreen(
             }
         }
     )
+}
+
+@Composable
+private fun MainManu(
+    openMenu: Boolean,
+    studentRepositoryVisibly: Boolean = true,
+    closeMenu: () -> Unit,
+    onClick: (GroupDetailsMenu) -> Unit
+) {
+    DropdownMenu(
+        modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
+        expanded = openMenu,
+        onDismissRequest = closeMenu
+    ) {
+        GroupDetailsMenu.values().forEach { menu ->
+            DropdownMenuItem(
+                modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
+                onClick = {
+                    onClick(menu)
+                    closeMenu()
+                }) {
+                    Icon(
+                        imageVector = menu.icon,
+                        contentDescription = null,
+                        tint = PgkTheme.colors.primaryText
+                    )
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    Text(
+                        text = stringResource(id = menu.textId),
+                        color = PgkTheme.colors.primaryText,
+                        style = PgkTheme.typography.caption,
+                        fontFamily = PgkTheme.fontFamily.fontFamily
+                    )
+            }
+        }
+    }
 }
 
 @Composable

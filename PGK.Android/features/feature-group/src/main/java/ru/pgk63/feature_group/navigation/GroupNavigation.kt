@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.composable
 import ru.pgk63.core_navigation.NavigationDestination
+import ru.pgk63.feature_group.screens.createGroupScreen.CreateGroupRoute
 import ru.pgk63.feature_group.screens.groupDetailsScreen.GroupDetailsRoute
 import ru.pgk63.feature_group.screens.groupListScreen.GroupListRoute
 
@@ -18,20 +19,30 @@ object GroupDetailsDestination : NavigationDestination {
     const val id_argument = "id"
 }
 
+object CreateGroupDestination : NavigationDestination {
+    override val route: String = "create_group_screen"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.groupNavigation(
     onBackScreen: () -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onGroupDetailsScreen: (groupId: Int, inclusive: Boolean) -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit,
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onRegistrationHeadman: (groupId: Int,deputy: Boolean) -> Unit,
+    onCreateGroupScreen: () -> Unit,
+    onRegistrationStudentScreen: (groupId: Int) -> Unit
 ) {
     composable(
         route = GroupListDestination.route
     ){
         GroupListRoute(
             onBackScreen = onBackScreen,
-            onGroupDetailsScreen = onGroupDetailsScreen
+            onGroupDetailsScreen = {
+                onGroupDetailsScreen(it,false)
+            },
+            onCreateGroupScreen = onCreateGroupScreen
         )
     }
 
@@ -48,7 +59,20 @@ fun NavGraphBuilder.groupNavigation(
            onBackScreen = onBackScreen,
            onStudentDetailsScreen = onStudentDetailsScreen,
            onDepartmentDetailsScreen = onDepartmentDetailsScreen,
-           onSpecializationDetailsScreen = onSpecializationDetailsScreen
+           onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+           onRegistrationHeadman = onRegistrationHeadman,
+           onRegistrationStudentScreen = onRegistrationStudentScreen
        )
+    }
+
+    composable(
+        route = CreateGroupDestination.route
+    ){
+        CreateGroupRoute(
+            onBackScreen = onBackScreen,
+            onGroupDetailsScreen = {
+                onGroupDetailsScreen(it,true)
+            }
+        )
     }
 }

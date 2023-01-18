@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.group.GroupApi
+import ru.pgk63.core_common.api.group.model.CreateGroupBody
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.group.paging.GroupPagingSource
 import ru.pgk63.core_common.api.student.model.StudentResponse
@@ -40,6 +41,10 @@ class GroupRepository @Inject constructor(
                 headmanIds = headmanIds,
             )
         }.flow
+    }
+
+    suspend fun create(body: CreateGroupBody) = safeApiCall {
+        groupApi.create(body)
     }
 
     suspend fun getById(id: Int): Result<Group> {

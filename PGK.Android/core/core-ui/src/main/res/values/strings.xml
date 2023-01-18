@@ -5,6 +5,7 @@
     <string name="guide">Руководство</string>
     <string name="groups">Группы</string>
     <string name="group_choose">Выберите группу</string>
+    <string name="group_create">Создать группу</string>
     <string name="journal">Журнал</string>
     <string name="journals">Журналы</string>
     <string name="journal_notifications_settings_body">Если вам поставят оценку в журнале вам придет уведомления</string>
@@ -45,7 +46,10 @@
     <string name="subjects">Предметы</string>
     <string name="subject">Предмет</string>
     <string name="student">Студент</string>
+    <string name="add_student">Добавить студента</string>
     <string name="headman">Староста</string>
+    <string name="add_headman">Добавить староста</string>
+    <string name="add_deputyHeadma">Добавить зам староста</string>
     <string name="deputyHeadma">Зам староста</string>
     <string name="classroomTeacher">Куратор</string>
     <string name="teachers">Преподаватели</string>
@@ -118,4 +122,7 @@
     <string name="restore_access_telegram_body">1. Зайдите в приложение Телеграм\n2. Откройте чат с ботом\n3. Отправьте сообщение\n/password_reset</string>
     <string name="send_email">Отправить письмо</string>
     <string name="swipe_to_screen">Проведите пальцем по экрану</string>
+    <string name="registration">Регистрация</string>
+    <string name="register">Зарегистрировать</string>
+    <string name="your_password">Ваш пароль</string>
 </resources>

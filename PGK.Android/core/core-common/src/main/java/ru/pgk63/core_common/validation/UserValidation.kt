@@ -1,6 +1,7 @@
 package ru.pgk63.core_common.validation
 
 import ru.pgk63.core_common.R
+import ru.pgk63.core_common.extension.isNumber
 
 fun emailValidation(email:String): Pair<Boolean, Int?> {
     if(email.isEmpty())
@@ -25,6 +26,29 @@ fun passwordValidation(password:String): Pair<Boolean, Int?> {
 fun nameValidation(name:String): Pair<Boolean, Int?> {
     if(name.isEmpty())
         return false to R.string.field_required
+
+    return true to null
+}
+
+fun numberValidation(name:String): Pair<Boolean, Int?> {
+    if(name.isEmpty())
+        return false to R.string.field_required
+
+    if(!name.isNumber())
+        return false to R.string.not_number
+
+    return true to null
+}
+
+fun numberGroupValidation(name:String): Pair<Boolean, Int?> {
+    if(name.isEmpty())
+        return false to R.string.field_required
+
+    if(!name.isNumber())
+        return false to R.string.not_number
+
+    if(name.length < 2)
+        return false to R.string.minimum_three_characters
 
     return true to null
 }

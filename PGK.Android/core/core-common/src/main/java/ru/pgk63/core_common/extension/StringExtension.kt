@@ -16,3 +16,8 @@ fun String?.toIntArrayOrNull(): List<Int>? {
 fun String?.isNull(): String? {
     return if(this == "null") null else this
 }
+
+fun String.isNumber(): Boolean {
+    val regex = "-?\\d+(\\.\\d+)?".toRegex()
+    return this.matches(regex)
+}

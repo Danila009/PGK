@@ -11,10 +11,12 @@ import ru.lfybkf19.feature_journal.navigation.JournalTopicTableDestination
 import ru.lfybkf19.feature_journal.navigation.journalNavigation
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.ForgotPasswordDestination
+import ru.pgk63.feature_auth.navigation.RegistrationUserDestination
 import ru.pgk63.feature_auth.navigation.authNavigation
 import ru.pgk63.feature_department.navigation.DepartmentDetailsDestination
 import ru.pgk63.feature_department.navigation.DepartmentListDestination
 import ru.pgk63.feature_department.navigation.departmentNavigation
+import ru.pgk63.feature_group.navigation.CreateGroupDestination
 import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
@@ -97,8 +99,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
     )
 
     groupNavigation(
-        onGroupDetailsScreen = { id ->
-            navController.navigate("${GroupDetailsDestination.route}/$id")
+        onGroupDetailsScreen = { id, inclusive ->
+            navController.navigate("${GroupDetailsDestination.route}/$id"){
+                popUpTo("${GroupDetailsDestination.route}/$id"){
+                    this.inclusive = inclusive
+                }
+            }
         },
         onStudentDetailsScreen = { id ->
             navController.navigate("${StudentDetailsDestination.route}/$id")
@@ -108,6 +114,24 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSpecializationDetailsScreen = { id ->
             navController.navigate("${SpecializationDetailsDestination.route}/$id")
+        },
+        onRegistrationHeadman = { groupId, deputy ->
+            val userRole = if(deputy) UserRole.DEPUTY_HEADMAN else UserRole.HEADMAN
+
+            navController.navigate("${RegistrationUserDestination.route}?" +
+                    "${RegistrationUserDestination.groupId}=${groupId}&" +
+                    "${RegistrationUserDestination.userRole}=$userRole"
+            )
+        },
+        onCreateGroupScreen = {
+            navController.navigate(CreateGroupDestination.route)
+        },
+        onRegistrationStudentScreen = { groupId ->
+            navController.navigate(
+                "${RegistrationUserDestination.route}?" +
+                        "${RegistrationUserDestination.userRole}=${UserRole.STUDENT}" +
+                        "&${RegistrationUserDestination.groupId}=$groupId"
+            )
         },
         onBackScreen = { navController.navigateUp() }
     )

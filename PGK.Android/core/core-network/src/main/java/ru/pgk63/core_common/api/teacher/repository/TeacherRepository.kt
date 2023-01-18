@@ -8,12 +8,17 @@ import ru.pgk63.core_common.Constants
 import ru.pgk63.core_common.api.teacher.TeacherApi
 import ru.pgk63.core_common.api.teacher.model.Teacher
 import ru.pgk63.core_common.api.teacher.paging.TeacherPageSource
+import ru.pgk63.core_common.api.user.model.UserRegistrationBody
 import ru.pgk63.core_common.common.response.ApiResponse
 import javax.inject.Inject
 
 class TeacherRepository @Inject constructor(
     private val teacherApi: TeacherApi
 ): ApiResponse() {
+
+    suspend fun registration(body: UserRegistrationBody) = safeApiCall {
+        teacherApi.registration(body)
+    }
 
     fun getAll(
         search:String? = null,

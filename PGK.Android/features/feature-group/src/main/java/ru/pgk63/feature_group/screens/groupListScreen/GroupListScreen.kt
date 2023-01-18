@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -32,7 +34,8 @@ import ru.pgk63.feature_group.screens.groupListScreen.viewModel.GroupListViewMod
 internal fun GroupListRoute(
     viewModel: GroupListViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onCreateGroupScreen: () -> Unit
 ) {
     val groups = viewModel.responseGroup.collectAsLazyPagingItems()
 
@@ -43,7 +46,8 @@ internal fun GroupListRoute(
     GroupListScreen(
         groups = groups,
         onBackScreen = onBackScreen,
-        onGroupDetailsScreen = onGroupDetailsScreen
+        onGroupDetailsScreen = onGroupDetailsScreen,
+        onCreateGroupScreen = onCreateGroupScreen
     )
 }
 
@@ -51,7 +55,8 @@ internal fun GroupListRoute(
 private fun GroupListScreen(
     groups: LazyPagingItems<Group>,
     onBackScreen: () -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onCreateGroupScreen: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -62,7 +67,16 @@ private fun GroupListScreen(
             TopBarBack(
                 title = stringResource(id = R.string.groups),
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackScreen
+                onBackClick = onBackScreen,
+                actions = {
+                    IconButton(onClick = onCreateGroupScreen) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            tint = PgkTheme.colors.primaryText
+                        )
+                    }
+                }
             )
         },
         content = { paddingValues ->

@@ -26,12 +26,12 @@ data class Student(
 
     fun fioAbbreviated():String{
 
-        val middleName = if(middleName == null)
+        val correctMiddleName = if(middleName == null || middleName.isEmpty())
             ""
         else
             " ${middleName[0]}."
 
-        return lastName + " ${firstName[0]}." + middleName
+        return lastName + " ${firstName[0]}." + correctMiddleName
     }
 
     fun fio():String = lastName + " $firstName " + (middleName ?: "")
