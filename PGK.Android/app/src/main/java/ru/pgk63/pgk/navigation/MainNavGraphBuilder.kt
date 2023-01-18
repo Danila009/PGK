@@ -29,6 +29,7 @@ import ru.pgk63.feature_raportichka.navigation.RaportichkaListDestination
 import ru.pgk63.feature_raportichka.navigation.RaportichkaSortingDestination
 import ru.pgk63.feature_raportichka.navigation.raportichkaNavigation
 import ru.pgk63.feature_settings.navigation.*
+import ru.pgk63.feature_specialization.navigation.CreateSpecializationDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationDetailsDestination
 import ru.pgk63.feature_specialization.navigation.SpecializationListDestination
 import ru.pgk63.feature_specialization.navigation.specializationNavigation
@@ -154,6 +155,16 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onDepartmentDetailsScreen = { id ->
             navController.navigate("${DepartmentDetailsDestination.route}/$id")
+        },
+        onCreateSpecializationScreen = { departmentId ->
+            if(departmentId == null){
+                navController.navigate(CreateSpecializationDestination.route)
+            }else{
+                navController.navigate(
+                    "${CreateSpecializationDestination.route}?" +
+                            "${CreateSpecializationDestination.departmentId}={$departmentId}"
+                )
+            }
         }
     )
 

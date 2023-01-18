@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,7 +38,8 @@ import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 internal fun SpecializationListRoute(
     viewModel: SpecializationListViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onCreateSpecializationScreen: (departmentId: Int?) -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
 
@@ -52,7 +54,8 @@ internal fun SpecializationListRoute(
         searchText = searchText,
         onSearchTextChange = { searchText = it },
         onBackScreen = onBackScreen,
-        onSpecializationDetailsScreen = onSpecializationDetailsScreen
+        onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+        onCreateSpecializationScreen = onCreateSpecializationScreen
     )
 }
 
@@ -62,7 +65,8 @@ private fun SpecializationListScreen(
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     onBackScreen: () -> Unit,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onCreateSpecializationScreen: (departmentId: Int?) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -81,18 +85,30 @@ private fun SpecializationListScreen(
                 onBackClick = onBackScreen,
                 actions = {
                     AnimatedVisibility(visible = !searchTextFieldVisible) {
-                        IconButton(onClick = {
-                            scope.launch {
-                                searchTextFieldVisible = true
-                                delay(100)
-                                searchTextFieldFocusRequester.requestFocus()
+                        Row {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    searchTextFieldVisible = true
+                                    delay(100)
+                                    searchTextFieldFocusRequester.requestFocus()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = null,
-                                tint = PgkTheme.colors.primaryText
-                            )
+
+                            Spacer(modifier = Modifier.height(5.dp))
+
+                            IconButton(onClick = { onCreateSpecializationScreen(null) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
+                            }
                         }
                     }
 
@@ -100,8 +116,7 @@ private fun SpecializationListScreen(
                         TextFieldSearch(
                             text = searchText,
                             onTextChanged = onSearchTextChange,
-                            modifier = Modifier
-                                .focusRequester(searchTextFieldFocusRequester),
+                            modifier = Modifier.focusRequester(searchTextFieldFocusRequester),
                             onClose = {
                                 searchTextFieldVisible = false
                                 onSearchTextChange("")

@@ -47,6 +47,10 @@ class GroupRepository @Inject constructor(
         groupApi.create(body)
     }
 
+    suspend fun deleteById(id: Int) = safeApiCall {
+        groupApi.deleteById(id)
+    }
+
     suspend fun getById(id: Int): Result<Group> {
         return safeApiCall { groupApi.getById(id) }
     }

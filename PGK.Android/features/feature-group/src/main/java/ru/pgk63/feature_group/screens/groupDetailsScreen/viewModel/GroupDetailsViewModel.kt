@@ -27,6 +27,9 @@ class GroupDetailsViewModel @Inject constructor(
     private val _responseGroup = MutableStateFlow<Result<Group>>(Result.Loading())
     val responseGroup = _responseGroup.asStateFlow()
 
+    private val _responseDeleteGroupResult = MutableStateFlow<Result<Unit?>?>(null)
+    val responseDeleteGroupResult = _responseDeleteGroupResult.asStateFlow()
+
     fun getGroupById(id: Int){
         viewModelScope.launch {
             val response = groupRepository.getById(id)
@@ -41,5 +44,11 @@ class GroupDetailsViewModel @Inject constructor(
                 groupId = id
             )
         }.flow.cachedIn(viewModelScope)
+    }
+
+    fun deleteGroupById(id: Int){
+        viewModelScope.launch {
+            _responseDeleteGroupResult.value = groupRepository.deleteById(id)
+        }
     }
 }

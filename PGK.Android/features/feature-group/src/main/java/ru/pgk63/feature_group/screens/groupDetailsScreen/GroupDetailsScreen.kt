@@ -75,6 +75,9 @@ internal fun GroupDetailsRoute(
         onRegistrationStudentScreen = onRegistrationStudentScreen,
         onRegistrationHeadman = { deputy ->
             onRegistrationHeadman(groupId, deputy)
+        },
+        deleteGroup = {
+            viewModel.deleteGroupById(groupId)
         }
     )
 }
@@ -88,7 +91,8 @@ private fun GroupDetailsScreen(
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
     onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
     onRegistrationHeadman: (deputy: Boolean) -> Unit,
-    onRegistrationStudentScreen: (groupId: Int) -> Unit
+    onRegistrationStudentScreen: (groupId: Int) -> Unit,
+    deleteGroup: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     var mainMenuVisible by remember { mutableStateOf(false) }
@@ -129,6 +133,7 @@ private fun GroupDetailsScreen(
                                             onRegistrationStudentScreen(groupResult.data!!.id)
                                         }
                                     }
+                                    GroupDetailsMenu.DELETE_GROUP -> deleteGroup()
                                 }
                             }
                         )
@@ -222,6 +227,12 @@ private fun MainManu(
         onDismissRequest = closeMenu
     ) {
         GroupDetailsMenu.values().forEach { menu ->
+
+            val color = if(menu == GroupDetailsMenu.DELETE_GROUP)
+                PgkTheme.colors.errorColor
+            else
+                PgkTheme.colors.primaryText
+
             DropdownMenuItem(
                 modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
                 onClick = {
@@ -231,14 +242,14 @@ private fun MainManu(
                     Icon(
                         imageVector = menu.icon,
                         contentDescription = null,
-                        tint = PgkTheme.colors.primaryText
+                        tint = color
                     )
 
                     Spacer(modifier = Modifier.width(5.dp))
 
                     Text(
                         text = stringResource(id = menu.textId),
-                        color = PgkTheme.colors.primaryText,
+                        color = color,
                         style = PgkTheme.typography.caption,
                         fontFamily = PgkTheme.fontFamily.fontFamily
                     )

@@ -41,6 +41,7 @@
     <string name="students">Студенты</string>
     <string name="specialties">Специальности</string>
     <string name="speciality">Специальность</string>
+    <string name="add_speciality">Добавить специальность</string>
     <string name="departmens">Отделении</string>
     <string name="departmen">Отделение</string>
     <string name="subjects">Предметы</string>
@@ -55,6 +56,7 @@
     <string name="teachers">Преподаватели</string>
     <string name="teacher">Преподаватель</string>
     <string name="number">Номер</string>
+    <string name="abbreviation">Аббревиатура</string>
     <string name="qualification">Квалификация</string>
     <string name="appearance">Внешность</string>
     <string name="appearance_settings_body">Изменить тему, размер шрифта, шрифт текст, поля, углы</string>
@@ -104,6 +106,7 @@
     <string name="select_date">Выберите дату</string>
     <string name="date">Дата</string>
     <string name="title">Тема</string>
+    <string name="name">Название</string>
     <string name="home_work">Задано на дом</string>
     <string name="scd_calendar_dialog_select_month">Выберите месяц</string>
     <string name="scd_calendar_dialog_next_month">В следующем месяце</string>

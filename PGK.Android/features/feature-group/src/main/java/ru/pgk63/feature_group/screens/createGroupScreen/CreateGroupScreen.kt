@@ -221,10 +221,10 @@ private fun CreateGroupUi(
             label = stringResource(id = R.string.number),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(FocusDirection.Down)
+                focusManager.clearFocus()
             })
         )
 

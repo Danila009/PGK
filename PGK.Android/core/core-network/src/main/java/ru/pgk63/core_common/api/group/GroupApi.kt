@@ -2,6 +2,7 @@ package ru.pgk63.core_common.api.group
 
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -33,6 +34,11 @@ interface GroupApi {
     suspend fun create(
         @Body body: CreateGroupBody
     ): Response<CreateGroupResponse>
+
+    @DELETE("/pgk63/api/Group/{id}")
+    suspend fun deleteById(
+        @Path("id") id: Int
+    ): Response<Unit?>
 
     @GET("/pgk63/api/Group/{id}")
     suspend fun getById(@Path("id") id: Int): Response<Group>
