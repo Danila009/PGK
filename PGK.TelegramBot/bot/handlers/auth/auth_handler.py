@@ -3,7 +3,7 @@ import os
 from aiogram import Dispatcher, types
 from aiogram.utils.callback_data import CallbackData
 
-from api.user.usre_api import add_telegram_id
+from api.user.user_api import add_telegram_id
 
 auth_type_callback = CallbackData('auth_type_callback', 'type')
 
