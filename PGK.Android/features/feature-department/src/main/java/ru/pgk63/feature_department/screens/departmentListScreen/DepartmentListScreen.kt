@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -33,6 +36,7 @@ internal fun DepartmentListRoute(
     viewModel: DepartmentListViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onCreateDepartmentScreen: (departmentHeadId: Int?) -> Unit,
 ) {
     var searchText by remember { mutableStateOf("") }
 
@@ -47,7 +51,8 @@ internal fun DepartmentListRoute(
         searchText = searchText,
         onSearchTextChange = { searchText = it },
         onBackScreen = onBackScreen,
-        onDepartmentDetailsScreen = onDepartmentDetailsScreen
+        onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+        onCreateDepartmentScreen = onCreateDepartmentScreen
     )
 }
 
@@ -57,7 +62,8 @@ private fun DepartmentListScreen(
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     onBackScreen: () -> Unit,
-    onDepartmentDetailsScreen: (departmentId: Int) -> Unit
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onCreateDepartmentScreen: (departmentHeadId: Int?) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -76,18 +82,30 @@ private fun DepartmentListScreen(
                 onBackClick = onBackScreen,
                 actions = {
                     AnimatedVisibility(visible = !searchTextFieldVisible) {
-                        IconButton(onClick = {
-                            scope.launch {
-                                searchTextFieldVisible = true
-                                delay(100)
-                                searchTextFieldFocusRequester.requestFocus()
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    searchTextFieldVisible = true
+                                    delay(100)
+                                    searchTextFieldFocusRequester.requestFocus()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = null,
-                                tint = PgkTheme.colors.primaryText
-                            )
+
+                            Spacer(modifier = Modifier.width(5.dp))
+
+                            IconButton(onClick = { onCreateDepartmentScreen(null) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.tintColor
+                                )
+                            }
                         }
                     }
 
@@ -95,8 +113,7 @@ private fun DepartmentListScreen(
                         TextFieldSearch(
                             text = searchText,
                             onTextChanged = onSearchTextChange,
-                            modifier = Modifier
-                                .focusRequester(searchTextFieldFocusRequester),
+                            modifier = Modifier.focusRequester(searchTextFieldFocusRequester),
                             onClose = {
                                 searchTextFieldVisible = false
                                 onSearchTextChange("")

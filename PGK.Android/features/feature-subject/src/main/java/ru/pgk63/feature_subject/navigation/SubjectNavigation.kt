@@ -21,7 +21,8 @@ object SubjectDetailsDestination : NavigationDestination {
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.subjectNavigation(
     onBackScreen: () -> Unit,
-    onSubjectDetailsScreen: (subjectId: Int) -> Unit
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit
 ) {
     composable(
         route = SubjectListDestination.route
@@ -41,8 +42,9 @@ fun NavGraphBuilder.subjectNavigation(
         )
     ) {
         SubjectDetailsRoute(
-           subjectId = it.arguments!!.getInt(SubjectDetailsDestination.id_argument),
-           onBackScreen = onBackScreen
-       )
+            subjectId = it.arguments!!.getInt(SubjectDetailsDestination.id_argument),
+            onBackScreen = onBackScreen,
+            onTeacherDetailsScreen = onTeacherDetailsScreen
+        )
     }
 }

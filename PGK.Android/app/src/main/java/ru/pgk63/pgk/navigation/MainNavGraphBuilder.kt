@@ -13,6 +13,7 @@ import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.ForgotPasswordDestination
 import ru.pgk63.feature_auth.navigation.RegistrationUserDestination
 import ru.pgk63.feature_auth.navigation.authNavigation
+import ru.pgk63.feature_department.navigation.CreateDepartmentDestination
 import ru.pgk63.feature_department.navigation.DepartmentDetailsDestination
 import ru.pgk63.feature_department.navigation.DepartmentListDestination
 import ru.pgk63.feature_department.navigation.departmentNavigation
@@ -172,6 +173,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onBackScreen = { navController.navigateUp() },
         onSubjectDetailsScreen = { id ->
             navController.navigate("${SubjectDetailsDestination.route}/$id")
+        },
+        onTeacherDetailsScreen = { id ->
+
         }
     )
 
@@ -196,6 +200,16 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onGroupDetailsScreen = { id ->
             navController.navigate("${GroupDetailsDestination.route}/$id")
+        },
+        onCreateDepartmentScreen = { departmentHeadId ->
+            if(departmentHeadId == null){
+                navController.navigate(CreateDepartmentDestination.route)
+            }else{
+                navController.navigate(
+                    "${CreateDepartmentDestination.route}?" +
+                            "${CreateDepartmentDestination.departmentHeadId}={$departmentHeadId}"
+                )
+            }
         }
     )
 

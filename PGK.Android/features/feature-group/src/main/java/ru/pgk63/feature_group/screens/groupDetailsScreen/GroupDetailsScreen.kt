@@ -121,7 +121,7 @@ private fun GroupDetailsScreen(
                             )
                         }
 
-                        MainManu(
+                        MainMenu(
                             openMenu = mainMenuVisible,
                             closeMenu = { mainMenuVisible = false },
                             onClick = { menu ->
@@ -215,7 +215,7 @@ private fun GroupDetailsScreen(
 }
 
 @Composable
-private fun MainManu(
+private fun MainMenu(
     openMenu: Boolean,
     studentRepositoryVisibly: Boolean = true,
     closeMenu: () -> Unit,

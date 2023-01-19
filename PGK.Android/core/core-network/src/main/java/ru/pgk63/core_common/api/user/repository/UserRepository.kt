@@ -9,10 +9,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.user.UserApi
-import ru.pgk63.core_common.api.user.model.Notification
-import ru.pgk63.core_common.api.user.model.UpdateUserPhotoResponse
-import ru.pgk63.core_common.api.user.model.User
-import ru.pgk63.core_common.api.user.model.UserSettings
+import ru.pgk63.core_common.api.user.model.*
 import ru.pgk63.core_common.api.user.paging.NotificationPageSourse
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
@@ -38,6 +35,10 @@ class UserRepository @Inject constructor(
                 search = search
             )
         }.flow
+    }
+
+    suspend fun updateNotificationSettings(body: NotificationSetting) = safeApiCall {
+        userApi.updateNotificationSettings(body)
     }
 
     suspend fun updatePassword(): Result<String> = safeApiCall { userApi.updatePassword() }
@@ -127,6 +128,14 @@ class UserRepository @Inject constructor(
 
     suspend fun passwordReset(email:String) = safeApiCall {
         userApi.passwordReset(email)
+    }
+
+    suspend fun updateEmail(email: String) = safeApiCall {
+        userApi.updateEmail(email)
+    }
+
+    suspend fun emailVerification() = safeApiCall {
+        userApi.emailVerification()
     }
 
     suspend fun updateLanguage(languageId: Int, languageCode: String) {

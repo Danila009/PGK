@@ -256,6 +256,7 @@ private fun LazyListScope.restoreAccessEmail(
             text = email,
             onTextChanged = { email = it },
             modifier = Modifier.padding(5.dp),
+            label = stringResource(id = R.string.email),
             errorText = if (emailValidation.second != null)
                 stringResource(id = emailValidation.second!!) else null,
             hasError = !emailValidation.first,
