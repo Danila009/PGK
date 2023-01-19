@@ -43,7 +43,9 @@ internal class GuideListViewModel @Inject constructor(
 
     fun getDirectorsList() {
         viewModelScope.launch {
-            directorRepository.getAll().cachedIn(viewModelScope).collect {
+            directorRepository.getAll(
+                current = true
+            ).cachedIn(viewModelScope).collect {
                 _responseDirectorList.value = it
             }
         }

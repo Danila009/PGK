@@ -1,12 +1,10 @@
 package ru.pgk63.core_common.api.teacher
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.pgk63.core_common.Constants
 import ru.pgk63.core_common.api.teacher.model.ResponseTeacher
+import ru.pgk63.core_common.api.teacher.model.Teacher
 import ru.pgk63.core_common.api.user.model.UserRegistrationBody
 import ru.pgk63.core_common.api.user.model.UserRegistrationResponse
 
@@ -24,4 +22,9 @@ interface TeacherApi {
         @Query("pageNumber") pageNumber: Int = 1,
         @Query("pageSize") pageSize: Int = Constants.PAGE_SIZE
     ): ResponseTeacher
+
+    @GET("/pgk63/api/Teacher/{id}")
+    suspend fun getById(
+        @Path("id") id: Int
+    ): Response<Teacher>
 }

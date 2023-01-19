@@ -32,4 +32,8 @@ class TeacherRepository @Inject constructor(
             )
         }.flow
     }
+
+    suspend fun getById(teacherId: Int) = safeApiCall {
+        teacherApi.getById(teacherId)
+    }
 }

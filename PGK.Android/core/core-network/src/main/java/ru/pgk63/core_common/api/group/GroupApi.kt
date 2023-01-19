@@ -23,7 +23,7 @@ interface GroupApi {
         @Query("number") number:List<Int>? = null,
         @Query("specialityIds") specialityIds: List<Int>? = null,
         @Query("departmentIds") departmentIds: List<Int>? = null,
-        @Query("classroomTeacherIds") classroomTeacherIds: List<Int>? = null,
+        @Query("сuratorIds") classroomTeacherIds: List<Int>? = null,
         @Query("deputyHeadmaIds") deputyHeadmaIds: List<Int>? = null,
         @Query("headmanIds") headmanIds: List<Int>? = null,
         @Query("pageNumber") pageNumber: Int = 1,

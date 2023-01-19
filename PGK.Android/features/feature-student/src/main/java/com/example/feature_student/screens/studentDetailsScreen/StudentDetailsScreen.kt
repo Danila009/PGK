@@ -96,8 +96,8 @@ private fun StudentDetailsScreen(
 @Composable
 private fun TopBarStudentInfo(student: Student){
 
-    val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
+    val screenWidthDp = LocalConfiguration.current.screenWidthDp
 
     Card(
         modifier = Modifier.fillMaxWidth(),

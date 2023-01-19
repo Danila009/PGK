@@ -2,8 +2,7 @@ package ru.pgk63.pgk.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import com.example.feature_guide.navigation.GuideListDestination
-import com.example.feature_guide.navigation.guideNavigation
+import com.example.feature_guide.navigation.*
 import com.example.feature_student.navigation.StudentDetailsDestination
 import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
@@ -180,7 +179,7 @@ fun NavGraphBuilder.mainNavGraphBuilder(
             navController.navigate("${SubjectDetailsDestination.route}/$id")
         },
         onTeacherDetailsScreen = { id ->
-
+            navController.navigate("${TeacherDetailsDestination.route}/$id")
         }
     )
 
@@ -224,7 +223,7 @@ fun NavGraphBuilder.mainNavGraphBuilder(
             navController.navigate("${StudentDetailsDestination.route}/$studentId")
         },
         onTeacherDetailsScreen = { teacherId ->
-
+            navController.navigate("${TeacherDetailsDestination.route}/$teacherId")
         },
         onSubjectDetailsScreen = { subjectId ->
             navController.navigate("${SubjectDetailsDestination.route}/$subjectId")
@@ -279,7 +278,22 @@ fun NavGraphBuilder.mainNavGraphBuilder(
     )
 
     guideNavigation(
-        onBackScreen = { navController.navigateUp() }
+        onBackScreen = { navController.navigateUp() },
+        onDirectorDetailsScreen = { id ->
+            navController.navigate("${DirectorDetailsDestination.route}/$id")
+        },
+        onDepartmentHeadDetailsScreen = { id ->
+            navController.navigate("${DepartmentHeadDetailsDestination.route}/$id")
+        },
+        onTeacherDetailsScreen = { id ->
+            navController.navigate("${TeacherDetailsDestination.route}/$id")
+        },
+        onGroupDetailsScreen = { id ->
+            navController.navigate("${GroupDetailsDestination.route}/$id")
+        },
+        onSubjectDetailsScreen = { id ->
+            navController.navigate("${SubjectDetailsDestination.route}/$id")
+        }
     )
 
     settingsNavigation(

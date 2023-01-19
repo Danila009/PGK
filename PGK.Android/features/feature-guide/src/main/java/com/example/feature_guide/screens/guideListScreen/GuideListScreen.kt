@@ -38,7 +38,10 @@ import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 @Composable
 internal fun GuideListRoute(
     viewModel: GuideListViewModel = hiltViewModel(),
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit
 ) {
     val departmentHeadList = viewModel.responseDepartmentHeadList.collectAsLazyPagingItems()
     val directorList = viewModel.responseDirectorList.collectAsLazyPagingItems()
@@ -54,7 +57,10 @@ internal fun GuideListRoute(
         directorList = directorList,
         departmentHeadList = departmentHeadList,
         teacherList = teacherList,
-        onBackScreen = onBackScreen
+        onBackScreen = onBackScreen,
+        onDirectorDetailsScreen = onDirectorDetailsScreen,
+        onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
+        onTeacherDetailsScreen = onTeacherDetailsScreen
     )
 }
 
@@ -63,7 +69,10 @@ private fun GuideListScreen(
     directorList: LazyPagingItems<Director>,
     departmentHeadList: LazyPagingItems<DepartmentHead>,
     teacherList: LazyPagingItems<Teacher>,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -88,7 +97,7 @@ private fun GuideListScreen(
                 getName = { it.fio() },
                 getPost = { stringResource(id = ru.pgk63.core_common.R.string.director) },
                 getPhotoUrl = { it.photoUrl },
-                onClickItem = {}
+                onClickItem = { onDirectorDetailsScreen(it.id) }
             )
 
             guideListUi(
@@ -96,7 +105,7 @@ private fun GuideListScreen(
                 getName = { it.fio() },
                 getPost = { stringResource(id = ru.pgk63.core_common.R.string.department_head) },
                 getPhotoUrl = { it.photoUrl },
-                onClickItem = {}
+                onClickItem = { onDepartmentHeadDetailsScreen(it.id) }
             )
 
             guideListUi(
@@ -104,7 +113,7 @@ private fun GuideListScreen(
                 getName = { it.fio() },
                 getPost = { stringResource(id = ru.pgk63.core_common.R.string.teacher) },
                 getPhotoUrl = { it.photoUrl },
-                onClickItem = {}
+                onClickItem = { onTeacherDetailsScreen(it.id) }
             )
         }
     }
