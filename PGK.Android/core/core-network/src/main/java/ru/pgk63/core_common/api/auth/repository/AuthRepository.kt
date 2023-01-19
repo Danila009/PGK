@@ -31,7 +31,10 @@ class AuthRepository @Inject constructor(
                 themeFontStyle = response.data.themeFontStyle,
                 themeFontSize = response.data.themeFontSize,
                 themeCorners = response.data.themeCorners,
-                languageCode = response.data.language?.code
+                languageCode = response.data.language?.code,
+                emailVerification = response.data.emailVerification,
+                email = response.data.email,
+                telegramId = response.data.telegramId
             )
 
             userDataSource.save(userLocalDatabase)

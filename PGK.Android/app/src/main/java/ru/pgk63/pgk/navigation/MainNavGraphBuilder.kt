@@ -2,6 +2,8 @@ package ru.pgk63.pgk.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import com.example.feature_guide.navigation.GuideListDestination
+import com.example.feature_guide.navigation.guideNavigation
 import com.example.feature_student.navigation.StudentDetailsDestination
 import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
@@ -87,6 +89,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onJournalScreen = { userRole, userId ->
             navController.navigate(JournalListDestination.route)
+        },
+        onGuideListScreen = {
+            navController.navigate(GuideListDestination.route)
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
@@ -271,6 +276,10 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                         "?${JournalTopicTableDestination.maxSubjectHours}=$maxSubjectHours"
             )
         }
+    )
+
+    guideNavigation(
+        onBackScreen = { navController.navigateUp() }
     )
 
     settingsNavigation(

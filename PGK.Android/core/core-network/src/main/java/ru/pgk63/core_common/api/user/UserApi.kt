@@ -4,6 +4,7 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.journal.UpdateInformationBody
 import ru.pgk63.core_common.api.user.model.*
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
@@ -14,6 +15,12 @@ interface UserApi {
 
     @GET("/pgk63/api/User")
     suspend fun get(): Response<User>
+
+    @PATCH("/pgk63/api/User/Information")
+    suspend fun updateInformation(@Body body: UpdateInformationBody): Response<Unit?>
+
+    @PATCH("/pgk63/api/User/Cabinet")
+    suspend fun updateCabinet(@Body body: UpdateCabinetBody): Response<Unit?>
 
     @GET("/pgk63/api/User/Notifications")
     suspend fun getNotifications(

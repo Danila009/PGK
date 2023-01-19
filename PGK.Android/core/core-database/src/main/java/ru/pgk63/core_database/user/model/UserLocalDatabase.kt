@@ -16,5 +16,8 @@ data class UserLocalDatabase(
     var themeFontStyle: ThemeFontStyle = ThemeFontStyle.Default,
     var themeFontSize: ThemeFontSize = ThemeFontSize.Medium,
     var themeCorners: ThemeCorners = ThemeCorners.Rounded,
-    var languageCode: String? = null
+    var languageCode: String? = null,
+    val emailVerification:Boolean? = null,
+    val telegramId:Int? = null,
+    val email:String? = null,
 )

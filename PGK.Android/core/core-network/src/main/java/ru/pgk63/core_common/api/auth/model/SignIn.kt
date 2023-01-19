@@ -26,5 +26,8 @@ data class SignInResponse(
     val themeFontSize: ThemeFontSize = ThemeFontSize.Medium,
     val themeCorners: ThemeCorners = ThemeCorners.Rounded,
     val language: Language?,
+    val emailVerification:Boolean,
+    val telegramId:Int,
+    val email:String,
     val errorMessage:String? = null
 )

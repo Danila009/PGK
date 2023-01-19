@@ -58,6 +58,7 @@ internal fun MainRoute(
     onDepartmentListScreen: () -> Unit,
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onGuideListScreen: () -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -91,6 +92,7 @@ internal fun MainRoute(
         onDepartmentListScreen = onDepartmentListScreen,
         onRaportichkaScreen = onRaportichkaScreen,
         onJournalScreen = onJournalScreen,
+        onGuideListScreen = onGuideListScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         },
@@ -142,6 +144,7 @@ private fun MainScreen(
     onDepartmentListScreen: () -> Unit,
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onGuideListScreen: () -> Unit,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
     getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
 ) {
@@ -181,7 +184,8 @@ private fun MainScreen(
                 onProfileScreen = onProfileScreen,
                 onDepartmentListScreen = onDepartmentListScreen,
                 onRaportichkaScreen = onRaportichkaScreen,
-                onJournalScreen = onJournalScreen
+                onJournalScreen = onJournalScreen,
+                onGuideListScreen = onGuideListScreen
             )
         },
         content = { paddingValues ->
@@ -271,7 +275,8 @@ private fun DrawerContentUi(
     onProfileScreen: () -> Unit,
     onDepartmentListScreen: () -> Unit,
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
-    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit
+    onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
+    onGuideListScreen: () -> Unit,
 ) {
     LazyColumn {
         item {
@@ -327,7 +332,7 @@ private fun DrawerContentUi(
                         when (drawerContent) {
                             DrawerContent.PROFILE -> onProfileScreen()
                             DrawerContent.STUDENTS -> onStudentListScreen()
-                            DrawerContent.GUIDE -> Unit
+                            DrawerContent.GUIDE -> onGuideListScreen()
                             DrawerContent.SPECIALTIES -> onSpecializationListScreen()
                             DrawerContent.DEPARTMENS -> onDepartmentListScreen()
                             DrawerContent.SUBJECTS -> onSubjectListScreen()
