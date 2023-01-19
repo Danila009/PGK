@@ -1,6 +1,6 @@
 package ru.pgk63.core_common.api.departmentHead.model
 
-data class DepartmentResponse(
+data class DepartmentHeadResponse(
     val results: List<DepartmentHead>
 )
 

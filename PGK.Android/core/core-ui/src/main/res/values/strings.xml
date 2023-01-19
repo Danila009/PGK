@@ -55,6 +55,7 @@
     <string name="classroomTeacher">Куратор</string>
     <string name="teachers">Преподаватели</string>
     <string name="teacher">Преподаватель</string>
+    <string name="cabinet">Кабинет</string>
     <string name="number">Номер</string>
     <string name="abbreviation">Аббревиатура</string>
     <string name="qualification">Квалификация</string>

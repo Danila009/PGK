@@ -10,9 +10,9 @@ data class Director(
     val lastName:String,
     val middleName:String?,
     val current:Boolean,
-    val cabinet:String,
-    val information:String,
-    val photoUrl:String
+    val cabinet:String?,
+    val information:String?,
+    val photoUrl:String?
 ){
     override fun toString(): String {
         return fioAbbreviated()

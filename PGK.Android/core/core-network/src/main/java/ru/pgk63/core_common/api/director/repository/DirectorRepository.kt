@@ -29,6 +29,10 @@ class DirectorRepository @Inject constructor(
         }.flow
     }
 
+    suspend fun getById(id: Int) = safeApiCall {
+        directorApi.getById(id)
+    }
+
     suspend fun registration(body: UserRegistrationBody) = safeApiCall {
         directorApi.registration(body)
     }

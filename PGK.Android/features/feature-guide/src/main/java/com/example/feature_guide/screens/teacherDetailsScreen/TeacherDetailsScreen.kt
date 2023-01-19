@@ -166,41 +166,66 @@ private fun TeacherCard(
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
 
-            if(teacher.photoUrl != null) {
-                ImageCoil(
-                    url = teacher.photoUrl,
-                    modifier = Modifier
-                        .width((screenWidthDp / 2).dp)
-                        .height((screenHeightDp / 4.3).dp)
-                )
-            }else {
-                Image(
-                    painter = painterResource(id = R.drawable.profile_photo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width((screenWidthDp / 2).dp)
-                        .height((screenHeightDp / 4.3).dp)
-                )
+                if(teacher.photoUrl != null) {
+                    ImageCoil(
+                        url = teacher.photoUrl,
+                        modifier = Modifier
+                            .width((screenWidthDp / 2).dp)
+                            .height((screenHeightDp / 4.3).dp)
+                    )
+                }else {
+                    Image(
+                        painter = painterResource(id = R.drawable.profile_photo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width((screenWidthDp / 2).dp)
+                            .height((screenHeightDp / 4.3).dp)
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = teacher.fio(),
+                        color = PgkTheme.colors.primaryText,
+                        style = PgkTheme.typography.body,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        modifier = Modifier.padding(5.dp),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.teacher),
+                        color = PgkTheme.colors.primaryText,
+                        style = PgkTheme.typography.caption,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        modifier = Modifier.padding(5.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
-            Column(
-                modifier = Modifier.padding(5.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
+            if(teacher.cabinet != null) {
                 Text(
-                    text = teacher.fio(),
+                    text = stringResource(id = R.string.cabinet) +
+                            " ${teacher.cabinet}",
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,
                     modifier = Modifier.padding(5.dp),
                     textAlign = TextAlign.Center
                 )
+            }
 
+            if(teacher.information != null){
                 Text(
-                    text = stringResource(id = R.string.teacher),
+                    text = teacher.information!!,
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.caption,
                     fontFamily = PgkTheme.fontFamily.fontFamily,

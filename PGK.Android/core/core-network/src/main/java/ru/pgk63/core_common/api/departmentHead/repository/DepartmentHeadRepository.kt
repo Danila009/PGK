@@ -28,4 +28,8 @@ class DepartmentHeadRepository @Inject constructor(
             )
         }.flow
     }
+
+    suspend fun getById(id: Int) = safeApiCall {
+        departmentHeadApi.getById(id)
+    }
 }

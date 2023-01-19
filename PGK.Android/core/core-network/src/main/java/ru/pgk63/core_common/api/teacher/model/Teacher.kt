@@ -15,6 +15,8 @@ data class Teacher(
     val firstName:String,
     val lastName:String,
     val middleName:String? = null,
+    val cabinet:String? = null,
+    val information:String? = null,
     val photoUrl:String? = null
 ){
     override fun toString(): String {
