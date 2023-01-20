@@ -293,6 +293,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSubjectDetailsScreen = { id ->
             navController.navigate("${SubjectDetailsDestination.route}/$id")
+        },
+        onRegistrationScreen = { userRole ->
+            navController.navigate(
+                "${RegistrationUserDestination.route}?" +
+                        "${RegistrationUserDestination.userRole}=$userRole"
+            )
         }
     )
 

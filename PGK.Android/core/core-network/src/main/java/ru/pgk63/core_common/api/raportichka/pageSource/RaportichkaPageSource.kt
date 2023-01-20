@@ -42,7 +42,7 @@ class RaportichkaPageSource(
                 classroomTeacherIds = classroomTeacherIds,
                 numberLessons = numberLessons,
                 teacherIds = teacherIds,
-                studentIds = studentIds,
+                studentIds = studentIds
             )
 
             LoadResult.Page(

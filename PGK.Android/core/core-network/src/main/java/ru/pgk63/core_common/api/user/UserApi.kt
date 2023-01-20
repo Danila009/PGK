@@ -6,6 +6,8 @@ import retrofit2.http.*
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.journal.UpdateInformationBody
 import ru.pgk63.core_common.api.user.model.*
+import ru.pgk63.core_common.common.Constants.CUSTOM_HEADER
+import ru.pgk63.core_common.common.Constants.NO_AUTH
 import ru.pgk63.core_common.enums.theme.ThemeCorners
 import ru.pgk63.core_common.enums.theme.ThemeFontSize
 import ru.pgk63.core_common.enums.theme.ThemeFontStyle
@@ -67,6 +69,7 @@ interface UserApi {
         @Part photo: MultipartBody.Part
     ): Response<UpdateUserPhotoResponse>
 
+    @Headers("$CUSTOM_HEADER: $NO_AUTH")
     @POST("/pgk63/api/User/Email/Pasword/Reset")
     suspend fun passwordReset(
         @Query("email") email: String

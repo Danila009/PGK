@@ -61,9 +61,9 @@ internal class RaportichkaViewModel @Inject constructor(
                 numberLessons = numberLessons,
                 teacherIds = teacherIds,
                 studentIds = studentIds
-                ).cachedIn(viewModelScope).collect {
-                    _responseRaportichkaList.value = it
-                }
+            ).cachedIn(viewModelScope).collect {
+                _responseRaportichkaList.value = it
+            }
         }
     }
 

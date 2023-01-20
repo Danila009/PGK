@@ -20,4 +20,9 @@ data class UserLocalDatabase(
     val emailVerification:Boolean? = null,
     val telegramId:Int? = null,
     val email:String? = null,
+    val firstName:String = "",
+    val lastName:String = "",
+    val password:String = "",
+    val accessToken:String? = null,
+    val refreshToken:String? = null
 )

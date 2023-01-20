@@ -8,6 +8,7 @@ import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.department.DepartmentApi
 import ru.pgk63.core_common.api.department.model.CreateDepartmentBody
 import ru.pgk63.core_common.api.department.model.Department
+import ru.pgk63.core_common.api.department.model.UpdateDepartmentBody
 import ru.pgk63.core_common.api.department.paging.DepartmentPagingSource
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
@@ -31,4 +32,8 @@ class DepartmentRepository @Inject constructor(
     suspend fun getById(id:Int): Result<Department> = safeApiCall { departmentApi.getById(id) }
 
     suspend fun create(body: CreateDepartmentBody) = safeApiCall { departmentApi.create(body) }
+
+    suspend fun delete(id: Int) = safeApiCall { departmentApi.delete(id) }
+
+    suspend fun update(id: Int, body: UpdateDepartmentBody) = safeApiCall { departmentApi.update(id, body) }
 }

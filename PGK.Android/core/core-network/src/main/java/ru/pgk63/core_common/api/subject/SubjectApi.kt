@@ -1,12 +1,9 @@
 package ru.pgk63.core_common.api.subject
 
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.pgk63.core_common.Constants
-import ru.pgk63.core_common.api.subject.model.Subject
-import ru.pgk63.core_common.api.subject.model.SubjectResponse
+import ru.pgk63.core_common.api.subject.model.*
 
 interface SubjectApi {
 
@@ -20,4 +17,13 @@ interface SubjectApi {
 
     @GET("/pgk63/api/Subject/{id}")
     suspend fun getById(@Path("id") id:Int): Response<Subject>
+
+    @POST("/pgk63/api/Subject")
+    suspend fun create(@Body body: CreateSubjectBody): Response<CreateSubjectResponse>
+
+    @PUT("/pgk63/api/Subject")
+    suspend fun update(@Path("id") id: Int, @Body body: UpdateSubjectBody): Response<Unit?>
+
+    @DELETE("/pgk63/api/Subject")
+    suspend fun delete(@Part("id") id: Int): Response<Unit?>
 }

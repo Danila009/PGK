@@ -1,5 +1,6 @@
 package ru.pgk63.feature_subject.screens.subjectListScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,48 +23,85 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.api.subject.model.CreateSubjectBody
+import ru.pgk63.core_common.api.subject.model.CreateSubjectResponse
 import ru.pgk63.core_common.api.subject.model.Subject
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.TextFieldSearch
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
+import ru.pgk63.feature_subject.screens.subjectListScreen.view.CreateSubjectDialog
 import ru.pgk63.feature_subject.screens.subjectListScreen.viewModel.SubjectListViewModel
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun SubjectListRoute(
     viewModel: SubjectListViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
     onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
+    val context = LocalContext.current
+    val scaffoldState = rememberScaffoldState()
+
     var searchText by remember { mutableStateOf("") }
 
     val subjects = viewModel.responseSubject.collectAsLazyPagingItems()
+    var createSubjectResult by remember { mutableStateOf<Result<CreateSubjectResponse>?>(null) }
 
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.getSubjectAll(
-            search = searchText.ifEmpty { null }
-        )
+    LaunchedEffect(key1 = searchText, block = {
+        viewModel.getSubjectAll(search = searchText.ifEmpty { null })
+    })
+
+    viewModel.responseCreateSubjectResult.onEach {
+        createSubjectResult = it
+    }.launchWhenStarted()
+
+    LaunchedEffect(key1 = createSubjectResult, block = {
+        when(createSubjectResult){
+            is Result.Error -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.error)
+                )
+                viewModel.createSubjectResultTNull()
+            }
+            is Result.Loading -> Unit
+            is Result.Success -> {
+                val subjectId = createSubjectResult!!.data!!.id
+                viewModel.createSubjectResultTNull()
+                onSubjectDetailsScreen(subjectId)
+            }
+            null -> Unit
+        }
     })
 
     SubjectListScreen(
+        scaffoldState = scaffoldState,
         subjects = subjects,
         searchText = searchText,
         onBackScreen = onBackScreen,
         onSubjectDetailsScreen = onSubjectDetailsScreen,
-        onSearchTextChange = { searchText = it }
+        onSearchTextChange = { searchText = it },
+        onCreateSubject = {
+            viewModel.createSubject(it)
+        }
     )
 }
 
 @Composable
 private fun SubjectListScreen(
+    scaffoldState: ScaffoldState,
     subjects: LazyPagingItems<Subject>,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     onBackScreen: () -> Unit,
-    onSubjectDetailsScreen: (subjectId: Int) -> Unit
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit,
+    onCreateSubject: (CreateSubjectBody) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scrollBehavior = rememberToolbarScrollBehavior()
@@ -70,8 +109,11 @@ private fun SubjectListScreen(
     val searchTextFieldFocusRequester = remember { FocusRequester() }
     var searchTextFieldVisible by remember { mutableStateOf(false) }
 
+    var createSubjectDialogShow by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        scaffoldState = scaffoldState,
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
@@ -97,16 +139,14 @@ private fun SubjectListScreen(
                             }
 
                             Spacer(modifier = Modifier.height(5.dp))
-                        }
-                    }
 
-                    AnimatedVisibility(visible = searchTextFieldVisible) {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                tint = PgkTheme.colors.primaryText
-                            )
+                            IconButton(onClick = { createSubjectDialogShow = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
+                            }
                         }
                     }
 
@@ -126,6 +166,15 @@ private fun SubjectListScreen(
             )
         }
     ) { paddingValues ->
+
+        CreateSubjectDialog(
+            show = createSubjectDialogShow,
+            onDismissRequest = {
+                createSubjectDialogShow = false
+            },
+            onCreateSubjectButtonClick = onCreateSubject
+        )
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize()

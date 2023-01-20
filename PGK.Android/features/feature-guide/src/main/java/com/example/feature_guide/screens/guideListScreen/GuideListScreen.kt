@@ -1,16 +1,15 @@
 package com.example.feature_guide.screens.guideListScreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -23,10 +22,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.feature_guide.screens.guideListScreen.model.GuideListMainMenu
 import com.example.feature_guide.screens.guideListScreen.viewModel.GuideListViewModel
 import ru.pgk63.core_common.api.departmentHead.model.DepartmentHead
 import ru.pgk63.core_common.api.director.model.Director
 import ru.pgk63.core_common.api.teacher.model.Teacher
+import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
@@ -41,7 +42,8 @@ internal fun GuideListRoute(
     onBackScreen: () -> Unit,
     onDirectorDetailsScreen: (directorId: Int) -> Unit,
     onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
-    onTeacherDetailsScreen: (teacherId: Int) -> Unit
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onRegistrationScreen: (userRole: UserRole) -> Unit
 ) {
     val departmentHeadList = viewModel.responseDepartmentHeadList.collectAsLazyPagingItems()
     val directorList = viewModel.responseDirectorList.collectAsLazyPagingItems()
@@ -60,7 +62,8 @@ internal fun GuideListRoute(
         onBackScreen = onBackScreen,
         onDirectorDetailsScreen = onDirectorDetailsScreen,
         onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
-        onTeacherDetailsScreen = onTeacherDetailsScreen
+        onTeacherDetailsScreen = onTeacherDetailsScreen,
+        onRegistrationScreen = onRegistrationScreen
     )
 }
 
@@ -72,9 +75,12 @@ private fun GuideListScreen(
     onBackScreen: () -> Unit,
     onDirectorDetailsScreen: (directorId: Int) -> Unit,
     onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
-    onTeacherDetailsScreen: (teacherId: Int) -> Unit
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onRegistrationScreen: (userRole: UserRole) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
+
+    var mainMenuShow by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -83,7 +89,33 @@ private fun GuideListScreen(
             TopBarBack(
                 title = stringResource(id = R.string.guide),
                 scrollBehavior = scrollBehavior,
-                onBackClick = onBackScreen
+                onBackClick = onBackScreen,
+                actions = {
+                    Column {
+                        IconButton(onClick = { mainMenuShow = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = null,
+                                tint = PgkTheme.colors.primaryText
+                            )
+                        }
+
+                        MainMenu(
+                            show = mainMenuShow,
+                            onDismissRequest = { mainMenuShow = false },
+                            onClick = { menu ->
+                                when(menu){
+                                    GuideListMainMenu.REGISTRATION_DIRECTOR ->
+                                        onRegistrationScreen(UserRole.DIRECTOR)
+                                    GuideListMainMenu.REGISTRATION_DEPARTMENT_HEAD ->
+                                        onRegistrationScreen(UserRole.DEPARTMENT_HEAD)
+                                    GuideListMainMenu.REGISTRATION_TEACHER ->
+                                        onRegistrationScreen(UserRole.TEACHER)
+                                }
+                            }
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -116,6 +148,51 @@ private fun GuideListScreen(
                 onClickItem = { onTeacherDetailsScreen(it.id) }
             )
         }
+    }
+}
+
+@Composable
+private fun MainMenu(
+    show: Boolean,
+    onDismissRequest: () -> Unit,
+    onClick: (GuideListMainMenu) -> Unit
+) {
+    DropdownMenu(
+        expanded = show,
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier.background(PgkTheme.colors.secondaryBackground)
+    ) {
+        GuideListMainMenu.values().forEach { menu ->
+            MainMenuItem(
+                menu = menu
+            ) { onClick(menu) }
+        }
+    }
+}
+
+@Composable
+private fun MainMenuItem(
+    menu: GuideListMainMenu,
+    onClick: () -> Unit
+) {
+    DropdownMenuItem(
+        modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = menu.icon,
+            contentDescription = null,
+            tint = PgkTheme.colors.primaryText
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Text(
+            text = stringResource(id = menu.textId),
+            color = PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.caption,
+            fontFamily = PgkTheme.fontFamily.fontFamily
+        )
     }
 }
 

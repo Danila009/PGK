@@ -27,4 +27,10 @@ interface TeacherApi {
     suspend fun getById(
         @Path("id") id: Int
     ): Response<Teacher>
+
+    @POST("/pgk63/api/Teacher/{id}/Subject")
+    suspend fun teacherAddSubject(
+        @Path("id") id: Int,
+        @Query("subjectId") subjectId:Int
+    ): Response<Unit?>
 }

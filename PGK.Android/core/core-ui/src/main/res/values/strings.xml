@@ -99,6 +99,9 @@
     <string name="search">Поиск</string>
     <string name="search_iskat">Искать</string>
     <string name="add">Добавить</string>
+    <string name="add_director">Добавить директора</string>
+    <string name="add_department_head">Добавить заведущего отделением</string>
+    <string name="add_teacher">Добавить преподавателя</string>
     <string name="update">Обновить</string>
     <string name="hours">Часы</string>
     <string name="para">Пара</string>

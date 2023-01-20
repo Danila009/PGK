@@ -34,7 +34,12 @@ class AuthRepository @Inject constructor(
                 languageCode = response.data.language?.code,
                 emailVerification = response.data.emailVerification,
                 email = response.data.email,
-                telegramId = response.data.telegramId
+                telegramId = response.data.telegramId,
+                firstName = body.firstName,
+                lastName = body.lastName,
+                password = body.password,
+                refreshToken = response.data.refreshToken,
+                accessToken = response.data.accessToken
             )
 
             userDataSource.save(userLocalDatabase)
@@ -48,4 +53,6 @@ class AuthRepository @Inject constructor(
     suspend fun revokeRefreshToken() : Result<Unit?> = safeApiCall {
         authApi.revokeRefreshToken(refreshToken = userDataSource.getRefreshToken()!!)
     }
+
+    suspend fun getAccessToken(refreshToken:String) = authApi.getAccessToken(refreshToken)
 }

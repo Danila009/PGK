@@ -112,7 +112,7 @@ internal fun RaportichkaRoute(
         }
     }.launchWhenStarted()
 
-    LaunchedEffect(key1 = Unit, block = {
+    LaunchedEffect(Unit){
         viewModel.getRaportichka(
             confirmation = confirmation,
             onlyDate = onlyDate,
@@ -125,7 +125,7 @@ internal fun RaportichkaRoute(
             teacherIds = teacherIds,
             studentIds = studentIds
         )
-    })
+    }
 
     RaportichkaScreen(
         scaffoldState = scaffoldState,

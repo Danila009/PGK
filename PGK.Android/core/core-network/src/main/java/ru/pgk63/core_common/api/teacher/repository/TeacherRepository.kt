@@ -36,4 +36,8 @@ class TeacherRepository @Inject constructor(
     suspend fun getById(teacherId: Int) = safeApiCall {
         teacherApi.getById(teacherId)
     }
+
+    suspend fun teacherAddSubject(teacherId: Int, subjectId: Int) = safeApiCall {
+        teacherApi.teacherAddSubject(teacherId,subjectId)
+    }
 }

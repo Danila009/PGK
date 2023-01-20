@@ -6,11 +6,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.pgk63.core_common.common.Constants.BASE_URL
-import ru.pgk63.core_database.user.UserDataSource
+import ru.pgk63.core_common.interceptor.AuthInterceptor
 import javax.inject.Singleton
 
 @Module
@@ -29,20 +29,14 @@ internal class RetrofitModule {
 
     @[Provides Singleton]
     fun providerOkHttpClient(
-        userDataSource: UserDataSource
+        authInterceptor: AuthInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor {
-            val token = userDataSource.getAccessToken()
-
-            val request = it.request().newBuilder()
-                .addHeader("Authorization","Bearer $token")
-                .build()
-
-            it.proceed(request)
-        }.build()
+        .addInterceptor(authInterceptor)
+        .build()
 
     @[Provides Singleton]
     fun providerGson(): Gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         .create()
+
 }

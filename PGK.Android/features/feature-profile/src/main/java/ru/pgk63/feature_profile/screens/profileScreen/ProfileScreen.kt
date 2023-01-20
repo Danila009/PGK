@@ -83,10 +83,9 @@ internal fun ProfileRoute(
     }.launchWhenStarted()
 
     viewModel.responseUpdateUserImageUrl.onEach { url ->
-
-        userNewPhotoUrl = url
-
         if(url != null){
+
+            userNewPhotoUrl = url
 
             scaffoldState.snackbarHostState.showSnackbar(
                 message = context.getString(R.string.photo_updated)
@@ -183,7 +182,7 @@ private fun TopBarUserInfo(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
-            if(user.photoUrl != null) {
+            if(user.photoUrl != null || userNewPhotoUrl != null) {
                 ImageCoil(
                     url = userNewPhotoUrl ?: user.photoUrl,
                     modifier = Modifier

@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.composable
+import ru.pgk63.core_common.extension.isNull
 import ru.pgk63.core_common.extension.toIntArrayOrNull
 import ru.pgk63.core_navigation.NavigationDestination
 import ru.pgk63.feature_raportichka.screens.raportichkaAddRow.RaportichkaAddRowRoute
@@ -126,9 +127,9 @@ fun NavGraphBuilder.raportichkaNavigation(
         RaportichkaRoute(
             onBackScreen = onBackScreen,
             confirmation = it.arguments?.getString(RaportichkaListDestination.confirmation)?.toBooleanStrictOrNull(),
-            onlyDate = it.arguments?.getString(RaportichkaListDestination.onlyDate),
-            startDate = it.arguments?.getString(RaportichkaListDestination.startDate),
-            endDate = it.arguments?.getString(RaportichkaListDestination.endDate),
+            onlyDate = it.arguments?.getString(RaportichkaListDestination.onlyDate).isNull(),
+            startDate = it.arguments?.getString(RaportichkaListDestination.startDate).isNull(),
+            endDate = it.arguments?.getString(RaportichkaListDestination.endDate).isNull(),
             groupIds = it.arguments?.getString(RaportichkaListDestination.groupIds)?.toIntArrayOrNull(),
             subjectIds = it.arguments?.getString(RaportichkaListDestination.subjectIds)?.toIntArrayOrNull(),
             classroomTeacherIds = it.arguments?.getString(RaportichkaListDestination.classroomTeacherIds)?.toIntArrayOrNull(),

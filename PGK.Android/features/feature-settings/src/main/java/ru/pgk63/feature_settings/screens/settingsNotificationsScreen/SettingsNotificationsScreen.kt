@@ -11,14 +11,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import ru.pgk63.core_common.api.user.model.NotificationSetting
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.OnLifecycleEvent
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
+import ru.pgk63.feature_settings.screens.settingsNotificationsScreen.viewModel.SettingsNotificationsViewModel
 import ru.pgk63.feature_settings.view.SettingsButton
 
 @Composable
 internal fun SettingsNotificationsRoute(
+    viewModel: SettingsNotificationsViewModel = hiltViewModel(),
     onBackScreen: () -> Unit
 ) {
     var notifications by remember { mutableStateOf(true) }
@@ -41,6 +47,22 @@ internal fun SettingsNotificationsRoute(
         && !raportichkaNotifications && !technicalSupportNotifications
     ){
         notifications = false
+    }
+
+    OnLifecycleEvent { owner, event ->
+        if(event == Lifecycle.Event.ON_STOP) {
+            viewModel.updateNotificationSettings(
+                NotificationSetting(
+                    includedNotifications = notifications,
+                    soundNotifications = soundNotifications,
+                    vibrationNotifications = vibrationNotifications,
+                    includedSchedulesNotifications = scheduleNotifications,
+                    includedJournalNotifications = journalNotifications,
+                    includedRaportichkaNotifications = raportichkaNotifications,
+                    includedTechnicalSupportNotifications = technicalSupportNotifications
+                )
+            )
+        }
     }
 
     SettingsNotificationsScreen(

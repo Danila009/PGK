@@ -9,6 +9,7 @@ import com.example.feature_guide.screens.directorDetailsScreen.DirectorDetailsRo
 import com.example.feature_guide.screens.guideListScreen.GuideListRoute
 import com.example.feature_guide.screens.teacherDetailsScreen.TeacherDetailsRoute
 import com.google.accompanist.navigation.animation.composable
+import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_navigation.NavigationDestination
 
 object GuideListDestination : NavigationDestination {
@@ -37,7 +38,8 @@ fun NavGraphBuilder.guideNavigation(
     onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
     onTeacherDetailsScreen: (teacherId: Int) -> Unit,
     onSubjectDetailsScreen: (subjectId: Int) -> Unit,
-    onGroupDetailsScreen: (groupId: Int) -> Unit
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onRegistrationScreen: (userRole: UserRole) -> Unit
 ) {
     composable(
         route = GuideListDestination.route
@@ -46,7 +48,8 @@ fun NavGraphBuilder.guideNavigation(
             onBackScreen = onBackScreen,
             onDirectorDetailsScreen = onDirectorDetailsScreen,
             onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
-            onTeacherDetailsScreen = onTeacherDetailsScreen
+            onTeacherDetailsScreen = onTeacherDetailsScreen,
+            onRegistrationScreen = onRegistrationScreen
         )
     }
 
