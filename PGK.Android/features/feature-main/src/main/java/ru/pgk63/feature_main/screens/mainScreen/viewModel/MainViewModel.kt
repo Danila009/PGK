@@ -12,6 +12,7 @@ import ru.pgk63.core_common.api.journal.repository.JournalRepository
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.raportichka.repository.RaportichkaRepository
 import ru.pgk63.core_common.api.user.model.User
+import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.api.user.repository.UserRepository
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_database.user.UserDataSource
@@ -25,7 +26,7 @@ internal class MainViewModel @Inject constructor(
     private val journalRepository: JournalRepository
 ): ViewModel() {
 
-    private val _responseUserNetwork = MutableStateFlow<Result<User>>(Result.Loading())
+    private val _responseUserNetwork = MutableStateFlow<Result<UserDetails>>(Result.Loading())
     val responseUserNetwork = _responseUserNetwork.asStateFlow()
 
     private val _responseRaportichkaList = MutableStateFlow<PagingData<Raportichka>>(PagingData.empty())

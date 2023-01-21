@@ -25,6 +25,7 @@
     <string name="technical_support">Техподдержка</string>
     <string name="technical_support_notifications_settings_body">Получать уведомления от техподдержки</string>
     <string name="email">Электронная почта</string>
+    <string name="email_verification">Подтвердите свой адрес электронной почты</string>
     <string name="send_email_success">Письмо отправлено</string>
     <string name="password">Пароль</string>
     <string name="firstName">Имя</string>
@@ -56,12 +57,18 @@
     <string name="teachers">Преподаватели</string>
     <string name="teacher">Преподаватель</string>
     <string name="cabinet">Кабинет</string>
+    <string name="cabinet_body">Укажите свой кабинет к примеру 210/1</string>
     <string name="number">Номер</string>
     <string name="abbreviation">Аббревиатура</string>
     <string name="qualification">Квалификация</string>
     <string name="appearance">Внешность</string>
     <string name="appearance_settings_body">Изменить тему, размер шрифта, шрифт текст, поля, углы</string>
     <string name="security">Безопасность</string>
+    <string name="email_security">Электронная почта добавлена</string>
+    <string name="telegram_security">Telegram-бот добавлен</string>
+    <string name="telegram_insecurity">Telegram-бот не добавлен</string>
+    <string name="email_insecurity">Электронная почта не добавлена</string>
+    <string name="security_email">Безопасность</string>
     <string name="security_settings_body">Изменить пароль, выйти из системы, добавить электронную почту или телеграм для восстановления доступа</string>
     <string name="language">Язык</string>
     <string name="language_settings_body">Изменить язык в системе</string>
@@ -84,6 +91,10 @@
     <string name="corners">Углы</string>
     <string name="your_new_password">Ваш новый пароль</string>
     <string name="set_profile_photo">Установить фотографию профиля</string>
+    <string name="set_cabinet">Добавьте свой кабинет</string>
+    <string name="set_information">Добавьте информацию для студентов</string>
+    <string name="information">Информация</string>
+    <string name="information_guide_body">Здесь вы можете добавить любую информацию для студентов\nК примеру сдача долгов для студентов каждый четверг в 15.00 в 208/1 кабинете</string>
     <string name="photo_updated">Фото обновлено</string>
     <string name="back">Назад</string>
     <string name="camera">Камера</string>
@@ -98,6 +109,7 @@
     <string name="delete">Удалить</string>
     <string name="search">Поиск</string>
     <string name="search_iskat">Искать</string>
+    <string name="page">Страница</string>
     <string name="add">Добавить</string>
     <string name="add_director">Добавить директора</string>
     <string name="add_department_head">Добавить заведущего отделением</string>

@@ -16,7 +16,7 @@ import ru.pgk63.core_common.enums.theme.ThemeStyle
 interface UserApi {
 
     @GET("/pgk63/api/User")
-    suspend fun get(): Response<User>
+    suspend fun get(): Response<UserDetails>
 
     @PATCH("/pgk63/api/User/Information")
     suspend fun updateInformation(@Body body: UpdateInformationBody): Response<Unit?>

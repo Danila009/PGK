@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -48,7 +49,7 @@ fun rememberTextFieldColors(
     cursorColor = cursorColor,
     focusedLabelColor = focusedLabelColor,
     unfocusedLabelColor = unfocusedLabelColor,
-    errorIndicatorColor = errorIndicatorColor
+    errorIndicatorColor = errorIndicatorColor,
 )
 
 @Composable
@@ -56,16 +57,19 @@ fun TextFieldBase(
     text: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
+    modifierTextField: Modifier = Modifier,
     label: String? = null,
     placeholder: String? = null,
     maxChar: Int? = null,
     hasError: Boolean = false,
     errorText: String? = null,
     singleLine: Boolean = true,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     keyboardActions: KeyboardActions = KeyboardActions(),
     visualTransformation: VisualTransformation = VisualTransformation.None,
     shape: Shape = PgkTheme.shapes.cornersStyle,
+    textStyle: TextStyle = PgkTheme.typography.body,
     colors: TextFieldColors = rememberTextFieldColors(),
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -75,6 +79,7 @@ fun TextFieldBase(
     Column(modifier = modifier) {
         OutlinedTextField(
             value = text,
+            modifier = modifierTextField,
             onValueChange = {
                 onTextChanged(if(maxChar != null) it.take(maxChar) else it)
                 if (maxChar != null && it.length > maxChar){
@@ -91,7 +96,9 @@ fun TextFieldBase(
             keyboardOptions = keyboardOptions,
             visualTransformation = visualTransformation,
             keyboardActions = keyboardActions,
-            isError = hasError
+            isError = hasError,
+            maxLines = maxLines,
+            textStyle = textStyle
         )
 
         Spacer(modifier = Modifier.height(2.dp))

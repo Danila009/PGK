@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.journal.model.JournalColumn
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.user.model.User
+import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.launchWhenStarted
@@ -60,7 +61,7 @@ internal fun MainRoute(
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
 ) {
-    var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
+    var userResult by remember { mutableStateOf<Result<UserDetails>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
 
     val raportichkaList = viewModel.responseRaportichkaList.collectAsLazyPagingItems()
@@ -130,7 +131,7 @@ internal fun MainRoute(
 
 @Composable
 private fun MainScreen(
-    userResult: Result<User>,
+    userResult: Result<UserDetails>,
     userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onNotificationListScreen: () -> Unit,
@@ -263,7 +264,7 @@ private fun TopBar(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun DrawerContentUi(
-    userResult: Result<User>,
+    userResult: Result<UserDetails>,
     userRole: UserRole?,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
@@ -381,7 +382,7 @@ private fun DrawerContentUi(
 
 @Composable
 private fun MainScreenSuccess(
-    user: User,
+    user: UserDetails,
     userRole: UserRole?,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
     getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
@@ -398,7 +399,7 @@ private fun MainScreenSuccess(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun MainScreenStudent(
-    user: User,
+    user: UserDetails,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
     getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
 ) {

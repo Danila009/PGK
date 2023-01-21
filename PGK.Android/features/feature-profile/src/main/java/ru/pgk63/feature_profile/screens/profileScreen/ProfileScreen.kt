@@ -10,6 +10,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
@@ -17,17 +18,17 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.onEach
-import ru.pgk63.core_common.api.user.model.User
+import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.launchWhenStarted
@@ -39,7 +40,10 @@ import ru.pgk63.core_ui.view.ImageCoil
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
+import ru.pgk63.feature_profile.screens.profileScreen.model.getSecurityEmailState
+import ru.pgk63.feature_profile.screens.profileScreen.model.getSecurityTelegramState
 import ru.pgk63.feature_profile.screens.profileScreen.viewModel.ProfileViewModel
+import ru.pgk63.feature_profile.screens.profileUpdateScreen.model.ProfileUpdateType
 import java.io.ByteArrayOutputStream
 
 @SuppressLint("FlowOperatorInvokedInComposition")
@@ -47,10 +51,12 @@ import java.io.ByteArrayOutputStream
 internal fun ProfileRoute(
     viewModel: ProfileViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
+    onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
+    onUserPageScreen: (UserRole, userId: Int) -> Unit
 ) {
     val context = LocalContext.current
 
-    var userResult by remember { mutableStateOf<Result<User>>(Result.Loading()) }
+    var userResult by remember { mutableStateOf<Result<UserDetails>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
     var userNewPhotoUrl by remember { mutableStateOf<String?>(null) }
 
@@ -99,6 +105,20 @@ internal fun ProfileRoute(
         userResult = userResult,
         userRole = userRole,
         onBackScreen = onBackScreen,
+        onProfileUpdateScreen = onProfileUpdateScreen,
+        onUserPageScreen = {
+            userResult.data?.id?.let { userId ->
+                when(userRole){
+                    UserRole.STUDENT, UserRole.HEADMAN, UserRole.DEPUTY_HEADMAN -> {
+                        onUserPageScreen(UserRole.STUDENT, userId)
+                    }
+                    UserRole.TEACHER -> onUserPageScreen(UserRole.TEACHER, userId)
+                    UserRole.DEPARTMENT_HEAD -> onUserPageScreen(UserRole.DEPARTMENT_HEAD, userId)
+                    UserRole.DIRECTOR -> onUserPageScreen(UserRole.DIRECTOR, userId)
+                    else -> Unit
+                }
+            }
+        },
         updateUserPhoto = {
             singlePhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -110,10 +130,12 @@ internal fun ProfileRoute(
 @Composable
 private fun ProfileScreen(
     scaffoldState: ScaffoldState,
-    userResult: Result<User>,
+    userResult: Result<UserDetails>,
     userRole: UserRole?,
     userNewPhotoUrl: String?,
     onBackScreen: () -> Unit,
+    onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
+    onUserPageScreen: () -> Unit,
     updateUserPhoto: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
@@ -127,7 +149,28 @@ private fun ProfileScreen(
                 TopBarBack(
                     title = stringResource(id = R.string.profile),
                     scrollBehavior = scrollBehavior,
-                    onBackClick = onBackScreen
+                    onBackClick = onBackScreen,
+                    actions = {
+                        if(
+                            userRole == UserRole.STUDENT ||
+                            userRole == UserRole.HEADMAN ||
+                            userRole == UserRole.DEPUTY_HEADMAN ||
+                            userRole == UserRole.TEACHER ||
+                            userRole == UserRole.DEPARTMENT_HEAD ||
+                            userRole == UserRole.DIRECTOR
+                        ) {
+                            TextButton(onClick = onUserPageScreen) {
+                                Text(
+                                    text = stringResource(id = R.string.page),
+                                    color = PgkTheme.colors.tintColor,
+                                    style = PgkTheme.typography.body,
+                                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                                    modifier = Modifier.padding(5.dp),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    }
                 )
 
                 AnimatedVisibility(
@@ -157,8 +200,11 @@ private fun ProfileScreen(
             is Result.Error -> ErrorUi(message = userResult.message)
             is Result.Loading -> LoadingUi()
             is Result.Success -> UserSuccess(
-                bottomPadding = paddingValues.calculateBottomPadding(),
-                updateUserPhoto = updateUserPhoto
+                contentPadding = paddingValues,
+                user = userResult.data!!,
+                userRole = userRole,
+                updateUserPhoto = updateUserPhoto,
+                onProfileUpdateScreen = onProfileUpdateScreen
             )
         }
     }
@@ -166,7 +212,7 @@ private fun ProfileScreen(
 
 @Composable
 private fun TopBarUserInfo(
-    user: User,
+    user: UserDetails,
     userRole: UserRole?,
     userNewPhotoUrl: String?,
 ) {
@@ -231,56 +277,176 @@ private fun TopBarUserInfo(
 
 @Composable
 private fun UserSuccess(
-    bottomPadding: Dp,
+    contentPadding: PaddingValues,
+    user: UserDetails,
+    userRole: UserRole?,
     updateUserPhoto: () -> Unit,
+    onProfileUpdateScreen: (ProfileUpdateType) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = contentPadding
     ) {
         item {
 
-            UpdateUserPhotoCard(onClick = updateUserPhoto)
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Spacer(modifier = Modifier.height(bottomPadding))
+            ButtonCard(
+                painter = painterResource(id = ResIcons.camera),
+                text = stringResource(id = R.string.set_profile_photo),
+                onClick = updateUserPhoto
+            )
+
+            if(
+                userRole == UserRole.TEACHER
+                || userRole== UserRole.DEPARTMENT_HEAD
+                || userRole == UserRole.DIRECTOR
+            ) {
+                ButtonCard(
+                    painter = painterResource(id = ResIcons.classroom),
+                    text = stringResource(id = R.string.set_cabinet),
+                    onClick = { onProfileUpdateScreen(ProfileUpdateType.CABINET) }
+                )
+
+                ButtonCard(
+                    painter = painterResource(id = ResIcons.description),
+                    text = stringResource(id = R.string.set_information),
+                    onClick = { onProfileUpdateScreen(ProfileUpdateType.INFORMATION) }
+                )
+            }
+
+            SecurityUi(
+                email = user.email,
+                emailVerification = user.emailVerification,
+                telegramId = user.telegramId
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun UpdateUserPhotoCard(
+private fun ButtonCard(
+    painter: Painter,
+    text: String,
     onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 20.dp),
+            .padding(horizontal = 10.dp, vertical = 5.dp),
         shape = PgkTheme.shapes.cornersStyle,
         backgroundColor = PgkTheme.colors.secondaryBackground,
         onClick = onClick
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = ResIcons.camera),
+                painter = painter,
                 contentDescription = null,
-                tint = PgkTheme.colors.primaryText,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(25.dp)
+                modifier = Modifier.padding(10.dp).size(25.dp),
+                tint = PgkTheme.colors.primaryText
             )
 
             Text(
-                text = stringResource(id = R.string.set_profile_photo),
+                text = text,
                 color = PgkTheme.colors.primaryText,
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp),
+                modifier = Modifier
+                    .padding(5.dp)
+                    .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Composable
+private fun SecurityUi(
+    telegramId: Int?,
+    email: String?,
+    emailVerification: Boolean
+) {
+    val securityEmailState = getSecurityEmailState(
+        email = email,
+        emailVerification = emailVerification
+    )
+
+    val securityTelegramState = getSecurityTelegramState(
+        telegramId = telegramId
+    )
+
+    Column {
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Text(
+            text = stringResource(id = R.string.security),
+            color = PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.heading,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            modifier = Modifier.padding(start = 20.dp)
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Divider(color = PgkTheme.colors.secondaryBackground)
+
+        SecurityItem(
+            painter = painterResource(id = securityEmailState.iconId),
+            text = stringResource(id = securityEmailState.nameId),
+            onClick = {
+
+            }
+        )
+
+        Divider(color = PgkTheme.colors.secondaryBackground)
+
+        SecurityItem(
+            painter = painterResource(id = securityTelegramState.iconId),
+            text = stringResource(id = securityTelegramState.nameId),
+            onClick = {
+
+            }
+        )
+
+        Divider(color = PgkTheme.colors.secondaryBackground)
+    }
+}
+
+@Composable
+private fun SecurityItem(
+    painter: Painter,
+    text:String,
+    onClick: () -> Unit
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(10.dp)
+                .size(25.dp)
+        )
+
+        Text(
+            text = text,
+            color = PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.body,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            modifier = Modifier
+                .padding(5.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
     }
 }

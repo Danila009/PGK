@@ -1,11 +1,12 @@
 package com.example.feature_guide.screens.guideListScreen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -67,6 +68,7 @@ internal fun GuideListRoute(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun GuideListScreen(
     directorList: LazyPagingItems<Director>,
@@ -120,8 +122,8 @@ private fun GuideListScreen(
         }
     ) { paddingValues ->
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
             contentPadding = paddingValues
         ){
             guideListUi(
@@ -196,7 +198,8 @@ private fun MainMenuItem(
     }
 }
 
-private fun<T : Any> LazyGridScope.guideListUi(
+@OptIn(ExperimentalFoundationApi::class)
+private fun<T : Any> LazyStaggeredGridScope.guideListUi(
     content: LazyPagingItems<T>,
     getName: (T) -> String,
     getPost: @Composable () -> String,

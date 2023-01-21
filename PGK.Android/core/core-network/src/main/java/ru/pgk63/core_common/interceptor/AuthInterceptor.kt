@@ -13,6 +13,7 @@ import ru.pgk63.core_common.api.auth.model.SignIn
 import ru.pgk63.core_common.common.Constants.CUSTOM_HEADER
 import ru.pgk63.core_common.common.Constants.NO_AUTH
 import ru.pgk63.core_database.user.UserDataSource
+import ru.pgk63.core_database.user.model.UserLocalDatabase
 import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Provider
@@ -66,11 +67,16 @@ internal class AuthInterceptor @Inject constructor(
                                     lastName = user.lastName,
                                     password = user.password
                                 ))
+                                val accessToken = signInResponse.body()?.accessToken
 
-                                userDataSource.saveAccessToken(signInResponse.body()?.accessToken)
+                                userDataSource.saveAccessToken(accessToken)
                                 userDataSource.saveRefreshToken(signInResponse.body()?.refreshToken)
 
-                                signInResponse.body()?.accessToken
+                                if(accessToken == null){
+                                    userDataSource.save(UserLocalDatabase(statusRegistration = false))
+                                }
+
+                                accessToken
                             }
                             else -> {
                                 null

@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.Body
 import ru.pgk63.core_common.Constants.PAGE_SIZE
+import ru.pgk63.core_common.api.journal.UpdateInformationBody
 import ru.pgk63.core_common.api.user.UserApi
 import ru.pgk63.core_common.api.user.model.*
 import ru.pgk63.core_common.api.user.paging.NotificationPageSourse
@@ -26,7 +28,15 @@ class UserRepository @Inject constructor(
     private val userDataSource: UserDataSource,
 ): ApiResponse() {
 
-    suspend fun get(): Result<User> = safeApiCall { userApi.get() }
+    suspend fun get(): Result<UserDetails> = safeApiCall { userApi.get() }
+
+    suspend fun updateInformation(@Body body: UpdateInformationBody) = safeApiCall {
+        userApi.updateInformation(body)
+    }
+
+    suspend fun updateCabinet(@Body body: UpdateCabinetBody) = safeApiCall {
+        userApi.updateCabinet(body)
+    }
 
     fun getNotifications(search: String? = null): Flow<PagingData<Notification>> {
         return Pager(PagingConfig(pageSize = PAGE_SIZE)){

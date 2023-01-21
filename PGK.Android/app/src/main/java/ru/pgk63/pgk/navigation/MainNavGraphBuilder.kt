@@ -25,6 +25,7 @@ import ru.pgk63.feature_group.navigation.groupNavigation
 import ru.pgk63.feature_main.navigation.NotificationListDestination
 import ru.pgk63.feature_main.navigation.mainNavigation
 import ru.pgk63.feature_profile.navigation.ProfileDestination
+import ru.pgk63.feature_profile.navigation.ProfileUpdateDestination
 import ru.pgk63.feature_profile.navigation.profileNavigation
 import ru.pgk63.feature_raportichka.navigation.RaportichkaAddRowDestination
 import ru.pgk63.feature_raportichka.navigation.RaportichkaListDestination
@@ -192,6 +193,28 @@ fun NavGraphBuilder.mainNavGraphBuilder(
 
     profileNavigation(
         onBackScreen = { navController.navigateUp() },
+        onProfileUpdateScreen = { type ->
+            navController.navigate(
+                "${ProfileUpdateDestination.route}?${ProfileUpdateDestination.type}=$type"
+            )
+        },
+        onUserPageScreen = { userRole, userId ->
+            when (userRole) {
+                UserRole.STUDENT -> {
+                    navController.navigate("${StudentDetailsDestination.route}/$userId")
+                }
+                UserRole.TEACHER -> {
+                    navController.navigate("${TeacherDetailsDestination.route}/$userId")
+                }
+                UserRole.DEPARTMENT_HEAD -> {
+                    navController.navigate("${DepartmentHeadDetailsDestination.route}/$userId")
+                }
+                UserRole.DIRECTOR -> {
+                    navController.navigate("${DirectorDetailsDestination.route}/$id")
+                }
+                else -> Unit
+            }
+        }
     )
 
     departmentNavigation(
