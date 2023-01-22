@@ -329,7 +329,7 @@ private fun EmailSecurity(
         }) {
             Text(
                 text = stringResource(id = R.string.update),
-                color = PgkTheme.colors.primaryText,
+                color = PgkTheme.colors.tintColor,
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,
                 textAlign = TextAlign.Center,
@@ -449,7 +449,7 @@ private fun EmailInsecurity(
         }) {
             Text(
                 text = stringResource(id = R.string.add),
-                color = PgkTheme.colors.primaryText,
+                color = PgkTheme.colors.tintColor,
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,
                 textAlign = TextAlign.Center,
