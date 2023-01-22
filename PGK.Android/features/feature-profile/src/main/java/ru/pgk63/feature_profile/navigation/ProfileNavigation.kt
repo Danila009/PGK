@@ -24,7 +24,8 @@ object ProfileUpdateDestination : NavigationDestination {
 fun NavGraphBuilder.profileNavigation(
     onBackScreen: () -> Unit,
     onProfileUpdateScreen:(ProfileUpdateType) -> Unit,
-    onUserPageScreen: (UserRole, userId: Int) -> Unit
+    onUserPageScreen: (UserRole, userId: Int) -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
     composable(
         route = ProfileDestination.route
@@ -32,7 +33,8 @@ fun NavGraphBuilder.profileNavigation(
         ProfileRoute(
             onBackScreen = onBackScreen,
             onProfileUpdateScreen = onProfileUpdateScreen,
-            onUserPageScreen = onUserPageScreen
+            onUserPageScreen = onUserPageScreen,
+            onSettingsEmailScreen = onSettingsEmailScreen
         )
     }
 

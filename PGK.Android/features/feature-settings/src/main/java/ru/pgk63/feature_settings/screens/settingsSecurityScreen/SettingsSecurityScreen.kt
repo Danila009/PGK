@@ -23,11 +23,13 @@ internal fun SettingsSecurityRoute(
     viewModel: SettingsSecurityViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
     onChangePasswordScreen: () -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
 
     SettingsSecurityScreen(
         onBackScreen = onBackScreen,
         onChangePasswordScreen = onChangePasswordScreen,
+        onSettingsEmailScreen = onSettingsEmailScreen,
         onSignOutApp = {
             viewModel.signOutApp()
         },
@@ -42,7 +44,8 @@ private fun SettingsSecurityScreen(
     onSignOutApp: () -> Unit,
     onSignOutAll: () -> Unit,
     onBackScreen: () -> Unit,
-    onChangePasswordScreen: () -> Unit
+    onChangePasswordScreen: () -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -64,7 +67,8 @@ private fun SettingsSecurityScreen(
             item {
 
                 SecurityUi(
-                    onChangePasswordScreen = onChangePasswordScreen
+                    onChangePasswordScreen = onChangePasswordScreen,
+                    onSettingsEmailScreen = onSettingsEmailScreen
                 )
 
                 Spacer(modifier = Modifier.height(25.dp))
@@ -84,7 +88,8 @@ private fun SettingsSecurityScreen(
 
 @Composable
 private fun SecurityUi(
-    onChangePasswordScreen: () -> Unit
+    onChangePasswordScreen: () -> Unit,
+    onSettingsEmailScreen: () -> Unit,
 ){
 
     Column {
@@ -98,7 +103,7 @@ private fun SecurityUi(
         SettingsButton(
             title = stringResource(id = R.string.email),
             body = stringResource(id = R.string.email_password_body)
-        ) {  }
+        ) { onSettingsEmailScreen() }
 
         Spacer(modifier = Modifier.height(10.dp))
 

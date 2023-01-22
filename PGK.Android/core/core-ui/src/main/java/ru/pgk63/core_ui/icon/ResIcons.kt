@@ -27,9 +27,6 @@ object ResIcons {
     val file = R.drawable.file
     val gallery = R.drawable.gallery
     val back = R.drawable.back
-    val securitySecurity = R.drawable.security_security
-    val insecuritySecurity = R.drawable.insecurity_security
-    val emailBlocker = R.drawable.email_blocker
     val description = R.drawable.description
     val classroom = R.drawable.classroom
 }

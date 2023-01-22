@@ -32,6 +32,8 @@ import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.launchWhenStarted
+import ru.pgk63.core_common.security.model.getSecurityEmailState
+import ru.pgk63.core_common.security.model.getSecurityTelegramState
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.theme.PgkTheme
@@ -40,8 +42,6 @@ import ru.pgk63.core_ui.view.ImageCoil
 import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
-import ru.pgk63.feature_profile.screens.profileScreen.model.getSecurityEmailState
-import ru.pgk63.feature_profile.screens.profileScreen.model.getSecurityTelegramState
 import ru.pgk63.feature_profile.screens.profileScreen.viewModel.ProfileViewModel
 import ru.pgk63.feature_profile.screens.profileUpdateScreen.model.ProfileUpdateType
 import java.io.ByteArrayOutputStream
@@ -52,7 +52,8 @@ internal fun ProfileRoute(
     viewModel: ProfileViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
     onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
-    onUserPageScreen: (UserRole, userId: Int) -> Unit
+    onUserPageScreen: (UserRole, userId: Int) -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -106,6 +107,7 @@ internal fun ProfileRoute(
         userRole = userRole,
         onBackScreen = onBackScreen,
         onProfileUpdateScreen = onProfileUpdateScreen,
+        onSettingsEmailScreen = onSettingsEmailScreen,
         onUserPageScreen = {
             userResult.data?.id?.let { userId ->
                 when(userRole){
@@ -136,6 +138,7 @@ private fun ProfileScreen(
     onBackScreen: () -> Unit,
     onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
     onUserPageScreen: () -> Unit,
+    onSettingsEmailScreen: () -> Unit,
     updateUserPhoto: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
@@ -204,7 +207,8 @@ private fun ProfileScreen(
                 user = userResult.data!!,
                 userRole = userRole,
                 updateUserPhoto = updateUserPhoto,
-                onProfileUpdateScreen = onProfileUpdateScreen
+                onProfileUpdateScreen = onProfileUpdateScreen,
+                onSettingsEmailScreen = onSettingsEmailScreen
             )
         }
     }
@@ -281,7 +285,8 @@ private fun UserSuccess(
     user: UserDetails,
     userRole: UserRole?,
     updateUserPhoto: () -> Unit,
-    onProfileUpdateScreen: (ProfileUpdateType) -> Unit
+    onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -318,7 +323,8 @@ private fun UserSuccess(
             SecurityUi(
                 email = user.email,
                 emailVerification = user.emailVerification,
-                telegramId = user.telegramId
+                telegramId = user.telegramId,
+                onSettingsEmailScreen = onSettingsEmailScreen
             )
         }
     }
@@ -370,7 +376,8 @@ private fun ButtonCard(
 private fun SecurityUi(
     telegramId: Int?,
     email: String?,
-    emailVerification: Boolean
+    emailVerification: Boolean,
+    onSettingsEmailScreen: () -> Unit
 ) {
     val securityEmailState = getSecurityEmailState(
         email = email,
@@ -399,9 +406,7 @@ private fun SecurityUi(
         SecurityItem(
             painter = painterResource(id = securityEmailState.iconId),
             text = stringResource(id = securityEmailState.nameId),
-            onClick = {
-
-            }
+            onClick = { onSettingsEmailScreen() }
         )
 
         Divider(color = PgkTheme.colors.secondaryBackground)

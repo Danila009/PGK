@@ -214,6 +214,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                 }
                 else -> Unit
             }
+        },
+        onSettingsEmailScreen = {
+            navController.navigate(SettingsEmailDestination.route)
         }
     )
 
@@ -341,6 +344,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onChangePasswordScreen = {
             navController.navigate(ChangePasswordDestination.route)
+        },
+        onSettingsEmailScreen = {
+            navController.navigate(SettingsEmailDestination.route)
         }
     )
 }

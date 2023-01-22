@@ -6,6 +6,7 @@ import com.google.accompanist.navigation.animation.composable
 import ru.pgk63.core_navigation.NavigationDestination
 import ru.pgk63.feature_settings.screens.changePasswordScreen.ChangePasswordRoute
 import ru.pgk63.feature_settings.screens.settingsAppearanceScreen.SettingsAppearanceRoute
+import ru.pgk63.feature_settings.screens.settingsEmailScreen.SettingsEmailRoute
 import ru.pgk63.feature_settings.screens.settingsLanguageScreen.SettingsLanguageScreenRoute
 import ru.pgk63.feature_settings.screens.settingsNotificationsScreen.SettingsNotificationsRoute
 import ru.pgk63.feature_settings.screens.settingsScreen.SettingsRoute
@@ -35,6 +36,10 @@ object ChangePasswordDestination : NavigationDestination {
     override val route = "change_password_screen"
 }
 
+object SettingsEmailDestination : NavigationDestination {
+    override val route = "settings_email_screen"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.settingsNavigation(
     onSettingsSecurityScreen:() -> Unit,
@@ -42,7 +47,8 @@ fun NavGraphBuilder.settingsNavigation(
     onSettingsLanguageScreen:() -> Unit,
     onSettingsAppearanceScreen:() -> Unit,
     onBackScreen: () -> Unit,
-    onChangePasswordScreen: () -> Unit
+    onChangePasswordScreen: () -> Unit,
+    onSettingsEmailScreen: () -> Unit
 ) {
     composable(
         route = SettingsDestination.route
@@ -61,7 +67,8 @@ fun NavGraphBuilder.settingsNavigation(
     ){
         SettingsSecurityRoute(
             onBackScreen = onBackScreen,
-            onChangePasswordScreen = onChangePasswordScreen
+            onChangePasswordScreen = onChangePasswordScreen,
+            onSettingsEmailScreen = onSettingsEmailScreen
         )
     }
 
@@ -93,6 +100,14 @@ fun NavGraphBuilder.settingsNavigation(
         route = ChangePasswordDestination.route
     ){
         ChangePasswordRoute(
+            onBackScreen = onBackScreen
+        )
+    }
+
+    composable(
+        route = SettingsEmailDestination.route
+    ){
+        SettingsEmailRoute(
             onBackScreen = onBackScreen
         )
     }

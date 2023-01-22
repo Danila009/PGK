@@ -25,6 +25,7 @@
     <string name="technical_support">Техподдержка</string>
     <string name="technical_support_notifications_settings_body">Получать уведомления от техподдержки</string>
     <string name="email">Электронная почта</string>
+    <string name="check_email">Проверьте, подтверждена ли почта</string>
     <string name="email_verification">Подтвердите свой адрес электронной почты</string>
     <string name="send_email_success">Письмо отправлено</string>
     <string name="password">Пароль</string>
@@ -106,6 +107,7 @@
     <string name="pin">Закрепить</string>
     <string name="pin_messages">Закрепленые сообщения</string>
     <string name="edit">Изменить</string>
+    <string name="edit_email">Изменить электронную почту</string>
     <string name="delete">Удалить</string>
     <string name="search">Поиск</string>
     <string name="search_iskat">Искать</string>
@@ -138,8 +140,12 @@
     <string name="restore_access_telegram">Восстановить доступ, через Телеграм бота</string>
     <string name="restore_access_email">Восстановить доступ, через Email</string>
     <string name="restore_access_email_body">Вам на Email придет ссылка, перейдя по ней вы увидите свой пароль</string>
+    <string name="add_email_body">Укажите электронную почту. Если вы забудете свой пароль, вы сможете восстановить доступ</string>
+    <string name="update_email_body">Почта добавлена\nВы можите изменить почту. Если вы забудете свой пароль, вы сможете восстановить доступ</string>
+    <string name="verification_email_body">Вы получите письмо по почте, нажмите на ссылку для подтверждения электронной почты</string>
     <string name="restore_access_telegram_body">1. Зайдите в приложение Телеграм\n2. Откройте чат с ботом\n3. Отправьте сообщение\n/password_reset</string>
     <string name="send_email">Отправить письмо</string>
+    <string name="repeat_send_email">Повторно отправить</string>
     <string name="swipe_to_screen">Проведите пальцем по экрану</string>
     <string name="registration">Регистрация</string>
     <string name="register">Зарегистрировать</string>

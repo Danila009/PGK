@@ -61,6 +61,10 @@ dependencies {
     //Navigation
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanist_navigation_animation_version")
 
+    //Pager
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_pager_version"
+
     //Paging
     implementation "androidx.paging:paging-compose:$paging_compose_version"
 
