@@ -27,7 +27,7 @@ interface JournalApi {
     @POST("/pgk63/api/Journal")
     suspend fun create(
         @Body body: CreateJournalBody
-    ): Response<Unit?>
+    ): Response<Journal?>
 
     @DELETE("/pgk63/api/Journal/{id}")
     suspend fun delete(

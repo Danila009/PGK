@@ -159,6 +159,16 @@ private fun CreateGroupScreen(
                 onBackClick = onBackScreen,
             )
         },
+        snackbarHost = { state ->
+            SnackbarHost(hostState = state) { data ->
+                Snackbar(
+                    backgroundColor = PgkTheme.colors.secondaryBackground,
+                    contentColor = PgkTheme.colors.primaryText,
+                    shape = PgkTheme.shapes.cornersStyle,
+                    snackbarData = data
+                )
+            }
+        },
         content = { paddingValues ->
             LazyColumn(contentPadding = paddingValues) {
                 item {

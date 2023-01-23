@@ -14,6 +14,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -29,7 +30,6 @@ import ru.pgk63.core_ui.view.*
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 import ru.pgk63.feature_department.screens.departmentListScreen.viewModel.DepartmentListViewModel
-import ru.pgk63.feature_department.screens.view.DepartmentCardUi
 
 @Composable
 internal fun DepartmentListRoute(
@@ -138,7 +138,7 @@ private fun DepartmentListScreen(
 
                 items(departments) { department ->
                     department?.let {
-                        DepartmentCardUi(
+                        DepartmentItemUi(
                             department = department,
                             onClick = { onDepartmentDetailsScreen(department.id) }
                         )
@@ -164,5 +164,33 @@ private fun DepartmentListScreen(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun DepartmentItemUi(
+    department: Department,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .padding(5.dp)
+            .fillMaxWidth(),
+        backgroundColor = PgkTheme.colors.secondaryBackground,
+        elevation = 12.dp,
+        shape = PgkTheme.shapes.cornersStyle,
+        onClick = onClick
+    ) {
+        Text(
+            text = department.name,
+            color = PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.body,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
     }
 }

@@ -1,7 +1,6 @@
 package ru.pgk63.feature_specialization.screens.specializationListScreen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -9,13 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -140,7 +136,12 @@ private fun SpecializationListScreen(
             ) {
 
                 items(specializations) { specialization ->
-                    specialization?.let { SpecializationCardUi(it,onSpecializationDetailsScreen) }
+                    specialization?.let {
+                        SpecializationCardUi(
+                            specialization = specialization,
+                            onClick = { onSpecializationDetailsScreen(specialization.id) }
+                        )
+                    }
                 }
 
                 if (specializations.loadState.append is LoadState.Loading){
@@ -169,11 +170,8 @@ private fun SpecializationListScreen(
 @Composable
 private fun SpecializationCardUi(
     specialization: Specialization,
-    onSpecializationDetailsScreen: (specializationId: Int) -> Unit
+    onClick: () -> Unit
 ) {
-    val screenWidthDp = LocalConfiguration.current.screenWidthDp
-    val screenHeightDp = LocalConfiguration.current.screenHeightDp
-
     Card(
         modifier = Modifier
             .padding(5.dp)
@@ -181,51 +179,17 @@ private fun SpecializationCardUi(
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        onClick = { onSpecializationDetailsScreen(specialization.id) }
+        onClick = onClick
     ) {
-        Column {
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-
-                if(specialization.department.departmentHead.photoUrl != null) {
-                    ImageCoil(
-                        url = specialization.department.departmentHead.photoUrl,
-                        modifier = Modifier
-                            .width((screenWidthDp / 2).dp)
-                            .height((screenHeightDp / 4.3).dp)
-                    )
-                }else {
-                    Image(
-                        painter = painterResource(id = R.drawable.profile_photo),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width((screenWidthDp / 2).dp)
-                            .height((screenHeightDp / 4.3).dp)
-                    )
-                }
-
-                Text(
-                    text = specialization.department.departmentHead.fio(),
-                    color = PgkTheme.colors.primaryText,
-                    style = PgkTheme.typography.body,
-                    fontFamily = PgkTheme.fontFamily.fontFamily,
-                    modifier = Modifier.padding(5.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Divider(color = PgkTheme.colors.secondaryBackground)
-
-            Text(
-                text = specialization.name,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.body,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier
-                    .padding(5.dp)
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            text = specialization.name,
+            color = PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.body,
+            fontFamily = PgkTheme.fontFamily.fontFamily,
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
     }
 }

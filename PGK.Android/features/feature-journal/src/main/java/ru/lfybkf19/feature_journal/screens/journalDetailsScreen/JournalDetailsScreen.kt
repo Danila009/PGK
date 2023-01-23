@@ -1,5 +1,6 @@
 package ru.lfybkf19.feature_journal.screens.journalDetailsScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Sort
@@ -24,6 +26,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.VerticalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.lfybkf19.feature_journal.screens.journalDetailsScreen.model.JournalDetailsBottomDrawerType
 import ru.lfybkf19.feature_journal.screens.journalDetailsScreen.viewModel.JournalDetailsViewModel
@@ -31,6 +34,7 @@ import ru.lfybkf19.feature_journal.view.JournalTableUi
 import ru.pgk63.core_common.api.journal.model.JournalSubject
 import ru.pgk63.core_common.api.journal.model.JournalTopic
 import ru.pgk63.core_common.api.student.model.Student
+import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_common.extension.parseToBaseDateFormat
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
@@ -38,17 +42,24 @@ import ru.pgk63.core_ui.view.EmptyUi
 import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.TopBarBack
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 internal fun JournalDetailsRoute(
     viewModel: JournalDetailsViewModel = hiltViewModel(),
     journalId: Int?,
     onJournalTopicTableScreen: (journalSubjectId: Int, maxSubjectHours: Int) -> Unit,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onCreateJournalSubjectScreen: (journalId: Int) -> Unit
 ) {
     val pagerState = rememberPagerState()
 
     val journalSubjects = viewModel.responseJournalSubjectsList.collectAsLazyPagingItems()
+    var userRole by remember { mutableStateOf<UserRole?>(null) }
+
+    viewModel.userLocal.onEach { user ->
+        userRole = user.userRole
+    }
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getJournalSubjects(journalId = journalId)
@@ -56,9 +67,11 @@ internal fun JournalDetailsRoute(
 
     JournalDetailsScreen(
         pagerState = pagerState,
+        userRole = userRole,
         journalSubjects = journalSubjects,
         onJournalTopicTableScreen = onJournalTopicTableScreen,
         onBackScreen = onBackScreen,
+        onCreateJournalSubjectScreen = { journalId?.let { onCreateJournalSubjectScreen(it) } },
         getStudentsByGroupId = { groupId ->
 
             viewModel.getStudents(groupIds = listOf(groupId))
@@ -72,10 +85,12 @@ internal fun JournalDetailsRoute(
 @Composable
 private fun JournalDetailsScreen(
     pagerState: PagerState,
+    userRole: UserRole?,
     journalSubjects: LazyPagingItems<JournalSubject>,
     getStudentsByGroupId: @Composable (groupId: Int) -> LazyPagingItems<Student>,
     onJournalTopicTableScreen: (journalSubjectId: Int, maxSubjectHours: Int) -> Unit,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onCreateJournalSubjectScreen: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val bottomDrawerState = rememberBottomDrawerState(initialValue = BottomDrawerValue.Closed)
@@ -150,6 +165,16 @@ private fun JournalDetailsScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Sort,
+                                contentDescription = null,
+                                tint = PgkTheme.colors.tintColor
+                            )
+                        }
+                    }
+
+                    if(userRole == UserRole.TEACHER) {
+                        IconButton(onClick = { onCreateJournalSubjectScreen() }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
                                 contentDescription = null,
                                 tint = PgkTheme.colors.tintColor
                             )
@@ -249,7 +274,7 @@ private fun JournalSubjectDetails(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        onJournalTopicTableScreen(journalSubject.id,journalSubject.hours)
+                        onJournalTopicTableScreen(journalSubject.id, journalSubject.hours)
                     },
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {

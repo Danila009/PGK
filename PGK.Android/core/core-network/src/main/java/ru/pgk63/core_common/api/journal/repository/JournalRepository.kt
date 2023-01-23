@@ -34,6 +34,10 @@ class JournalRepository @Inject constructor(
         }.flow
     }
 
+    suspend fun create(body: CreateJournalBody) = safeApiCall {
+        journalApi.create(body)
+    }
+
     fun getJournalSubjects(
         journalId:Int? = null
     ): Flow<PagingData<JournalSubject>> {
@@ -43,6 +47,10 @@ class JournalRepository @Inject constructor(
                 journalId = journalId
             )
         }.flow
+    }
+
+    suspend fun createJournalSubject(journalId: Int, body: CreateJournalSubjectBody) = safeApiCall {
+        journalApi.createJournalSubject(journalId = journalId, body = body)
     }
 
     fun getJournalTopics(

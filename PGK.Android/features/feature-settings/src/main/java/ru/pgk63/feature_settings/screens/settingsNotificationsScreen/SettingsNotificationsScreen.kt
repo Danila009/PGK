@@ -1,8 +1,8 @@
 package ru.pgk63.feature_settings.screens.settingsNotificationsScreen
 
-import androidx.compose.foundation.layout.Spacer
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Switch
@@ -13,15 +13,22 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.user.model.NotificationSetting
+import ru.pgk63.core_common.api.user.model.UserSettings
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.ErrorUi
+import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.OnLifecycleEvent
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_settings.screens.settingsNotificationsScreen.viewModel.SettingsNotificationsViewModel
 import ru.pgk63.feature_settings.view.SettingsButton
 
+@SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun SettingsNotificationsRoute(
     viewModel: SettingsNotificationsViewModel = hiltViewModel(),
@@ -36,6 +43,8 @@ internal fun SettingsNotificationsRoute(
     var raportichkaNotifications by remember { mutableStateOf(true) }
     var technicalSupportNotifications by remember { mutableStateOf(true) }
 
+    var settingsResult by remember { mutableStateOf<Result<UserSettings>>(Result.Loading()) }
+
     if(!notifications) {
         scheduleNotifications = false
         journalNotifications = false
@@ -48,6 +57,14 @@ internal fun SettingsNotificationsRoute(
     ){
         notifications = false
     }
+
+    viewModel.responseSettings.onEach { result ->
+        settingsResult = result
+    }.launchWhenStarted()
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getSettings()
+    })
 
     OnLifecycleEvent { owner, event ->
         if(event == Lifecycle.Event.ON_STOP) {
@@ -66,6 +83,7 @@ internal fun SettingsNotificationsRoute(
     }
 
     SettingsNotificationsScreen(
+        settingsResult = settingsResult,
         notifications = notifications,
         vibrationNotifications = vibrationNotifications,
         soundNotifications = soundNotifications,
@@ -104,6 +122,7 @@ internal fun SettingsNotificationsRoute(
 
 @Composable
 private fun SettingsNotificationsScreen(
+    settingsResult: Result<UserSettings>,
     notifications: Boolean,
     onNotificationsChange: (Boolean) -> Unit,
     soundNotifications: Boolean,
@@ -145,60 +164,95 @@ private fun SettingsNotificationsScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        when(settingsResult) {
+            is Result.Error -> ErrorUi()
+            is Result.Loading -> LoadingUi()
+            is Result.Success -> SuccessUi(
+                contentPadding = paddingValues,
+                soundNotifications = soundNotifications,
+                onSoundNotificationsChange = onSoundNotificationsChange,
+                vibrationNotifications = vibrationNotifications,
+                onVibrationNotificationsChange = onVibrationNotificationsChange,
+                scheduleNotifications = scheduleNotifications,
+                onScheduleNotificationsChange = onScheduleNotificationsChange,
+                journalNotifications = journalNotifications,
+                onJournalNotificationsChange = onJournalNotificationsChange,
+                raportichkaNotifications = raportichkaNotifications,
+                onRaportichkaNotificationsChange = onRaportichkaNotificationsChange,
+                technicalSupportNotifications = technicalSupportNotifications,
+                onTechnicalSupportNotificationsChange = onTechnicalSupportNotificationsChange
+            )
+        }
+    }
+}
 
-            item {
+@Composable
+private fun SuccessUi(
+    contentPadding: PaddingValues,
+    soundNotifications: Boolean,
+    onSoundNotificationsChange:(Boolean) -> Unit,
+    vibrationNotifications: Boolean,
+    onVibrationNotificationsChange:(Boolean) -> Unit,
+    scheduleNotifications:Boolean,
+    onScheduleNotificationsChange: (Boolean) -> Unit,
+    journalNotifications:Boolean,
+    onJournalNotificationsChange: (Boolean) -> Unit,
+    raportichkaNotifications:Boolean,
+    onRaportichkaNotificationsChange: (Boolean) -> Unit,
+    technicalSupportNotifications:Boolean,
+    onTechnicalSupportNotificationsChange: (Boolean) -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = contentPadding
+    ) {
 
-                SettingsButton(
-                    title = stringResource(id = R.string.sound),
-                    switchCheck = soundNotifications,
-                    onSwitchCheckedChange = onSoundNotificationsChange,
-                    onClick = { onSoundNotificationsChange(!soundNotifications) }
-                )
+        item {
+            SettingsButton(
+                title = stringResource(id = R.string.sound),
+                switchCheck = soundNotifications,
+                onSwitchCheckedChange = onSoundNotificationsChange,
+                onClick = { onSoundNotificationsChange(!soundNotifications) }
+            )
 
-                SettingsButton(
-                    title = stringResource(id = R.string.vibration),
-                    switchCheck = vibrationNotifications,
-                    onSwitchCheckedChange = onVibrationNotificationsChange,
-                    onClick = { onVibrationNotificationsChange(!vibrationNotifications) }
-                )
+            SettingsButton(
+                title = stringResource(id = R.string.vibration),
+                switchCheck = vibrationNotifications,
+                onSwitchCheckedChange = onVibrationNotificationsChange,
+                onClick = { onVibrationNotificationsChange(!vibrationNotifications) }
+            )
 
-                SettingsButton(
-                    title = stringResource(id = R.string.schedule),
-                    body = stringResource(id = R.string.schedule_notifications_settings_body),
-                    switchCheck = scheduleNotifications,
-                    onSwitchCheckedChange = onScheduleNotificationsChange,
-                    onClick = { onScheduleNotificationsChange(!scheduleNotifications) }
-                )
+            SettingsButton(
+                title = stringResource(id = R.string.schedule),
+                body = stringResource(id = R.string.schedule_notifications_settings_body),
+                switchCheck = scheduleNotifications,
+                onSwitchCheckedChange = onScheduleNotificationsChange,
+                onClick = { onScheduleNotificationsChange(!scheduleNotifications) }
+            )
 
-                SettingsButton(
-                    title = stringResource(id = R.string.journal),
-                    body = stringResource(id = R.string.journal_notifications_settings_body),
-                    switchCheck = journalNotifications,
-                    onSwitchCheckedChange = onJournalNotificationsChange,
-                    onClick = { onJournalNotificationsChange(!journalNotifications) }
-                )
+            SettingsButton(
+                title = stringResource(id = R.string.journal),
+                body = stringResource(id = R.string.journal_notifications_settings_body),
+                switchCheck = journalNotifications,
+                onSwitchCheckedChange = onJournalNotificationsChange,
+                onClick = { onJournalNotificationsChange(!journalNotifications) }
+            )
 
-                SettingsButton(
-                    title = stringResource(id = R.string.raportichka),
-                    body = stringResource(id = R.string.raportichka_notifications_settings_body),
-                    switchCheck = raportichkaNotifications,
-                    onSwitchCheckedChange = onRaportichkaNotificationsChange,
-                    onClick = { onRaportichkaNotificationsChange(!raportichkaNotifications) }
-                )
+            SettingsButton(
+                title = stringResource(id = R.string.raportichka),
+                body = stringResource(id = R.string.raportichka_notifications_settings_body),
+                switchCheck = raportichkaNotifications,
+                onSwitchCheckedChange = onRaportichkaNotificationsChange,
+                onClick = { onRaportichkaNotificationsChange(!raportichkaNotifications) }
+            )
 
-                SettingsButton(
-                    title = stringResource(id = R.string.technical_support),
-                    body = stringResource(id = R.string.technical_support_notifications_settings_body),
-                    switchCheck = technicalSupportNotifications,
-                    onSwitchCheckedChange = onTechnicalSupportNotificationsChange,
-                    onClick = { onTechnicalSupportNotificationsChange(!technicalSupportNotifications) }
-                )
-            }
-
-            item { Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding())) }
+            SettingsButton(
+                title = stringResource(id = R.string.technical_support),
+                body = stringResource(id = R.string.technical_support_notifications_settings_body),
+                switchCheck = technicalSupportNotifications,
+                onSwitchCheckedChange = onTechnicalSupportNotificationsChange,
+                onClick = { onTechnicalSupportNotificationsChange(!technicalSupportNotifications) }
+            )
         }
     }
 }

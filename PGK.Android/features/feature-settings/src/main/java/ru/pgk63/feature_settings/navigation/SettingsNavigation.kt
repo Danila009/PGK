@@ -11,6 +11,7 @@ import ru.pgk63.feature_settings.screens.settingsLanguageScreen.SettingsLanguage
 import ru.pgk63.feature_settings.screens.settingsNotificationsScreen.SettingsNotificationsRoute
 import ru.pgk63.feature_settings.screens.settingsScreen.SettingsRoute
 import ru.pgk63.feature_settings.screens.settingsSecurityScreen.SettingsSecurityRoute
+import ru.pgk63.feature_settings.screens.settingsTelegramScreen.SettingsTelegramRoute
 
 object SettingsDestination : NavigationDestination {
     override val route = "settings_screen"
@@ -40,6 +41,10 @@ object SettingsEmailDestination : NavigationDestination {
     override val route = "settings_email_screen"
 }
 
+object SettingsTelegramDestination : NavigationDestination {
+    override val route = "settings_telegram_screen"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.settingsNavigation(
     onSettingsSecurityScreen:() -> Unit,
@@ -48,7 +53,8 @@ fun NavGraphBuilder.settingsNavigation(
     onSettingsAppearanceScreen:() -> Unit,
     onBackScreen: () -> Unit,
     onChangePasswordScreen: () -> Unit,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
 ) {
     composable(
         route = SettingsDestination.route
@@ -68,7 +74,8 @@ fun NavGraphBuilder.settingsNavigation(
         SettingsSecurityRoute(
             onBackScreen = onBackScreen,
             onChangePasswordScreen = onChangePasswordScreen,
-            onSettingsEmailScreen = onSettingsEmailScreen
+            onSettingsEmailScreen = onSettingsEmailScreen,
+            onSettingsTelegramScreen = onSettingsTelegramScreen
         )
     }
 
@@ -108,6 +115,14 @@ fun NavGraphBuilder.settingsNavigation(
         route = SettingsEmailDestination.route
     ){
         SettingsEmailRoute(
+            onBackScreen = onBackScreen
+        )
+    }
+
+    composable(
+        route = SettingsTelegramDestination.route
+    ){
+        SettingsTelegramRoute(
             onBackScreen = onBackScreen
         )
     }

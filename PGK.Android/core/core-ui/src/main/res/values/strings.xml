@@ -7,6 +7,8 @@
     <string name="group_choose">Выберите группу</string>
     <string name="group_create">Создать группу</string>
     <string name="journal">Журнал</string>
+    <string name="journal_create">Создать журнал</string>
+    <string name="journal_subject_create">Добавить предмет к журналу</string>
     <string name="journals">Журналы</string>
     <string name="journal_notifications_settings_body">Если вам поставят оценку в журнале вам придет уведомления</string>
     <string name="raportichka">Рапортичка</string>
@@ -38,6 +40,7 @@
     <string name="success">Успешно</string>
     <string name="loading">Загрузка</string>
     <string name="authorization_error">Ошибка авторизации</string>
+    <string name="authorization_telegram_bot">Авторизуйтесь в телеграм-боте</string>
     <string name="field_required">Это поле является обязательным</string>
     <string name="message">Сообщение</string>
     <string name="students">Студенты</string>

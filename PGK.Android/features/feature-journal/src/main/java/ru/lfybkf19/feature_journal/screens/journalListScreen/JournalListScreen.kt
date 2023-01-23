@@ -20,7 +20,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.launch
 import ru.lfybkf19.feature_journal.screens.journalListScreen.model.JournalListBottomDrawerType
 import ru.lfybkf19.feature_journal.screens.journalListScreen.viewModel.JournalListViewModel
-import ru.lfybkf19.feature_journal.view.JournalUi
 import ru.pgk63.core_common.api.department.model.Department
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_common.api.journal.model.Journal
@@ -29,10 +28,7 @@ import ru.pgk63.core_common.compose.rememberMutableStateListOf
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.EmptyUi
-import ru.pgk63.core_ui.view.ErrorUi
-import ru.pgk63.core_ui.view.SortingItem
-import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.*
 
 @Composable
 internal fun JournalListRoute(
@@ -448,7 +444,9 @@ private fun JournalList(
                        modifier = Modifier
                            .padding(10.dp)
                            .align(Alignment.Center),
-                       journal = journal,
+                       group = journal.group.toString(),
+                       semester = journal.semester.toString(),
+                       course = journal.course.toString(),
                        onClick = {
                            onJournalDetailsScreen(journal.id)
                        }

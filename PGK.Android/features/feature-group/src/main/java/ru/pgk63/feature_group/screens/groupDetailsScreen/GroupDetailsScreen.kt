@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,9 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.department.model.Department
 import ru.pgk63.core_common.api.group.model.Group
+import ru.pgk63.core_common.api.journal.model.Journal
 import ru.pgk63.core_common.api.speciality.model.Specialization
 import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.teacher.model.Teacher
@@ -33,10 +36,7 @@ import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.ErrorUi
-import ru.pgk63.core_ui.view.ImageCoil
-import ru.pgk63.core_ui.view.LoadingUi
-import ru.pgk63.core_ui.view.TopBarBack
+import ru.pgk63.core_ui.view.*
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_group.screens.groupDetailsScreen.model.GroupDetailsMenu
 import ru.pgk63.feature_group.screens.groupDetailsScreen.viewModel.GroupDetailsViewModel
@@ -51,28 +51,41 @@ internal fun GroupDetailsRoute(
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
     onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
     onRegistrationHeadman: (groupId: Int,deputy: Boolean) -> Unit,
-    onRegistrationStudentScreen: (groupId: Int) -> Unit
+    onRegistrationStudentScreen: (groupId: Int) -> Unit,
+    onJournalScreen: (journalId: Int) -> Unit,
+    onCreateJournalScreen: (groupId: Int) -> Unit
 ) {
     var groupResult by remember { mutableStateOf<Result<Group>>(Result.Loading()) }
 
     val students = viewModel.getStudentsByGroupId(id = groupId).collectAsLazyPagingItems()
+    val journalList = viewModel.responseJournalList.collectAsLazyPagingItems()
 
     viewModel.responseGroup.onEach { result ->
         groupResult = result
     }.launchWhenStarted()
 
+    viewModel.responseDeleteGroupResult.onEach { result ->
+        if(result is Result.Success){
+            onBackScreen()
+        }
+    }.launchWhenStarted()
+
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getGroupById(id = groupId)
+        viewModel.getJournalList(groupId = groupId)
     })
 
     GroupDetailsScreen(
         groupResult = groupResult,
+        journalList = journalList,
         onBackScreen = onBackScreen,
         students = students,
         onStudentDetailsScreen = onStudentDetailsScreen,
         onDepartmentDetailsScreen = onDepartmentDetailsScreen,
         onSpecializationDetailsScreen = onSpecializationDetailsScreen,
         onRegistrationStudentScreen = onRegistrationStudentScreen,
+        onJournalScreen = onJournalScreen,
+        onCreateJournalScreen = onCreateJournalScreen,
         onRegistrationHeadman = { deputy ->
             onRegistrationHeadman(groupId, deputy)
         },
@@ -86,13 +99,16 @@ internal fun GroupDetailsRoute(
 private fun GroupDetailsScreen(
     groupResult: Result<Group>,
     students: LazyPagingItems<Student>,
+    journalList: LazyPagingItems<Journal>,
     onBackScreen: () -> Unit,
     onStudentDetailsScreen: (studentId: Int) -> Unit,
     onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
     onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
     onRegistrationHeadman: (deputy: Boolean) -> Unit,
     onRegistrationStudentScreen: (groupId: Int) -> Unit,
-    deleteGroup: () -> Unit
+    onJournalScreen: (journalId: Int) -> Unit,
+    deleteGroup: () -> Unit,
+    onCreateJournalScreen: (groupId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     var mainMenuVisible by remember { mutableStateOf(false) }
@@ -131,6 +147,11 @@ private fun GroupDetailsScreen(
                                     GroupDetailsMenu.ADD_STUDENT -> {
                                         if(groupResult.data?.id != null){
                                             onRegistrationStudentScreen(groupResult.data!!.id)
+                                        }
+                                    }
+                                    GroupDetailsMenu.CREATE_JOURNAL -> {
+                                        if(groupResult.data?.id != null){
+                                            onCreateJournalScreen(groupResult.data!!.id)
                                         }
                                     }
                                     GroupDetailsMenu.DELETE_GROUP -> deleteGroup()
@@ -173,6 +194,40 @@ private fun GroupDetailsScreen(
                                         onSpecializationDetailsScreen(groupResult.data!!.speciality.id)
                                     }
                                 )
+                            }
+                        }
+
+                        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                            Column {
+                                if(journalList.itemCount > 0 ){
+                                    Spacer(modifier = Modifier.height(25.dp))
+
+                                    Text(
+                                        text = stringResource(id = R.string.journals),
+                                        color = PgkTheme.colors.primaryText,
+                                        style = PgkTheme.typography.heading,
+                                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                                        modifier = Modifier.padding(start = 20.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.height(5.dp))
+
+                                    LazyRow {
+                                        items(journalList) { journal ->
+                                            if(journal != null){
+                                                JournalUi(
+                                                    group = journal.group.toString(),
+                                                    course = journal.course.toString(),
+                                                    semester = journal.semester.toString(),
+                                                    modifier = Modifier.padding(5.dp),
+                                                    onClick = { onJournalScreen(journal.id) }
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(15.dp))
+                                }
                             }
                         }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -27,7 +28,9 @@ import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.ErrorUi
 import ru.pgk63.core_ui.view.ImageCoil
+import ru.pgk63.core_ui.view.LoadingUi
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 
 @SuppressLint("FlowOperatorInvokedInComposition")
@@ -35,7 +38,8 @@ import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 internal fun StudentDetailsRoute(
     viewModel: StudentDetailsViewModel = hiltViewModel(),
     studentId: Int,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit
 ) {
 
     var resultStudent by remember { mutableStateOf<Result<Student>>(Result.Loading()) }
@@ -50,14 +54,16 @@ internal fun StudentDetailsRoute(
 
     StudentDetailsScreen(
         resultStudent = resultStudent,
-        onBackScreen = onBackScreen
+        onBackScreen = onBackScreen,
+        onGroupDetailsScreen = onGroupDetailsScreen
     )
 }
 
 @Composable
 private fun StudentDetailsScreen(
     resultStudent: Result<Student>,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -75,26 +81,31 @@ private fun StudentDetailsScreen(
                     visible = resultStudent.data != null,
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) {
-                    TopBarStudentInfo(student = resultStudent.data!!)
+                    TopBarStudentInfo(
+                        student = resultStudent.data!!,
+                        onGroupDetailsScreen = onGroupDetailsScreen
+                    )
                 }
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-
-            item {
-
-            }
-
-            item { Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding())) }
+        when(resultStudent) {
+            is Result.Error -> ErrorUi()
+            is Result.Loading -> LoadingUi()
+            is Result.Success -> SuccessUi(
+                contentPadding = paddingValues,
+                student = resultStudent.data!!
+            )
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun TopBarStudentInfo(student: Student){
+private fun TopBarStudentInfo(
+    student: Student,
+    onGroupDetailsScreen: (groupId: Int) -> Unit
+){
 
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
@@ -105,7 +116,8 @@ private fun TopBarStudentInfo(student: Student){
         elevation = 12.dp,
         shape = AbsoluteRoundedCornerShape(
             0, 0, 5, 5
-        )
+        ),
+        onClick = { onGroupDetailsScreen(student.group.id) }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -127,13 +139,14 @@ private fun TopBarStudentInfo(student: Student){
             }
 
             Column(
-                modifier = Modifier.padding(5.dp),
+                modifier = Modifier
+                    .padding(5.dp)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "${student.lastName} ${student.firstName} " +
-                            (student.middleName ?: ""),
+                    text = student.fio(),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,
@@ -142,9 +155,7 @@ private fun TopBarStudentInfo(student: Student){
                 )
 
                 Text(
-                    text = student.group.speciality.nameAbbreviation +
-                            "-${student.group.course}" +
-                            "${student.group.number}",
+                    text = student.group.toString(),
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.body,
                     fontFamily = PgkTheme.fontFamily.fontFamily,
@@ -156,5 +167,16 @@ private fun TopBarStudentInfo(student: Student){
     }
 }
 
+@Composable
+private fun SuccessUi(
+    contentPadding: PaddingValues,
+    student: Student
+) {
+    LazyColumn(contentPadding = contentPadding) {
+        item {
+            Spacer(modifier = Modifier.height(15.dp))
 
 
+        }
+    }
+}

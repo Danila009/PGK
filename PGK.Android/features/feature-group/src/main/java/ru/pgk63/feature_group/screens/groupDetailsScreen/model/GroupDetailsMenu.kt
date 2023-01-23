@@ -11,5 +11,6 @@ internal enum class GroupDetailsMenu(@StringRes val textId: Int, val icon: Image
     ADD_STUDENT(R.string.add_student, Icons.Default.Add),
     ADD_HEADMAN(R.string.add_headman, Icons.Default.Add),
     ADD_DEPUTY_HEADMAN(R.string.add_deputyHeadma, Icons.Default.Add),
+    CREATE_JOURNAL(R.string.journal_create, Icons.Default.Add),
     DELETE_GROUP(R.string.delete, Icons.Default.Delete)
 }

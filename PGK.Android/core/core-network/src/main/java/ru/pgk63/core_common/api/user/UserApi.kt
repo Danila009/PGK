@@ -85,4 +85,7 @@ interface UserApi {
 
     @PATCH("/pgk63/api/User/Settings/Language")
     suspend fun updateLanguage(@Query("languageId") languageId: Int): Response<Unit?>
+
+    @GET("/pgk63/api/User/Telegram/Token")
+    suspend fun getTelegramToken(): Response<String>
 }

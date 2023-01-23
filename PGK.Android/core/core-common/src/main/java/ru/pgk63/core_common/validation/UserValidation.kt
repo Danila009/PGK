@@ -30,24 +30,24 @@ fun nameValidation(name:String): Pair<Boolean, Int?> {
     return true to null
 }
 
-fun numberValidation(name:String): Pair<Boolean, Int?> {
-    if(name.isEmpty())
+fun numberValidation(number:String): Pair<Boolean, Int?> {
+    if(number.isEmpty())
         return false to R.string.field_required
 
-    if(!name.isNumber())
+    if(!number.isNumber())
         return false to R.string.not_number
 
     return true to null
 }
 
-fun numberGroupValidation(name:String): Pair<Boolean, Int?> {
-    if(name.isEmpty())
+fun numberGroupValidation(number:String): Pair<Boolean, Int?> {
+    if(number.isEmpty())
         return false to R.string.field_required
 
-    if(!name.isNumber())
+    if(!number.isNumber())
         return false to R.string.not_number
 
-    if(name.length < 2)
+    if(number.length < 2)
         return false to R.string.minimum_three_characters
 
     return true to null

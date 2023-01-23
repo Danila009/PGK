@@ -6,10 +6,7 @@ import com.example.feature_guide.navigation.*
 import com.example.feature_student.navigation.StudentDetailsDestination
 import com.example.feature_student.navigation.StudentListDestination
 import com.example.feature_student.navigation.studentNavigation
-import ru.lfybkf19.feature_journal.navigation.JournalDetailsDestination
-import ru.lfybkf19.feature_journal.navigation.JournalListDestination
-import ru.lfybkf19.feature_journal.navigation.JournalTopicTableDestination
-import ru.lfybkf19.feature_journal.navigation.journalNavigation
+import ru.lfybkf19.feature_journal.navigation.*
 import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.feature_auth.navigation.ForgotPasswordDestination
 import ru.pgk63.feature_auth.navigation.RegistrationUserDestination
@@ -140,6 +137,14 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                         "&${RegistrationUserDestination.groupId}=$groupId"
             )
         },
+        onJournalScreen = { id ->
+            navController.navigate("${JournalDetailsDestination.route}/$id")
+        },
+        onCreateJournalScreen = { groupId ->
+            navController.navigate(
+                "${CreateJournalDestination.route}?${CreateJournalDestination.groupId}=$groupId"
+            )
+        },
         onBackScreen = { navController.navigateUp() }
     )
 
@@ -188,6 +193,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         onBackScreen = { navController.navigateUp() },
         onStudentDetailsScreen = { id ->
             navController.navigate("${StudentDetailsDestination.route}/$id")
+        },
+        onGroupDetailsScreen = { id ->
+            navController.navigate("${GroupDetailsDestination.route}/$id")
         }
     )
 
@@ -217,6 +225,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSettingsEmailScreen = {
             navController.navigate(SettingsEmailDestination.route)
+        },
+        onSettingsTelegramScreen = {
+            navController.navigate(SettingsTelegramDestination.route)
         }
     )
 
@@ -300,6 +311,12 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                 "${JournalTopicTableDestination.route}/$journalSubjectId" +
                         "?${JournalTopicTableDestination.maxSubjectHours}=$maxSubjectHours"
             )
+        },
+        onCreateJournalSubjectScreen = { journalId ->
+            navController.navigate(
+                "${CreateJournalSubjectDestination.route}?" +
+                        "${CreateJournalSubjectDestination.journalId}=$journalId"
+            )
         }
     )
 
@@ -347,6 +364,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSettingsEmailScreen = {
             navController.navigate(SettingsEmailDestination.route)
+        },
+        onSettingsTelegramScreen = {
+            navController.navigate(SettingsTelegramDestination.route)
         }
     )
 }

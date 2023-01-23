@@ -155,4 +155,6 @@ class UserRepository @Inject constructor(
             userDataSource.updateLanguageCode(languageCode)
         }
     }
+
+    suspend fun getTelegramToken() = safeApiCall { userApi.getTelegramToken() }
 }

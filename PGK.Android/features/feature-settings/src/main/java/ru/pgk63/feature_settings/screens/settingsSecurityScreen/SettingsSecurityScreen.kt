@@ -23,13 +23,15 @@ internal fun SettingsSecurityRoute(
     viewModel: SettingsSecurityViewModel = hiltViewModel(),
     onBackScreen: () -> Unit,
     onChangePasswordScreen: () -> Unit,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit
 ) {
 
     SettingsSecurityScreen(
         onBackScreen = onBackScreen,
         onChangePasswordScreen = onChangePasswordScreen,
         onSettingsEmailScreen = onSettingsEmailScreen,
+        onSettingsTelegramScreen = onSettingsTelegramScreen,
         onSignOutApp = {
             viewModel.signOutApp()
         },
@@ -45,7 +47,8 @@ private fun SettingsSecurityScreen(
     onSignOutAll: () -> Unit,
     onBackScreen: () -> Unit,
     onChangePasswordScreen: () -> Unit,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
 
@@ -68,7 +71,8 @@ private fun SettingsSecurityScreen(
 
                 SecurityUi(
                     onChangePasswordScreen = onChangePasswordScreen,
-                    onSettingsEmailScreen = onSettingsEmailScreen
+                    onSettingsEmailScreen = onSettingsEmailScreen,
+                    onSettingsTelegramScreen = onSettingsTelegramScreen
                 )
 
                 Spacer(modifier = Modifier.height(25.dp))
@@ -90,6 +94,7 @@ private fun SettingsSecurityScreen(
 private fun SecurityUi(
     onChangePasswordScreen: () -> Unit,
     onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
 ){
 
     Column {
@@ -110,7 +115,7 @@ private fun SecurityUi(
         SettingsButton(
             title = stringResource(id = R.string.telegram),
             body = stringResource(id = R.string.telegram_password_body)
-        ) {  }
+        ) { onSettingsTelegramScreen() }
 
 
         Spacer(modifier = Modifier.height(10.dp))

@@ -1,6 +1,7 @@
 
 package ru.pgk63.feature_group.screens.groupListScreen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -8,10 +9,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -19,6 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
@@ -26,6 +31,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.view.EmptyUi
 import ru.pgk63.core_ui.view.ErrorUi
+import ru.pgk63.core_ui.view.TextFieldSearch
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 import ru.pgk63.feature_group.screens.groupListScreen.viewModel.GroupListViewModel
@@ -39,26 +45,38 @@ internal fun GroupListRoute(
 ) {
     val groups = viewModel.responseGroup.collectAsLazyPagingItems()
 
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.getGroups()
+    var searchText by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = searchText, block = {
+        viewModel.getGroups(
+            search = searchText.ifEmpty { null }
+        )
     })
 
     GroupListScreen(
         groups = groups,
+        searchText = searchText,
         onBackScreen = onBackScreen,
         onGroupDetailsScreen = onGroupDetailsScreen,
-        onCreateGroupScreen = onCreateGroupScreen
+        onCreateGroupScreen = onCreateGroupScreen,
+        onSearchTextChange = { searchText = it }
     )
 }
 
 @Composable
 private fun GroupListScreen(
     groups: LazyPagingItems<Group>,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
     onBackScreen: () -> Unit,
     onGroupDetailsScreen: (groupId: Int) -> Unit,
     onCreateGroupScreen: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val scrollBehavior = rememberToolbarScrollBehavior()
+
+    val searchTextFieldFocusRequester = remember { FocusRequester() }
+    var searchTextFieldVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -69,11 +87,43 @@ private fun GroupListScreen(
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen,
                 actions = {
-                    IconButton(onClick = onCreateGroupScreen) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = null,
-                            tint = PgkTheme.colors.primaryText
+                    AnimatedVisibility(visible = !searchTextFieldVisible) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    searchTextFieldVisible = true
+                                    delay(100)
+                                    searchTextFieldFocusRequester.requestFocus()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.width(5.dp))
+
+                            IconButton(onClick = { onCreateGroupScreen() }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.tintColor
+                                )
+                            }
+                        }
+                    }
+
+                    AnimatedVisibility(visible = searchTextFieldVisible) {
+                        TextFieldSearch(
+                            text = searchText,
+                            onTextChanged = onSearchTextChange,
+                            modifier = Modifier.focusRequester(searchTextFieldFocusRequester),
+                            onClose = {
+                                searchTextFieldVisible = false
+                                onSearchTextChange("")
+                            }
                         )
                     }
                 }

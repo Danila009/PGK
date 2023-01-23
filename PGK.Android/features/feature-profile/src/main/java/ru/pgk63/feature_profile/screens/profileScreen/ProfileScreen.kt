@@ -53,7 +53,8 @@ internal fun ProfileRoute(
     onBackScreen: () -> Unit,
     onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
     onUserPageScreen: (UserRole, userId: Int) -> Unit,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -108,6 +109,7 @@ internal fun ProfileRoute(
         onBackScreen = onBackScreen,
         onProfileUpdateScreen = onProfileUpdateScreen,
         onSettingsEmailScreen = onSettingsEmailScreen,
+        onSettingsTelegramScreen = onSettingsTelegramScreen,
         onUserPageScreen = {
             userResult.data?.id?.let { userId ->
                 when(userRole){
@@ -139,6 +141,7 @@ private fun ProfileScreen(
     onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
     onUserPageScreen: () -> Unit,
     onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
     updateUserPhoto: () -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
@@ -208,7 +211,8 @@ private fun ProfileScreen(
                 userRole = userRole,
                 updateUserPhoto = updateUserPhoto,
                 onProfileUpdateScreen = onProfileUpdateScreen,
-                onSettingsEmailScreen = onSettingsEmailScreen
+                onSettingsEmailScreen = onSettingsEmailScreen,
+                onSettingsTelegramScreen = onSettingsTelegramScreen,
             )
         }
     }
@@ -226,6 +230,7 @@ private fun TopBarUserInfo(
     Card(
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
+        modifier = Modifier.fillMaxWidth(),
         shape = AbsoluteRoundedCornerShape(
             0, 0, 5, 5
         )
@@ -286,7 +291,8 @@ private fun UserSuccess(
     userRole: UserRole?,
     updateUserPhoto: () -> Unit,
     onProfileUpdateScreen: (ProfileUpdateType) -> Unit,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -324,7 +330,8 @@ private fun UserSuccess(
                 email = user.email,
                 emailVerification = user.emailVerification,
                 telegramId = user.telegramId,
-                onSettingsEmailScreen = onSettingsEmailScreen
+                onSettingsEmailScreen = onSettingsEmailScreen,
+                onSettingsTelegramScreen = onSettingsTelegramScreen
             )
         }
     }
@@ -377,7 +384,8 @@ private fun SecurityUi(
     telegramId: Int?,
     email: String?,
     emailVerification: Boolean,
-    onSettingsEmailScreen: () -> Unit
+    onSettingsEmailScreen: () -> Unit,
+    onSettingsTelegramScreen: () -> Unit,
 ) {
     val securityEmailState = getSecurityEmailState(
         email = email,
@@ -414,9 +422,7 @@ private fun SecurityUi(
         SecurityItem(
             painter = painterResource(id = securityTelegramState.iconId),
             text = stringResource(id = securityTelegramState.nameId),
-            onClick = {
-
-            }
+            onClick = { onSettingsTelegramScreen() }
         )
 
         Divider(color = PgkTheme.colors.secondaryBackground)

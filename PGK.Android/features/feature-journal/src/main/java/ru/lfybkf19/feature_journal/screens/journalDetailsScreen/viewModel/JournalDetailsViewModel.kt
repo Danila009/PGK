@@ -6,7 +6,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.journal.model.JournalEvaluation
 import ru.pgk63.core_common.api.journal.model.JournalRow
@@ -14,13 +16,19 @@ import ru.pgk63.core_common.api.journal.model.JournalSubject
 import ru.pgk63.core_common.api.journal.repository.JournalRepository
 import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.student.repository.StudentRepository
+import ru.pgk63.core_database.user.UserDataSource
+import ru.pgk63.core_database.user.model.UserLocalDatabase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class JournalDetailsViewModel @Inject constructor(
     private val journalRepository: JournalRepository,
-    private val studentRepository: StudentRepository
+    private val studentRepository: StudentRepository,
+    userDataSource: UserDataSource
 ): ViewModel() {
+
+    val userLocal = userDataSource.get()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, UserLocalDatabase())
 
     private val _responseJournalSubjectsList = MutableStateFlow<PagingData<JournalSubject>>(PagingData.empty())
     val responseJournalSubjectsList = _responseJournalSubjectsList.asStateFlow()

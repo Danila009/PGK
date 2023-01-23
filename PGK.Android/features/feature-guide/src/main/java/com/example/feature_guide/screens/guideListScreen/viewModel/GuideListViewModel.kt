@@ -33,17 +33,20 @@ internal class GuideListViewModel @Inject constructor(
     private val _responseTeacherList = MutableStateFlow<PagingData<Teacher>>(PagingData.empty())
     val responseTeacherList = _responseTeacherList.asStateFlow()
 
-    fun getDepartmentHeadList() {
+    fun getDepartmentHeadList(search: String? = null) {
         viewModelScope.launch {
-            departmentHeadRepository.getAll().cachedIn(viewModelScope).collect {
+            departmentHeadRepository.getAll(
+                search = search
+            ).cachedIn(viewModelScope).collect {
                 _responseDepartmentHeadList.value = it
             }
         }
     }
 
-    fun getDirectorsList() {
+    fun getDirectorsList(search: String? = null) {
         viewModelScope.launch {
             directorRepository.getAll(
+                search = search,
                 current = true
             ).cachedIn(viewModelScope).collect {
                 _responseDirectorList.value = it
@@ -51,9 +54,11 @@ internal class GuideListViewModel @Inject constructor(
         }
     }
 
-    fun getTeacherList() {
+    fun getTeacherList(search: String? = null) {
         viewModelScope.launch {
-            teacherRepository.getAll().cachedIn(viewModelScope).collect {
+            teacherRepository.getAll(
+                search = search
+            ).cachedIn(viewModelScope).collect {
                 _responseTeacherList.value = it
             }
         }

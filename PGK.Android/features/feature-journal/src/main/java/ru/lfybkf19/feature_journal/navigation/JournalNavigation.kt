@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.composable
+import ru.lfybkf19.feature_journal.screens.createJournalScreen.CreateJournalRoute
+import ru.lfybkf19.feature_journal.screens.createJournalSubject.CreateJournalSubjectRoute
 import ru.lfybkf19.feature_journal.screens.journalDetailsScreen.JournalDetailsRoute
 import ru.lfybkf19.feature_journal.screens.journalListScreen.JournalListRoute
 import ru.lfybkf19.feature_journal.screens.journalTopicTableScreen.JournalTopicTableRoute
@@ -25,10 +27,21 @@ object JournalTopicTableDestination : NavigationDestination {
     const val maxSubjectHours = "maxSubjectHours"
 }
 
+object CreateJournalDestination : NavigationDestination {
+    override val route = "create_journal_screen"
+    const val groupId = "groupId"
+}
+
+object CreateJournalSubjectDestination : NavigationDestination {
+    override val route = "create_journal_subject_screen"
+    const val journalId = "journalId"
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.journalNavigation(
     onJournalDetailsScreen: (journalId: Int) -> Unit,
     onJournalTopicTableScreen: (journalSubjectId:Int, maxSubjectHours:Int) -> Unit,
+    onCreateJournalSubjectScreen: (journalId:Int) -> Unit,
     onBackScreen: () -> Unit
 ) {
     composable(
@@ -51,6 +64,7 @@ fun NavGraphBuilder.journalNavigation(
         JournalDetailsRoute(
             journalId = it.arguments?.getInt(JournalDetailsDestination.journalId),
             onJournalTopicTableScreen = onJournalTopicTableScreen,
+            onCreateJournalSubjectScreen = onCreateJournalSubjectScreen,
             onBackScreen = onBackScreen
         )
     }
@@ -70,6 +84,37 @@ fun NavGraphBuilder.journalNavigation(
         JournalTopicTableRoute(
             journalSubjectId = it.arguments?.getInt(JournalTopicTableDestination.journalSubjectId)!!,
             maxSubjectHours = it.arguments?.getInt(JournalTopicTableDestination.maxSubjectHours)!!,
+            onBackScreen = onBackScreen
+        )
+    }
+
+    composable(
+        route = "${CreateJournalDestination.route}?" +
+                "${CreateJournalDestination.groupId}={${CreateJournalDestination.groupId}}",
+        arguments = listOf(
+            navArgument(CreateJournalDestination.groupId){
+                type = NavType.IntType
+            }
+        )
+    ){
+        CreateJournalRoute(
+            groupId = it.arguments!!.getInt(CreateJournalDestination.groupId),
+            onBackScreen = onBackScreen,
+            onJournalDetailsScreen = onJournalDetailsScreen
+        )
+    }
+
+    composable(
+        route = "${CreateJournalSubjectDestination.route}?" +
+                "${CreateJournalSubjectDestination.journalId}={${CreateJournalSubjectDestination.journalId}}",
+        arguments = listOf(
+            navArgument(CreateJournalSubjectDestination.journalId){
+                type = NavType.IntType
+            }
+        )
+    ){
+        CreateJournalSubjectRoute(
+            journalId = it.arguments!!.getInt(CreateJournalSubjectDestination.journalId),
             onBackScreen = onBackScreen
         )
     }

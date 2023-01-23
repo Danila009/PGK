@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,7 @@ import ru.pgk63.core_ui.view.dialog.calendar.models.CalendarSelection
 import ru.pgk63.core_ui.view.dialog.rememberSheetState
 import java.util.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun JournalTopicTableRoute(
@@ -49,41 +51,23 @@ internal fun JournalTopicTableRoute(
     maxSubjectHours: Int,
     onBackScreen: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    val scaffoldState = rememberScaffoldState()
+    val bottomDrawerState = rememberBottomDrawerState(initialValue = BottomDrawerValue.Closed)
+
     val topics = viewModel.responseJournalTopicList.collectAsLazyPagingItems()
+    var createJournalTopicResult by remember { mutableStateOf<Result<Unit?>?>(null) }
+
+    var journalTopicTableBottomDrawerType by remember { mutableStateOf<JournalTopicTableBottomDrawerType?>(null) }
+
+    viewModel.responseCreateJournalTopic.onEach { result ->
+        createJournalTopicResult = result
+    }.launchWhenStarted()
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getJournalTopics(journalSubjectId = journalSubjectId)
     })
-
-    viewModel.responseCreateJournalTopic.onEach { result ->
-        when(result){
-            is Result.Error -> Unit
-            is Result.Loading -> Unit
-            is Result.Success -> topics.refresh()
-            null -> Unit
-        }
-    }.launchWhenStarted()
-
-    JournalTopicTableScreen(
-        topics = topics,
-        maxSubjectHours = maxSubjectHours,
-        onBackScreen = onBackScreen,
-        createJournalTopic = {
-            viewModel.createJournalTopic(journalSubjectId,it)
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun JournalTopicTableScreen(
-    topics: LazyPagingItems<JournalTopic>,
-    maxSubjectHours: Int,
-    onBackScreen: () -> Unit,
-    createJournalTopic: (CreateJournalTopicBody) -> Unit
-) {
-    val bottomDrawerState = rememberBottomDrawerState(initialValue = BottomDrawerValue.Closed)
-    var journalTopicTableBottomDrawerType by remember { mutableStateOf<JournalTopicTableBottomDrawerType?>(null) }
 
     LaunchedEffect(key1 = journalTopicTableBottomDrawerType, block = {
         if(journalTopicTableBottomDrawerType != null){
@@ -99,15 +83,59 @@ private fun JournalTopicTableScreen(
         }
     })
 
+    LaunchedEffect(key1 = createJournalTopicResult, block = {
+        when(createJournalTopicResult) {
+            is Result.Error -> scaffoldState.snackbarHostState.showSnackbar(
+                message = context.getString(R.string.error)
+            )
+            is Result.Loading -> Unit
+            is Result.Success -> {
+                journalTopicTableBottomDrawerType = null
+                topics.refresh()
+            }
+            null -> Unit
+        }
+    })
+
+    JournalTopicTableScreen(
+        topics = topics,
+        maxSubjectHours = maxSubjectHours,
+        bottomDrawerState = bottomDrawerState,
+        scaffoldState = scaffoldState,
+        journalTopicTableBottomDrawerType = journalTopicTableBottomDrawerType,
+        onBackScreen = onBackScreen,
+        onJournalTopicTableBottomDrawerTypeChange = {
+            journalTopicTableBottomDrawerType = it
+        },
+        createJournalTopic = {
+            viewModel.createJournalTopic(journalSubjectId, it)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun JournalTopicTableScreen(
+    topics: LazyPagingItems<JournalTopic>,
+    maxSubjectHours: Int,
+    scaffoldState: ScaffoldState,
+    bottomDrawerState: BottomDrawerState,
+    journalTopicTableBottomDrawerType: JournalTopicTableBottomDrawerType?,
+    onJournalTopicTableBottomDrawerTypeChange: (JournalTopicTableBottomDrawerType?) -> Unit,
+    onBackScreen: () -> Unit,
+    createJournalTopic: (CreateJournalTopicBody) -> Unit
+) {
+
     Scaffold(
         backgroundColor = PgkTheme.colors.primaryBackground,
+        scaffoldState = scaffoldState,
         topBar = {
             TopBarBack(
                 title = stringResource(id = R.string.topics),
                 onBackClick = onBackScreen,
                 actions = {
                     IconButton(onClick = {
-                        journalTopicTableBottomDrawerType = JournalTopicTableBottomDrawerType.CreateTopic
+                        onJournalTopicTableBottomDrawerTypeChange(JournalTopicTableBottomDrawerType.CreateTopic)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -117,6 +145,16 @@ private fun JournalTopicTableScreen(
                     }
                 }
             )
+        },
+        snackbarHost = { state ->
+            SnackbarHost(hostState = state) { data ->
+                Snackbar(
+                    backgroundColor = PgkTheme.colors.secondaryBackground,
+                    contentColor = PgkTheme.colors.primaryText,
+                    shape = PgkTheme.shapes.cornersStyle,
+                    snackbarData = data
+                )
+            }
         },
         content = { paddingValues ->
             if (

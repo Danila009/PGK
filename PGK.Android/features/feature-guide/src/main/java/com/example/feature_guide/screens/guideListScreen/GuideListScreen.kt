@@ -1,5 +1,6 @@
 package com.example.feature_guide.screens.guideListScreen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,9 +11,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -25,6 +29,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.feature_guide.screens.guideListScreen.model.GuideListMainMenu
 import com.example.feature_guide.screens.guideListScreen.viewModel.GuideListViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.departmentHead.model.DepartmentHead
 import ru.pgk63.core_common.api.director.model.Director
 import ru.pgk63.core_common.api.teacher.model.Teacher
@@ -33,6 +39,7 @@ import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.ImageCoil
+import ru.pgk63.core_ui.view.TextFieldSearch
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
@@ -50,21 +57,25 @@ internal fun GuideListRoute(
     val directorList = viewModel.responseDirectorList.collectAsLazyPagingItems()
     val teacherList = viewModel.responseTeacherList.collectAsLazyPagingItems()
 
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.getDirectorsList()
-        viewModel.getDepartmentHeadList()
-        viewModel.getTeacherList()
+    var searchText by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = searchText, block = {
+        viewModel.getDirectorsList(search = searchText.ifEmpty { null })
+        viewModel.getDepartmentHeadList(search = searchText.ifEmpty { null })
+        viewModel.getTeacherList(search = searchText.ifEmpty { null })
     })
 
     GuideListScreen(
         directorList = directorList,
         departmentHeadList = departmentHeadList,
         teacherList = teacherList,
+        searchText = searchText,
         onBackScreen = onBackScreen,
         onDirectorDetailsScreen = onDirectorDetailsScreen,
         onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
         onTeacherDetailsScreen = onTeacherDetailsScreen,
-        onRegistrationScreen = onRegistrationScreen
+        onRegistrationScreen = onRegistrationScreen,
+        onSearchTextChange = { searchText = it }
     )
 }
 
@@ -74,15 +85,21 @@ private fun GuideListScreen(
     directorList: LazyPagingItems<Director>,
     departmentHeadList: LazyPagingItems<DepartmentHead>,
     teacherList: LazyPagingItems<Teacher>,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
     onBackScreen: () -> Unit,
     onDirectorDetailsScreen: (directorId: Int) -> Unit,
     onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
     onTeacherDetailsScreen: (teacherId: Int) -> Unit,
     onRegistrationScreen: (userRole: UserRole) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val scrollBehavior = rememberToolbarScrollBehavior()
 
     var mainMenuShow by remember { mutableStateOf(false) }
+
+    val searchTextFieldFocusRequester = remember { FocusRequester() }
+    var searchTextFieldVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -93,27 +110,60 @@ private fun GuideListScreen(
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen,
                 actions = {
-                    Column {
-                        IconButton(onClick = { mainMenuShow = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = null,
-                                tint = PgkTheme.colors.primaryText
-                            )
-                        }
-
-                        MainMenu(
-                            show = mainMenuShow,
-                            onDismissRequest = { mainMenuShow = false },
-                            onClick = { menu ->
-                                when(menu){
-                                    GuideListMainMenu.REGISTRATION_DIRECTOR ->
-                                        onRegistrationScreen(UserRole.DIRECTOR)
-                                    GuideListMainMenu.REGISTRATION_DEPARTMENT_HEAD ->
-                                        onRegistrationScreen(UserRole.DEPARTMENT_HEAD)
-                                    GuideListMainMenu.REGISTRATION_TEACHER ->
-                                        onRegistrationScreen(UserRole.TEACHER)
+                    AnimatedVisibility(visible = !searchTextFieldVisible) {
+                        Row {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    mainMenuShow = false
+                                    searchTextFieldVisible = true
+                                    delay(100)
+                                    searchTextFieldFocusRequester.requestFocus()
                                 }
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    tint = PgkTheme.colors.primaryText
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.width(5.dp))
+
+                            Column {
+                                IconButton(onClick = { mainMenuShow = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Menu,
+                                        contentDescription = null,
+                                        tint = PgkTheme.colors.primaryText
+                                    )
+                                }
+
+                                MainMenu(
+                                    show = mainMenuShow,
+                                    onDismissRequest = { mainMenuShow = false },
+                                    onClick = { menu ->
+                                        when(menu){
+                                            GuideListMainMenu.REGISTRATION_DIRECTOR ->
+                                                onRegistrationScreen(UserRole.DIRECTOR)
+                                            GuideListMainMenu.REGISTRATION_DEPARTMENT_HEAD ->
+                                                onRegistrationScreen(UserRole.DEPARTMENT_HEAD)
+                                            GuideListMainMenu.REGISTRATION_TEACHER ->
+                                                onRegistrationScreen(UserRole.TEACHER)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                    AnimatedVisibility(visible = searchTextFieldVisible) {
+                        TextFieldSearch(
+                            text = searchText,
+                            onTextChanged = onSearchTextChange,
+                            modifier = Modifier.focusRequester(searchTextFieldFocusRequester),
+                            onClose = {
+                                searchTextFieldVisible = false
+                                onSearchTextChange("")
                             }
                         )
                     }
