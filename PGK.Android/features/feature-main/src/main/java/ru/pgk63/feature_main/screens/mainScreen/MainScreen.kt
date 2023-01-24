@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.journal.model.JournalColumn
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
-import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
@@ -190,26 +189,16 @@ private fun MainScreen(
             )
         },
         content = { paddingValues ->
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-
-                item {
-                    when(userResult){
-                        is Result.Error -> ErrorUi()
-                        is Result.Loading -> EmptyUi()
-                        is Result.Success -> MainScreenSuccess(
-                            user = userResult.data!!,
-                            userRole = userRole,
-                            getRaportichkaList = getRaportichkaList,
-                            getJournalColumnList = getJournalColumnList
-                        )
-                    }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
-                }
+            when(userResult){
+                is Result.Error -> ErrorUi()
+                is Result.Loading -> EmptyUi()
+                is Result.Success -> MainScreenSuccess(
+                    user = userResult.data!!,
+                    userRole = userRole,
+                    contentPadding = paddingValues,
+                    getRaportichkaList = getRaportichkaList,
+                    getJournalColumnList = getJournalColumnList
+                )
             }
         }
     )
@@ -384,15 +373,22 @@ private fun DrawerContentUi(
 private fun MainScreenSuccess(
     user: UserDetails,
     userRole: UserRole?,
+    contentPadding: PaddingValues,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
     getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
 ) {
     if(userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN){
-        MainScreenStudent(
-            user = user,
-            getRaportichkaList = getRaportichkaList,
-            getJournalColumnList = getJournalColumnList
-        )
+        LazyColumn(contentPadding = contentPadding) {
+            item {
+                MainScreenStudent(
+                    user = user,
+                    getRaportichkaList = getRaportichkaList,
+                    getJournalColumnList = getJournalColumnList
+                )
+            }
+        }
+    }else {
+        EmptyUi()
     }
 }
 
@@ -438,13 +434,14 @@ private fun MainScreenStudent(
             modifier = Modifier.padding(15.dp)
         )
 
-        HorizontalPager(count = raportichkaList.itemCount) {
+        HorizontalPager(count = raportichkaList.itemCount) { page ->
 
-            val raportichka = raportichkaList[it]
+            val raportichka = raportichkaList[page]
 
-            if(raportichka != null){
+            if(raportichka != null && raportichka.rows.any { it.student.id == user.id }){
                 RaportichkaItem(
-                    raportichka = raportichka
+                    raportichka = raportichka,
+                    user = user
                 )
             }
         }
@@ -503,6 +500,7 @@ private fun JournalColumnItem(
 private fun RaportichkaItem(
     modifier: Modifier = Modifier,
     raportichka: Raportichka,
+    user: UserDetails,
 ) {
     Card(
         modifier = modifier.padding(6.dp),
@@ -526,13 +524,15 @@ private fun RaportichkaItem(
 
                 val row = raportichka.rows[index]
 
-                Text(
-                    text = "${row.numberLesson}. ${row.subject.subjectTitle} (${row.teacher.fioAbbreviated()})",
-                    color = PgkTheme.colors.primaryText,
-                    fontFamily = PgkTheme.fontFamily.fontFamily,
-                    style = PgkTheme.typography.caption,
-                    modifier = Modifier.padding(5.dp)
-                )
+                if(user.id == row.student.id) {
+                    Text(
+                        text = "${row.numberLesson}. ${row.subject.subjectTitle} (${row.teacher.fioAbbreviated()})",
+                        color = PgkTheme.colors.primaryText,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        style = PgkTheme.typography.caption,
+                        modifier = Modifier.padding(5.dp)
+                    )
+                }
             }
         }
     }

@@ -25,6 +25,9 @@ internal class JournalTopicTableViewModel @Inject constructor(
     private val _responseCreateJournalTopic = MutableStateFlow<Result<Unit?>?>(null)
     val responseCreateJournalTopic = _responseCreateJournalTopic.asStateFlow()
 
+    private val _responseDeleteJournalTopic = MutableStateFlow<Result<Unit?>?>(null)
+    val responseDeleteJournalTopic = _responseDeleteJournalTopic.asStateFlow()
+
     fun getJournalTopics(journalSubjectId: Int) {
         viewModelScope.launch {
             journalRepository.getJournalTopics(
@@ -44,6 +47,12 @@ internal class JournalTopicTableViewModel @Inject constructor(
                 journalSubjectId = journalSubjectId,
                 body = body
             )
+        }
+    }
+
+    fun deleteJournalTopic(id: Int) {
+        viewModelScope.launch {
+            _responseDeleteJournalTopic.value = journalRepository.deleteJournalTopic(id)
         }
     }
 }

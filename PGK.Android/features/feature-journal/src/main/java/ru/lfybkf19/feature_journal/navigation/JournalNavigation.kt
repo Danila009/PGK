@@ -42,7 +42,8 @@ fun NavGraphBuilder.journalNavigation(
     onJournalDetailsScreen: (journalId: Int) -> Unit,
     onJournalTopicTableScreen: (journalSubjectId:Int, maxSubjectHours:Int) -> Unit,
     onCreateJournalSubjectScreen: (journalId:Int) -> Unit,
-    onBackScreen: () -> Unit
+    onBackScreen: () -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
     composable(
         route = JournalListDestination.route
@@ -65,7 +66,8 @@ fun NavGraphBuilder.journalNavigation(
             journalId = it.arguments?.getInt(JournalDetailsDestination.journalId),
             onJournalTopicTableScreen = onJournalTopicTableScreen,
             onCreateJournalSubjectScreen = onCreateJournalSubjectScreen,
-            onBackScreen = onBackScreen
+            onBackScreen = onBackScreen,
+            onStudentDetailsScreen = onStudentDetailsScreen
         )
     }
 

@@ -21,6 +21,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.onEach
+import ru.lfybkf19.feature_journal.screens.journalTopicTableScreen.model.JournalTopicRowMenu
 import ru.lfybkf19.feature_journal.screens.journalTopicTableScreen.model.JournalTopicTableBottomDrawerType
 import ru.lfybkf19.feature_journal.screens.journalTopicTableScreen.viewModel.JournalTopicTableViewModel
 import ru.lfybkf19.feature_journal.view.JournalTopicTable
@@ -58,11 +59,16 @@ internal fun JournalTopicTableRoute(
 
     val topics = viewModel.responseJournalTopicList.collectAsLazyPagingItems()
     var createJournalTopicResult by remember { mutableStateOf<Result<Unit?>?>(null) }
+    var deleteJournalTopicResult by remember { mutableStateOf<Result<Unit?>?>(null) }
 
     var journalTopicTableBottomDrawerType by remember { mutableStateOf<JournalTopicTableBottomDrawerType?>(null) }
 
     viewModel.responseCreateJournalTopic.onEach { result ->
         createJournalTopicResult = result
+    }.launchWhenStarted()
+
+    viewModel.responseDeleteJournalTopic.onEach { result ->
+        deleteJournalTopicResult = result
     }.launchWhenStarted()
 
     LaunchedEffect(key1 = Unit, block = {
@@ -97,6 +103,20 @@ internal fun JournalTopicTableRoute(
         }
     })
 
+    LaunchedEffect(key1 = deleteJournalTopicResult, block = {
+        when(deleteJournalTopicResult) {
+            is Result.Error -> scaffoldState.snackbarHostState.showSnackbar(
+                message = context.getString(R.string.error)
+            )
+            is Result.Loading -> Unit
+            is Result.Success -> {
+                journalTopicTableBottomDrawerType = null
+                topics.refresh()
+            }
+            null -> Unit
+        }
+    })
+
     JournalTopicTableScreen(
         topics = topics,
         maxSubjectHours = maxSubjectHours,
@@ -109,6 +129,9 @@ internal fun JournalTopicTableRoute(
         },
         createJournalTopic = {
             viewModel.createJournalTopic(journalSubjectId, it)
+        },
+        deleteTopic = { id ->
+            viewModel.deleteJournalTopic(id)
         }
     )
 }
@@ -123,7 +146,8 @@ private fun JournalTopicTableScreen(
     journalTopicTableBottomDrawerType: JournalTopicTableBottomDrawerType?,
     onJournalTopicTableBottomDrawerTypeChange: (JournalTopicTableBottomDrawerType?) -> Unit,
     onBackScreen: () -> Unit,
-    createJournalTopic: (CreateJournalTopicBody) -> Unit
+    createJournalTopic: (CreateJournalTopicBody) -> Unit,
+    deleteTopic: (topicId: Int) -> Unit
 ) {
 
     Scaffold(
@@ -173,7 +197,8 @@ private fun JournalTopicTableScreen(
                         if(topics.itemCount > 0) {
                             BottomDrawerContent(
                                 type = journalTopicTableBottomDrawerType,
-                                createJournalTopic = createJournalTopic
+                                createJournalTopic = createJournalTopic,
+                                deleteTopic = deleteTopic
                             )
                         }else {
                             EmptyUi()
@@ -183,7 +208,8 @@ private fun JournalTopicTableScreen(
                     TopicList(
                         topics = topics,
                         maxSubjectHours = maxSubjectHours,
-                        paddingValues = paddingValues
+                        paddingValues = paddingValues,
+                        onJournalTopicTableBottomDrawerTypeChange = onJournalTopicTableBottomDrawerTypeChange
                     )
                 }
             }
@@ -194,11 +220,19 @@ private fun JournalTopicTableScreen(
 @Composable
 private fun BottomDrawerContent(
     type: JournalTopicTableBottomDrawerType?,
-    createJournalTopic: (CreateJournalTopicBody) -> Unit
+    createJournalTopic: (CreateJournalTopicBody) -> Unit,
+    deleteTopic: (topicId: Int) -> Unit
 ) {
     when(type){
         JournalTopicTableBottomDrawerType.CreateTopic -> CreateTopicUi(
             createJournalTopic = createJournalTopic
+        )
+        is JournalTopicTableBottomDrawerType.TopicRowMenu -> TopicRowMenu(
+            onClick = { menu ->
+                when(menu) {
+                    JournalTopicRowMenu.DELETE -> deleteTopic(type.topic.id)
+                }
+            }
         )
         null -> EmptyUi()
     }
@@ -314,10 +348,45 @@ private fun CreateTopicUi(
 }
 
 @Composable
+private fun TopicRowMenu(
+    onClick: (JournalTopicRowMenu) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        JournalTopicRowMenu.values().forEach { menu ->
+            DropdownMenuItem(onClick = { onClick(menu) }) {
+                Icon(
+                    imageVector = menu.icon,
+                    contentDescription = null,
+                    tint = if(menu == JournalTopicRowMenu.DELETE)
+                        PgkTheme.colors.errorColor
+                    else
+                        PgkTheme.colors.primaryText
+                )
+
+                Spacer(modifier = Modifier.width(5.dp))
+
+                Text(
+                    text = stringResource(id = menu.textId),
+                    color = if(menu == JournalTopicRowMenu.DELETE)
+                        PgkTheme.colors.errorColor
+                    else
+                        PgkTheme.colors.primaryText,
+                    style = PgkTheme.typography.caption,
+                    fontFamily = PgkTheme.fontFamily.fontFamily
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun TopicList(
     topics: LazyPagingItems<JournalTopic>,
     maxSubjectHours: Int,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onJournalTopicTableBottomDrawerTypeChange: (JournalTopicTableBottomDrawerType?) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -326,8 +395,13 @@ private fun TopicList(
     ) {
         JournalTopicTable(
             topics = topics,
-            maxSubjectHours = maxSubjectHours,
-            onClickRow = {}
-        )
+            maxSubjectHours = maxSubjectHours
+        ) { journalTopic ->
+            onJournalTopicTableBottomDrawerTypeChange(
+                JournalTopicTableBottomDrawerType.TopicRowMenu(
+                    journalTopic
+                )
+            )
+        }
     }
 }

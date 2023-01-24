@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.LazyPagingItems
+import ru.pgk63.core_common.api.journal.model.JournalEvaluation
 import ru.pgk63.core_common.api.journal.model.JournalRow
 import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.extension.parseToBaseDateFormat
@@ -19,7 +20,9 @@ internal fun BoxScope.JournalTableUi(
     modifier: Modifier = Modifier,
     verticalLazyListState: LazyListState = rememberLazyListState(),
     rows: List<JournalRow>,
-    students: LazyPagingItems<Student>
+    students: LazyPagingItems<Student>,
+    onClickStudent: (Student) -> Unit,
+    onClickEvaluation: (JournalEvaluation?, columnId: Int?) -> Unit
 ) {
     val columns = rows.map { it.columns }.flatten()
     val dates = columns.map { it.date }.distinct().sortedBy { it }
@@ -44,7 +47,8 @@ internal fun BoxScope.JournalTableUi(
 
             TableCell(
                 text = student?.fioAbbreviated() ?: "",
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onClick = { student?.let { onClickStudent(it) } }
             )
         }
 
@@ -68,12 +72,14 @@ internal fun BoxScope.JournalTableUi(
             if(column != null){
                 TableCell(
                     text = column.evaluation.text,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onClick = {  onClickEvaluation(column.evaluation, column.id)}
                 )
             }else {
                 TableCell(
                     text = "-",
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onClick = {  onClickEvaluation(null, null)}
                 )
             }
         }

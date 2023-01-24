@@ -317,6 +317,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                 "${CreateJournalSubjectDestination.route}?" +
                         "${CreateJournalSubjectDestination.journalId}=$journalId"
             )
+        },
+        onStudentDetailsScreen = { id ->
+            navController.navigate("${StudentDetailsDestination.route}/${id}")
         }
     )
 

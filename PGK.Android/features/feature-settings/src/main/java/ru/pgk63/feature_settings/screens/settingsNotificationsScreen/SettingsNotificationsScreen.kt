@@ -168,6 +168,7 @@ private fun SettingsNotificationsScreen(
             is Result.Error -> ErrorUi()
             is Result.Loading -> LoadingUi()
             is Result.Success -> SuccessUi(
+                userSettings = settingsResult.data!!,
                 contentPadding = paddingValues,
                 soundNotifications = soundNotifications,
                 onSoundNotificationsChange = onSoundNotificationsChange,
@@ -188,6 +189,7 @@ private fun SettingsNotificationsScreen(
 
 @Composable
 private fun SuccessUi(
+    userSettings: UserSettings,
     contentPadding: PaddingValues,
     soundNotifications: Boolean,
     onSoundNotificationsChange:(Boolean) -> Unit,
@@ -202,6 +204,17 @@ private fun SuccessUi(
     technicalSupportNotifications:Boolean,
     onTechnicalSupportNotificationsChange: (Boolean) -> Unit,
 ) {
+    LaunchedEffect(key1 = Unit, block = {
+        with(userSettings) {
+            onSoundNotificationsChange(this.soundNotifications)
+            onVibrationNotificationsChange(this.vibrationNotifications)
+            onScheduleNotificationsChange(includedSchedulesNotifications)
+            onJournalNotificationsChange(includedJournalNotifications)
+            onRaportichkaNotificationsChange(includedRaportichkaNotifications)
+            onTechnicalSupportNotificationsChange(includedTechnicalSupportNotifications)
+        }
+    })
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = contentPadding

@@ -58,3 +58,12 @@ fun Date.isYesterday(): Boolean {
 fun Date.isTomorrow(): Boolean {
     return DateUtils.isToday(this.time - DateUtils.DAY_IN_MILLIS)
 }
+
+fun Date.parseToNetworkFormat(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+    return dateFormat.format(this)
+}
+
+fun getCurrentDateTime(): Date {
+    return Calendar.getInstance().time
+}

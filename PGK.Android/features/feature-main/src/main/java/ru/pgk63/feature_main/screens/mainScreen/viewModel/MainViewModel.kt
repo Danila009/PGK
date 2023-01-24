@@ -11,10 +11,11 @@ import ru.pgk63.core_common.api.journal.model.JournalColumn
 import ru.pgk63.core_common.api.journal.repository.JournalRepository
 import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.raportichka.repository.RaportichkaRepository
-import ru.pgk63.core_common.api.user.model.User
 import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.api.user.repository.UserRepository
 import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_common.extension.getCurrentDateTime
+import ru.pgk63.core_common.extension.parseToNetworkFormat
 import ru.pgk63.core_database.user.UserDataSource
 import javax.inject.Inject
 
@@ -52,7 +53,10 @@ internal class MainViewModel @Inject constructor(
 
     fun getRaportichkaList(studentIds:List<Int>? = listOf()) {
         viewModelScope.launch {
-            raportichkaRepository.getRaportichkaAll(studentIds = studentIds)
+            raportichkaRepository.getRaportichkaAll(
+                studentIds = studentIds,
+                onlyDate = getCurrentDateTime().parseToNetworkFormat()
+            )
                 .cachedIn(viewModelScope).collect {
                     _responseRaportichkaList.value = it
                 }

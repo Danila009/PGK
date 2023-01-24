@@ -50,7 +50,8 @@ internal fun JournalDetailsRoute(
     journalId: Int?,
     onJournalTopicTableScreen: (journalSubjectId: Int, maxSubjectHours: Int) -> Unit,
     onBackScreen: () -> Unit,
-    onCreateJournalSubjectScreen: (journalId: Int) -> Unit
+    onCreateJournalSubjectScreen: (journalId: Int) -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
     val pagerState = rememberPagerState()
 
@@ -71,6 +72,7 @@ internal fun JournalDetailsRoute(
         journalSubjects = journalSubjects,
         onJournalTopicTableScreen = onJournalTopicTableScreen,
         onBackScreen = onBackScreen,
+        onStudentDetailsScreen = onStudentDetailsScreen,
         onCreateJournalSubjectScreen = { journalId?.let { onCreateJournalSubjectScreen(it) } },
         getStudentsByGroupId = { groupId ->
 
@@ -90,7 +92,8 @@ private fun JournalDetailsScreen(
     getStudentsByGroupId: @Composable (groupId: Int) -> LazyPagingItems<Student>,
     onJournalTopicTableScreen: (journalSubjectId: Int, maxSubjectHours: Int) -> Unit,
     onBackScreen: () -> Unit,
-    onCreateJournalSubjectScreen: () -> Unit
+    onCreateJournalSubjectScreen: () -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val bottomDrawerState = rememberBottomDrawerState(initialValue = BottomDrawerValue.Closed)
@@ -214,7 +217,8 @@ private fun JournalDetailsScreen(
                         journalSubjects = journalSubjects,
                         pagerState = pagerState,
                         paddingValues = paddingValues,
-                        getStudentsByGroupId = getStudentsByGroupId
+                        getStudentsByGroupId = getStudentsByGroupId,
+                        onClickStudent = { onStudentDetailsScreen(it.id) }
                     )
                 }
             }
@@ -401,7 +405,8 @@ private fun JournalSubjectsUi(
     journalSubjects: LazyPagingItems<JournalSubject>,
     pagerState: PagerState,
     paddingValues: PaddingValues,
-    getStudentsByGroupId: @Composable (groupId:Int) -> LazyPagingItems<Student>
+    getStudentsByGroupId: @Composable (groupId:Int) -> LazyPagingItems<Student>,
+    onClickStudent: (Student) -> Unit
 ) {
     VerticalPager(
         count = journalSubjects.itemCount,
@@ -415,7 +420,11 @@ private fun JournalSubjectsUi(
             if(journalSubject != null){
                 JournalTableUi(
                     rows = journalSubject.rows,
-                    students = getStudentsByGroupId.invoke(journalSubject.journal.group.id)
+                    students = getStudentsByGroupId.invoke(journalSubject.journal.group.id),
+                    onClickStudent = onClickStudent,
+                    onClickEvaluation = { journalEvaluation, columnId ->
+                        TODO("api fix")
+                    }
                 )
             }else{
                 EmptyUi()

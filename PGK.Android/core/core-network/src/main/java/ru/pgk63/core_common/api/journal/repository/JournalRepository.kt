@@ -103,4 +103,6 @@ class JournalRepository @Inject constructor(
             body = body
         )
     }
+
+    suspend fun deleteJournalTopic(id: Int) = safeApiCall { journalApi.deleteJournalTopic(id) }
 }

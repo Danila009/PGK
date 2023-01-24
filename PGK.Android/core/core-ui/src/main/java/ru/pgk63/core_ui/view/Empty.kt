@@ -16,7 +16,8 @@ fun EmptyUi() {
     ) {
         BaseLottieAnimation(
             type = LottieAnimationType.EMPTY,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            iterations = 1
         )
     }
 }
