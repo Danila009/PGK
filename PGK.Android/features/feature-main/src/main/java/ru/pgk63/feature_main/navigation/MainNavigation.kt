@@ -36,7 +36,15 @@ fun NavGraphBuilder.mainNavigation(
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
-    onSearchScreen: () -> Unit
+    onSearchScreen: () -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit
 ) {
     composable(
         route = MainDestination.route
@@ -70,7 +78,15 @@ fun NavGraphBuilder.mainNavigation(
         route = SearchDestination.route
     ){
         SearchRoute(
-            onBackScreen = onBackScreen
+            onBackScreen = onBackScreen,
+            onStudentDetailsScreen = onStudentDetailsScreen,
+            onTeacherDetailsScreen = onTeacherDetailsScreen,
+            onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
+            onDirectorDetailsScreen = onDirectorDetailsScreen,
+            onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+            onGroupDetailsScreen = onGroupDetailsScreen,
+            onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+            onSubjectDetailsScreen = onSubjectDetailsScreen
         )
     }
 }

@@ -135,6 +135,7 @@ fun TextFieldSearch(
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = stringResource(id = R.string.search),
+    closeVisible: Boolean = true,
     onClose: () -> Unit = {},
     onSearch: (KeyboardActionScope.() -> Unit)? = null,
 ) {
@@ -164,15 +165,17 @@ fun TextFieldSearch(
             )
         },
         trailingIcon = {
-            IconButton(onClick = {
-                onClose()
-                keyboardController?.hide()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = PgkTheme.colors.controlColor
-                )
+            if(closeVisible){
+                IconButton(onClick = {
+                    onClose()
+                    keyboardController?.hide()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
+                        tint = PgkTheme.colors.controlColor
+                    )
+                }
             }
         }
     )

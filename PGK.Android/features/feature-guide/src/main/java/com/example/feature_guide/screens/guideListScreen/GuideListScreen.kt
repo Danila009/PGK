@@ -2,7 +2,6 @@ package com.example.feature_guide.screens.guideListScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
@@ -13,15 +12,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -38,7 +33,7 @@ import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.ImageCoil
+import ru.pgk63.core_ui.view.GuideItemUi
 import ru.pgk63.core_ui.view.TextFieldSearch
 import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
@@ -215,9 +210,7 @@ private fun MainMenu(
         modifier = Modifier.background(PgkTheme.colors.secondaryBackground)
     ) {
         GuideListMainMenu.values().forEach { menu ->
-            MainMenuItem(
-                menu = menu
-            ) { onClick(menu) }
+            MainMenuItem(menu = menu) { onClick(menu) }
         }
     }
 }
@@ -277,66 +270,6 @@ private fun<T : Any> LazyStaggeredGridScope.guideListUi(
                 post = getPost.invoke(),
                 photoUrl = getPhotoUrl(contentItem),
                 onClick = { onClickItem(contentItem) }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun GuideItemUi(
-    name:String,
-    post:String,
-    photoUrl: String?,
-    onClick: () -> Unit
-) {
-    val screenWidthDp = LocalConfiguration.current.screenWidthDp
-    val screenHeightDp = LocalConfiguration.current.screenHeightDp
-
-    Card(
-        modifier = Modifier.padding(5.dp),
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        shape = PgkTheme.shapes.cornersStyle,
-        onClick = onClick
-    ) {
-        Column(
-            modifier = Modifier.padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if(photoUrl != null) {
-                ImageCoil(
-                    url = photoUrl,
-                    modifier = Modifier
-                        .width((screenWidthDp / 2).dp)
-                        .height((screenHeightDp / 4.3).dp)
-                )
-            }else {
-                Image(
-                    painter = painterResource(id = R.drawable.profile_photo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width((screenWidthDp / 2).dp)
-                        .height((screenHeightDp / 4.3).dp)
-                )
-            }
-
-            Text(
-                text = name,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.body,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp),
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = post,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.caption,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp),
-                textAlign = TextAlign.Center
             )
         }
     }

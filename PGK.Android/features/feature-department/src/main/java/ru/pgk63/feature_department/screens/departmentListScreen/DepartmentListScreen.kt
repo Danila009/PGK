@@ -14,7 +14,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -138,8 +137,8 @@ private fun DepartmentListScreen(
 
                 items(departments) { department ->
                     department?.let {
-                        DepartmentItemUi(
-                            department = department,
+                        DepartmentItem(
+                            department = department.name,
                             onClick = { onDepartmentDetailsScreen(department.id) }
                         )
                     }
@@ -164,33 +163,5 @@ private fun DepartmentListScreen(
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun DepartmentItemUi(
-    department: Department,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .padding(5.dp)
-            .fillMaxWidth(),
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        elevation = 12.dp,
-        shape = PgkTheme.shapes.cornersStyle,
-        onClick = onClick
-    ) {
-        Text(
-            text = department.name,
-            color = PgkTheme.colors.primaryText,
-            style = PgkTheme.typography.body,
-            fontFamily = PgkTheme.fontFamily.fontFamily,
-            modifier = Modifier
-                .padding(15.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
     }
 }

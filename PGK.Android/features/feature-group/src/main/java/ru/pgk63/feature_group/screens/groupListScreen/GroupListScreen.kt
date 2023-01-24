@@ -27,11 +27,8 @@ import kotlinx.coroutines.launch
 import ru.pgk63.core_common.api.group.model.Group
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
-import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
-import ru.pgk63.core_ui.view.EmptyUi
-import ru.pgk63.core_ui.view.ErrorUi
-import ru.pgk63.core_ui.view.TextFieldSearch
+import ru.pgk63.core_ui.view.*
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.core_ui.view.shimmer.VerticalListItemShimmer
 import ru.pgk63.feature_group.screens.groupListScreen.viewModel.GroupListViewModel
@@ -142,10 +139,13 @@ private fun GroupListScreen(
                     modifier = Modifier.fillMaxSize()
                 ){
                     items(groups){ group ->
-                        GroupListItem(
-                            group = group ?: return@items,
-                            onGroupDetailsScreen = onGroupDetailsScreen
-                        )
+                        if(group != null) {
+                            GroupItem(
+                                group = group.toString(),
+                                classroomTeacher = group.classroomTeacher.fioAbbreviated(),
+                                onClick = { onGroupDetailsScreen(group.id) }
+                            )
+                        }
                     }
 
                     if (groups.loadState.append is LoadState.Loading){
@@ -171,40 +171,4 @@ private fun GroupListScreen(
             }
         }
     )
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun GroupListItem(group: Group, onGroupDetailsScreen: (groupId: Int) -> Unit) {
-    Card(
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        elevation = 12.dp,
-        shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(5.dp),
-        onClick = { onGroupDetailsScreen(group.id) }
-    ) {
-        Column(
-            modifier = Modifier.padding(5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
-        ) {
-            Text(
-                text = "${group.speciality.nameAbbreviation}-${group.course}${group.number}",
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.body,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp)
-            )
-
-            Text(
-                text = "${group.classroomTeacher.lastName} " +
-                        "${group.classroomTeacher.firstName[0]}" +
-                        ".${group.classroomTeacher.middleName?.getOrNull(0) ?: ""}",
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.caption,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp)
-            )
-        }
-    }
 }

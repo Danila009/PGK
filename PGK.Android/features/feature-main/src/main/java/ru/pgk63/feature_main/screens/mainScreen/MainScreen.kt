@@ -1,6 +1,7 @@
 package ru.pgk63.feature_main.screens.mainScreen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -63,6 +64,7 @@ internal fun MainRoute(
 ) {
     var userResult by remember { mutableStateOf<Result<UserDetails>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
+    var darkMode by remember { mutableStateOf<Boolean?>(null) }
 
     val raportichkaList = viewModel.responseRaportichkaList.collectAsLazyPagingItems()
     val journalColumnList = viewModel.responseJournalColumnList.collectAsLazyPagingItems()
@@ -73,6 +75,7 @@ internal fun MainRoute(
 
     viewModel.userLocal.onEach { user ->
         userRole = user?.userRole
+        darkMode = user?.darkMode
     }.launchWhenStarted()
 
     LaunchedEffect(key1 = Unit, block = {
@@ -82,6 +85,7 @@ internal fun MainRoute(
     MainScreen(
         userResult = userResult,
         userRole = userRole,
+        darkMode = darkMode ?: isSystemInDarkTheme(),
         onNotificationListScreen = onNotificationListScreen,
         onGroupScreen = onGroupScreen,
         onTechSupportChatScreen = onTechSupportChatScreen,
@@ -134,6 +138,7 @@ internal fun MainRoute(
 private fun MainScreen(
     userResult: Result<UserDetails>,
     userRole: UserRole?,
+    darkMode: Boolean,
     updateDarkMode: () -> Unit = {},
     onNotificationListScreen: () -> Unit,
     onGroupScreen: () -> Unit = {},
@@ -178,6 +183,7 @@ private fun MainScreen(
             DrawerContentUi(
                 userResult = userResult,
                 userRole = userRole,
+                darkMode = darkMode,
                 updateDarkMode = updateDarkMode,
                 onGroupScreen = onGroupScreen,
                 onTechSupportChatScreen = onTechSupportChatScreen,
@@ -258,6 +264,7 @@ private fun TopBar(
 private fun DrawerContentUi(
     userResult: Result<UserDetails>,
     userRole: UserRole?,
+    darkMode: Boolean,
     updateDarkMode: () -> Unit = {},
     onGroupScreen: () -> Unit = {},
     onTechSupportChatScreen: (userRole: UserRole) -> Unit,
@@ -303,7 +310,10 @@ private fun DrawerContentUi(
                     ) {
                         Icon(
                             modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = ResIcons.nightMode),
+                            painter = if(darkMode)
+                                painterResource(id = ResIcons.sun)
+                            else
+                                painterResource(id = ResIcons.nightMode),
                             contentDescription = "dark mode",
                             tint = PgkTheme.colors.primaryText
                         )

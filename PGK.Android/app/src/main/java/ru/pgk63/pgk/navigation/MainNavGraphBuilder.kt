@@ -96,6 +96,30 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSearchScreen = {
             navController.navigate(SearchDestination.route)
+        },
+        onStudentDetailsScreen = {
+            navController.navigate("${StudentDetailsDestination.route}/$it")
+        },
+        onTeacherDetailsScreen = {
+            navController.navigate("${TeacherDetailsDestination.route}/$it")
+        },
+        onDepartmentHeadDetailsScreen = {
+            navController.navigate("${DepartmentHeadDetailsDestination.route}/$it")
+        },
+        onDirectorDetailsScreen = {
+            navController.navigate("${DirectorDetailsDestination.route}/$it")
+        },
+        onDepartmentDetailsScreen = {
+            navController.navigate("${DepartmentDetailsDestination.route}/$it")
+        },
+        onGroupDetailsScreen = {
+            navController.navigate("${GroupDetailsDestination.route}/$it")
+        },
+        onSpecializationDetailsScreen = {
+            navController.navigate("${SpecializationDetailsDestination.route}/$it")
+        },
+        onSubjectDetailsScreen = {
+            navController.navigate("${SubjectDetailsDestination.route}/$it")
         }
     )
 

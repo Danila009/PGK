@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
             val firebaseMessaging = remember { FirebaseMessaging.getInstance() }
 
             val navHostController = rememberAnimatedNavController()
-
             val isSystemInDarkTheme = isSystemInDarkTheme()
 
             mainViewModel.user.onEach {

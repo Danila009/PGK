@@ -17,7 +17,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -34,6 +33,7 @@ import ru.pgk63.core_ui.view.TopBarBack
 import ru.pgk63.core_ui.R
 import ru.pgk63.core_ui.paging.items
 import ru.pgk63.core_ui.theme.PgkTheme
+import ru.pgk63.core_ui.view.SubjectItem
 import ru.pgk63.core_ui.view.TextFieldSearch
 import ru.pgk63.core_ui.view.collapsingToolbar.rememberToolbarScrollBehavior
 import ru.pgk63.feature_subject.screens.subjectListScreen.view.CreateSubjectDialog
@@ -182,9 +182,9 @@ private fun SubjectListScreen(
 
             items(subjects){ subject ->
                 subject?.let {
-                    SubjectCard(
-                        subject = subject,
-                        onSubjectDetailsScreen = onSubjectDetailsScreen
+                    SubjectItem(
+                        subjectTitle = subject.subjectTitle,
+                        onClick = { onSubjectDetailsScreen(subject.id) }
                     )
                 }
             }
@@ -193,31 +193,6 @@ private fun SubjectListScreen(
                 Spacer(modifier = Modifier
                     .height(paddingValues.calculateBottomPadding()))
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun SubjectCard(subject: Subject, onSubjectDetailsScreen: (subjectId: Int) -> Unit) {
-    Card(
-        backgroundColor = PgkTheme.colors.secondaryBackground,
-        elevation = 12.dp,
-        shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(5.dp),
-        onClick = { onSubjectDetailsScreen(subject.id) }
-    ) {
-        Box {
-            Text(
-                text = subject.subjectTitle,
-                color = PgkTheme.colors.primaryText,
-                style = PgkTheme.typography.body,
-                fontFamily = PgkTheme.fontFamily.fontFamily,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .align(Alignment.Center)
-            )
         }
     }
 }

@@ -95,6 +95,9 @@ dependencies {
     //Compose permissions
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_permissions_version"
 
+    //System ui controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_systemuicontroller_version"
+
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"

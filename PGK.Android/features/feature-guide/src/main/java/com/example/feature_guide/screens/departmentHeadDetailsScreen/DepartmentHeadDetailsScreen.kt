@@ -65,7 +65,8 @@ private fun DepartmentHeadDetailsScreen(
         backgroundColor = PgkTheme.colors.primaryBackground,
         topBar = {
             TopBarBack(
-                title = "",
+                title = departmentHeadDetails.data?.fioAbbreviated()
+                    ?: stringResource(id = ru.pgk63.core_common.R.string.department_head),
                 scrollBehavior = scrollBehavior,
                 onBackClick = onBackScreen
             )
