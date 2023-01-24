@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
@@ -37,6 +38,7 @@ fun CollapsingToolbar(
     collapsingTitle: CollapsingTitle? = null,
     scrollBehavior: CollapsingToolbarScrollBehavior? = null,
     collapsedElevation: Dp = DefaultCollapsedElevation,
+    backgroundColor: Color = PgkTheme.colors.primaryBackground
 ) {
     val collapsedFraction = when {
         scrollBehavior != null && centralContent == null -> scrollBehavior.state.collapsedFraction
@@ -63,7 +65,7 @@ fun CollapsingToolbar(
     androidx.compose.material3.Surface(
         modifier = modifier,
         shadowElevation = elevationState.value,
-        color = PgkTheme.colors.primaryBackground
+        color = backgroundColor
     ) {
         Layout(
             content = {

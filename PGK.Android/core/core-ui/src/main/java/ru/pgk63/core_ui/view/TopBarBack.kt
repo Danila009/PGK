@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingTitle
 import ru.pgk63.core_ui.view.collapsingToolbar.CollapsingToolbar
@@ -20,6 +21,7 @@ fun TopBarBack(
     title: String? = null,
     collapsingTitle: CollapsingTitle? = if(title == null) null else CollapsingTitle.large(titleText = title),
     scrollBehavior: CollapsingToolbarScrollBehavior? = null,
+    backgroundColor: Color = PgkTheme.colors.primaryBackground,
     onBackClick: () -> Unit,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
@@ -28,6 +30,7 @@ fun TopBarBack(
 ) {
     CollapsingToolbar(
         modifier = modifier,
+        backgroundColor = backgroundColor,
         collapsingTitle = collapsingTitle,
         scrollBehavior = scrollBehavior,
         additionalContent = additionalContent,

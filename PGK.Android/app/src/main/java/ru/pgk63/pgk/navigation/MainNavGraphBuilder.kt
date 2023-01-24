@@ -20,6 +20,7 @@ import ru.pgk63.feature_group.navigation.GroupListDestination
 import ru.pgk63.feature_group.navigation.GroupDetailsDestination
 import ru.pgk63.feature_group.navigation.groupNavigation
 import ru.pgk63.feature_main.navigation.NotificationListDestination
+import ru.pgk63.feature_main.navigation.SearchDestination
 import ru.pgk63.feature_main.navigation.mainNavigation
 import ru.pgk63.feature_profile.navigation.ProfileDestination
 import ru.pgk63.feature_profile.navigation.ProfileUpdateDestination
@@ -92,6 +93,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
         },
         onSettingsScreen = {
             navController.navigate(SettingsDestination.route)
+        },
+        onSearchScreen = {
+            navController.navigate(SearchDestination.route)
         }
     )
 

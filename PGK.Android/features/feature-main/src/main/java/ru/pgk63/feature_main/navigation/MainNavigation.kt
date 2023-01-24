@@ -7,6 +7,7 @@ import ru.pgk63.core_common.enums.user.UserRole
 import ru.pgk63.core_navigation.NavigationDestination
 import ru.pgk63.feature_main.screens.mainScreen.MainRoute
 import ru.pgk63.feature_main.screens.notificationListScreen.NotificationListRoute
+import ru.pgk63.feature_main.screens.searchScreen.SearchRoute
 
 object MainDestination : NavigationDestination {
     override val route = "main_screen"
@@ -14,6 +15,10 @@ object MainDestination : NavigationDestination {
 
 object NotificationListDestination : NavigationDestination {
     override val route: String = "notification_list_screen"
+}
+
+object SearchDestination : NavigationDestination {
+    override val route: String = "search_screen"
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -31,6 +36,7 @@ fun NavGraphBuilder.mainNavigation(
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
+    onSearchScreen: () -> Unit
 ) {
     composable(
         route = MainDestination.route
@@ -47,7 +53,8 @@ fun NavGraphBuilder.mainNavigation(
             onDepartmentListScreen = onDepartmentListScreen,
             onRaportichkaScreen = onRaportichkaScreen,
             onJournalScreen = onJournalScreen,
-            onGuideListScreen = onGuideListScreen
+            onGuideListScreen = onGuideListScreen,
+            onSearchScreen = onSearchScreen
         )
     }
 
@@ -55,6 +62,14 @@ fun NavGraphBuilder.mainNavigation(
         route = NotificationListDestination.route
     ){
         NotificationListRoute(
+            onBackScreen = onBackScreen
+        )
+    }
+
+    composable(
+        route = SearchDestination.route
+    ){
+        SearchRoute(
             onBackScreen = onBackScreen
         )
     }

@@ -21,6 +21,10 @@
     <string name="teacher">Преподаватель</string>
     <string name="educational_sector">Учебный сектор</string>
     <string name="department_head">Зав отделения</string>
+    <string name="department">Отделения</string>
+    <string name="group">Група</string>
+    <string name="speciality">Спецальность</string>
+    <string name="subject">Предмет</string>
     <string name="admin">Админ</string>
     <string name="director">Директор</string>
     <string name="today">Сегодня</string>

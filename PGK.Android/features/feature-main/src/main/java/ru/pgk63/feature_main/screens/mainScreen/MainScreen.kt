@@ -59,6 +59,7 @@ internal fun MainRoute(
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
+    onSearchScreen: () -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<UserDetails>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -93,6 +94,7 @@ internal fun MainRoute(
         onRaportichkaScreen = onRaportichkaScreen,
         onJournalScreen = onJournalScreen,
         onGuideListScreen = onGuideListScreen,
+        onSearchScreen = onSearchScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         },
@@ -145,6 +147,7 @@ private fun MainScreen(
     onRaportichkaScreen: (userRole: UserRole, userId: Int) -> Unit,
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
+    onSearchScreen: () -> Unit,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
     getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
 ) {
@@ -164,7 +167,8 @@ private fun MainScreen(
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-                }
+                },
+                onSearchScreen = onSearchScreen
             )
         },
         drawerShape = PgkTheme.shapes.cornersStyle,
@@ -208,7 +212,8 @@ private fun MainScreen(
 private fun TopBar(
     scrollBehavior: CollapsingToolbarScrollBehavior,
     onClickIconMenu:() -> Unit,
-    onNotificationListScreen: () -> Unit
+    onNotificationListScreen: () -> Unit,
+    onSearchScreen: () -> Unit
 ) {
     CollapsingToolbar(
         collapsingTitle = CollapsingTitle.large(titleText = "Доброе утро"),
@@ -225,9 +230,7 @@ private fun TopBar(
         actions = {
             IconButton(
                 modifier = Modifier.padding(5.dp),
-                onClick = {
-
-                }
+                onClick = onSearchScreen
             ) {
                 Icon(
                     imageVector = Icons.Default.Search,
