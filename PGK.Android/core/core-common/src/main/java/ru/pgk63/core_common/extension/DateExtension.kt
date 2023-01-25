@@ -67,3 +67,21 @@ fun Date.parseToNetworkFormat(): String {
 fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
 }
+
+@Composable
+fun getWelcomeTimesOfDay(): String {
+
+    val date = getCurrentDateTime()
+    val dateFormat = SimpleDateFormat("HH", Locale.getDefault())
+
+    return when (dateFormat.format(date).toInt()) {
+        in 0..3 -> stringResource(id = R.string.welcome_night)
+
+        in 4..9 -> stringResource(id = R.string.welcome_morning)
+
+        in 10..17 -> stringResource(id = R.string.welcome_day)
+
+        else -> stringResource(id = R.string.welcome_evening)
+    }
+
+}

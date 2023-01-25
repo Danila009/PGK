@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import kotlinx.coroutines.flow.onEach
@@ -30,8 +32,11 @@ import ru.pgk63.core_common.api.raportichka.model.Raportichka
 import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.enums.user.UserRole
+import ru.pgk63.core_common.extension.getWelcomeTimesOfDay
 import ru.pgk63.core_common.extension.launchWhenStarted
 import ru.pgk63.core_common.extension.parseToBaseDateFormat
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import ru.pgk63.core_ui.icon.ResIcons
 import ru.pgk63.core_ui.theme.PgkTheme
 import ru.pgk63.core_ui.view.EmptyUi
@@ -61,6 +66,14 @@ internal fun MainRoute(
     onJournalScreen: (userRole: UserRole, userId: Int) -> Unit,
     onGuideListScreen: () -> Unit,
     onSearchScreen: () -> Unit,
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
     var userResult by remember { mutableStateOf<Result<UserDetails>>(Result.Loading()) }
     var userRole by remember { mutableStateOf<UserRole?>(null) }
@@ -68,6 +81,7 @@ internal fun MainRoute(
 
     val raportichkaList = viewModel.responseRaportichkaList.collectAsLazyPagingItems()
     val journalColumnList = viewModel.responseJournalColumnList.collectAsLazyPagingItems()
+    val history = viewModel.responseHistory.collectAsLazyPagingItems()
 
     viewModel.responseUserNetwork.onEach { result ->
         userResult = result
@@ -80,11 +94,13 @@ internal fun MainRoute(
 
     LaunchedEffect(key1 = Unit, block = {
         viewModel.getUserNetwork()
+        viewModel.getHistory()
     })
 
     MainScreen(
         userResult = userResult,
         userRole = userRole,
+        history = history,
         darkMode = darkMode ?: isSystemInDarkTheme(),
         onNotificationListScreen = onNotificationListScreen,
         onGroupScreen = onGroupScreen,
@@ -99,6 +115,14 @@ internal fun MainRoute(
         onJournalScreen = onJournalScreen,
         onGuideListScreen = onGuideListScreen,
         onSearchScreen = onSearchScreen,
+        onStudentDetailsScreen = onStudentDetailsScreen,
+        onTeacherDetailsScreen = onTeacherDetailsScreen,
+        onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
+        onDirectorDetailsScreen = onDirectorDetailsScreen,
+        onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+        onGroupDetailsScreen = onGroupDetailsScreen,
+        onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+        onSubjectDetailsScreen = onSubjectDetailsScreen,
         updateDarkMode = {
             viewModel.updateDarkMode()
         },
@@ -137,6 +161,7 @@ internal fun MainRoute(
 @Composable
 private fun MainScreen(
     userResult: Result<UserDetails>,
+    history: LazyPagingItems<History>,
     userRole: UserRole?,
     darkMode: Boolean,
     updateDarkMode: () -> Unit = {},
@@ -154,7 +179,15 @@ private fun MainScreen(
     onGuideListScreen: () -> Unit,
     onSearchScreen: () -> Unit,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
-    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
+    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>,
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     val scope = rememberCoroutineScope()
@@ -199,15 +232,27 @@ private fun MainScreen(
             )
         },
         content = { paddingValues ->
-            when(userResult){
-                is Result.Error -> ErrorUi()
-                is Result.Loading -> EmptyUi()
-                is Result.Success -> MainScreenSuccess(
-                    user = userResult.data!!,
+
+            if(userResult is Result.Error && history.itemCount <= 0){
+                ErrorUi()
+            }else if (userResult is Result.Loading && history.itemCount <= 0){
+                EmptyUi()
+            }else {
+                MainScreenSuccess(
+                    user = userResult.data,
+                    history = history,
                     userRole = userRole,
                     contentPadding = paddingValues,
                     getRaportichkaList = getRaportichkaList,
-                    getJournalColumnList = getJournalColumnList
+                    getJournalColumnList = getJournalColumnList,
+                    onStudentDetailsScreen = onStudentDetailsScreen,
+                    onTeacherDetailsScreen = onTeacherDetailsScreen,
+                    onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
+                    onDirectorDetailsScreen = onDirectorDetailsScreen,
+                    onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+                    onGroupDetailsScreen = onGroupDetailsScreen,
+                    onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+                    onSubjectDetailsScreen = onSubjectDetailsScreen,
                 )
             }
         }
@@ -222,7 +267,7 @@ private fun TopBar(
     onSearchScreen: () -> Unit
 ) {
     CollapsingToolbar(
-        collapsingTitle = CollapsingTitle.large(titleText = "Доброе утро"),
+        collapsingTitle = CollapsingTitle.large(titleText = getWelcomeTimesOfDay()),
         scrollBehavior = scrollBehavior,
         navigationIcon = {
             IconButton(onClick = onClickIconMenu) {
@@ -384,24 +429,126 @@ private fun DrawerContentUi(
 
 @Composable
 private fun MainScreenSuccess(
-    user: UserDetails,
+    user: UserDetails?,
     userRole: UserRole?,
+    history: LazyPagingItems<History>,
     contentPadding: PaddingValues,
     getRaportichkaList: @Composable () -> LazyPagingItems<Raportichka>,
-    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>
+    getJournalColumnList: @Composable () -> LazyPagingItems<JournalColumn>,
+    onStudentDetailsScreen: (studentId: Int) -> Unit,
+    onTeacherDetailsScreen: (teacherId: Int) -> Unit,
+    onDepartmentHeadDetailsScreen: (departmentHeadId: Int) -> Unit,
+    onDirectorDetailsScreen: (directorId: Int) -> Unit,
+    onDepartmentDetailsScreen: (departmentId: Int) -> Unit,
+    onGroupDetailsScreen: (groupId: Int) -> Unit,
+    onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
+    onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
-    if(userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN){
-        LazyColumn(contentPadding = contentPadding) {
-            item {
-                MainScreenStudent(
-                    user = user,
-                    getRaportichkaList = getRaportichkaList,
-                    getJournalColumnList = getJournalColumnList
-                )
+    if(
+        history.itemCount > 0 ||
+        (userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN)
+    ){
+        LazyColumn(
+            contentPadding = contentPadding,
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            if(history.itemCount > 0) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.history),
+                        color = PgkTheme.colors.primaryText,
+                        fontFamily = PgkTheme.fontFamily.fontFamily,
+                        style = PgkTheme.typography.heading,
+                        modifier = Modifier.padding(15.dp)
+                    )
+
+                    HistoryList(
+                        history = history,
+                        onClick = { historyItem ->
+                            when(historyItem.historyType) {
+                                HistoryType.GROUP -> onGroupDetailsScreen(historyItem.contentId)
+                                HistoryType.DEPARTMENT -> onDepartmentDetailsScreen(historyItem.contentId)
+                                HistoryType.STUDENT -> onStudentDetailsScreen(historyItem.contentId)
+                                HistoryType.TEACHER -> onTeacherDetailsScreen(historyItem.contentId)
+                                HistoryType.SUBJECT -> onSubjectDetailsScreen(historyItem.contentId)
+                                HistoryType.SPECIALITY -> onSpecializationDetailsScreen(historyItem.contentId)
+                                HistoryType.DIRECTOR -> onDirectorDetailsScreen(historyItem.contentId)
+                                HistoryType.DEPARTMENT_HEAD -> onDepartmentHeadDetailsScreen(historyItem.contentId)
+                            }
+                        }
+                    )
+                }
+            }
+
+            if(user != null && (userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN)) {
+                item {
+                    MainScreenStudent(
+                        user = user,
+                        getRaportichkaList = getRaportichkaList,
+                        getJournalColumnList = getJournalColumnList
+                    )
+                }
             }
         }
     }else {
         EmptyUi()
+    }
+}
+
+@Composable
+private fun HistoryList(
+    history: LazyPagingItems<History>,
+    onClick: (History) -> Unit
+) {
+    LazyRow {
+        items(history, key = { it.historyId }) { item ->
+            if(item != null){
+                HistoryItem(
+                    history = item,
+                    onClick = { onClick(item) }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun HistoryItem(
+    history: History,
+    onClick: () -> Unit
+) {
+    Card(
+        backgroundColor = PgkTheme.colors.secondaryBackground,
+        elevation = 12.dp,
+        shape = PgkTheme.shapes.cornersStyle,
+        modifier = Modifier.padding(5.dp),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier.padding(5.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            Text(
+                text = history.title,
+                color = PgkTheme.colors.primaryText,
+                style = PgkTheme.typography.body,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                modifier = Modifier.padding(5.dp)
+            )
+
+            history.description?.let { description ->
+                Text(
+                    text = description,
+                    color = PgkTheme.colors.primaryText,
+                    style = PgkTheme.typography.caption,
+                    fontFamily = PgkTheme.fontFamily.fontFamily,
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
+        }
     }
 }
 

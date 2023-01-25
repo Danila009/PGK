@@ -12,10 +12,14 @@ import ru.pgk63.core_common.api.group.paging.GroupPagingSource
 import ru.pgk63.core_common.api.student.model.StudentResponse
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
 import javax.inject.Inject
 
 class GroupRepository @Inject constructor(
     private val groupApi: GroupApi,
+    private val historyDataSource: HistoryDataSource,
 ) : ApiResponse() {
 
     fun getAll(
@@ -52,7 +56,17 @@ class GroupRepository @Inject constructor(
     }
 
     suspend fun getById(id: Int): Result<Group> {
-        return safeApiCall { groupApi.getById(id) }
+        val response = safeApiCall { groupApi.getById(id) }
+
+        response.data?.let { group ->
+            historyDataSource.add(History(
+                contentId = group.id,
+                title = group.toString(),
+                historyType = HistoryType.GROUP
+            ))
+        }
+
+        return response
     }
 
     suspend fun getStudentByGroupId(

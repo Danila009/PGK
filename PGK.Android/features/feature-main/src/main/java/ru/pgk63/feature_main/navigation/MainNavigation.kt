@@ -62,7 +62,15 @@ fun NavGraphBuilder.mainNavigation(
             onRaportichkaScreen = onRaportichkaScreen,
             onJournalScreen = onJournalScreen,
             onGuideListScreen = onGuideListScreen,
-            onSearchScreen = onSearchScreen
+            onSearchScreen = onSearchScreen,
+            onStudentDetailsScreen = onStudentDetailsScreen,
+            onTeacherDetailsScreen = onTeacherDetailsScreen,
+            onDepartmentHeadDetailsScreen = onDepartmentHeadDetailsScreen,
+            onDirectorDetailsScreen = onDirectorDetailsScreen,
+            onDepartmentDetailsScreen = onDepartmentDetailsScreen,
+            onGroupDetailsScreen = onGroupDetailsScreen,
+            onSpecializationDetailsScreen = onSpecializationDetailsScreen,
+            onSubjectDetailsScreen = onSubjectDetailsScreen
         )
     }
 

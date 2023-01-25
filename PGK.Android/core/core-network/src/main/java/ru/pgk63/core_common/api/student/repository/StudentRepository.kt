@@ -10,10 +10,15 @@ import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.student.model.StudentRegistrationBody
 import ru.pgk63.core_common.api.student.paging.StudentPagingSource
 import ru.pgk63.core_common.common.response.ApiResponse
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import javax.inject.Inject
 
 class StudentRepository @Inject constructor(
-    private val studentApi: StudentApi
+    private val studentApi: StudentApi,
+    private val historyDataSource: HistoryDataSource
 ): ApiResponse() {
 
     suspend fun registration(body: StudentRegistrationBody) = safeApiCall {
@@ -33,5 +38,20 @@ class StudentRepository @Inject constructor(
         }.flow
     }
 
-    suspend fun getById(id:Int) = safeApiCall { studentApi.getById(id) }
+    suspend fun getById(id:Int): Result<Student> {
+        val response = safeApiCall { studentApi.getById(id) }
+
+        response.data?.let { student ->
+            historyDataSource.add(
+                History(
+                    contentId = student.id,
+                    title = student.fioAbbreviated(),
+                    description = student.group.toString(),
+                    historyType = HistoryType.STUDENT
+                )
+            )
+        }
+
+        return response
+    }
 }

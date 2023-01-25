@@ -16,6 +16,8 @@ import ru.pgk63.core_common.api.user.repository.UserRepository
 import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_common.extension.getCurrentDateTime
 import ru.pgk63.core_common.extension.parseToNetworkFormat
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
 import ru.pgk63.core_database.user.UserDataSource
 import javax.inject.Inject
 
@@ -24,7 +26,8 @@ internal class MainViewModel @Inject constructor(
     userDataSource: UserDataSource,
     private val userRepository: UserRepository,
     private val raportichkaRepository: RaportichkaRepository,
-    private val journalRepository: JournalRepository
+    private val journalRepository: JournalRepository,
+    private val historyDataSource: HistoryDataSource
 ): ViewModel() {
 
     private val _responseUserNetwork = MutableStateFlow<Result<UserDetails>>(Result.Loading())
@@ -38,6 +41,9 @@ internal class MainViewModel @Inject constructor(
 
     val userLocal = userDataSource.get()
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    private val _responseHistory = MutableStateFlow<PagingData<History>>(PagingData.empty())
+    val responseHistory = _responseHistory.asStateFlow()
 
     fun getUserNetwork(){
         viewModelScope.launch {
@@ -69,6 +75,14 @@ internal class MainViewModel @Inject constructor(
                 studentIds = studentIds
             ).cachedIn(viewModelScope).collect {
                 _responseJournalColumnList.value = it
+            }
+        }
+    }
+
+    fun getHistory() {
+        viewModelScope.launch {
+            historyDataSource.getAll().cachedIn(viewModelScope).collect {
+                _responseHistory.value = it
             }
         }
     }

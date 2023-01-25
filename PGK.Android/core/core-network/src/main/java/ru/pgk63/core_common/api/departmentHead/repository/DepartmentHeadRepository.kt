@@ -10,10 +10,15 @@ import ru.pgk63.core_common.api.departmentHead.model.DepartmentHead
 import ru.pgk63.core_common.api.departmentHead.paging.DepartmentHeadPageSourse
 import ru.pgk63.core_common.api.user.model.UserRegistrationBody
 import ru.pgk63.core_common.common.response.ApiResponse
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import javax.inject.Inject
 
 class DepartmentHeadRepository @Inject constructor(
-    private val departmentHeadApi: DepartmentHeadApi
+    private val departmentHeadApi: DepartmentHeadApi,
+    private val historyDataSource: HistoryDataSource
 ): ApiResponse() {
 
     suspend fun registration(body: UserRegistrationBody) = safeApiCall {
@@ -29,7 +34,19 @@ class DepartmentHeadRepository @Inject constructor(
         }.flow
     }
 
-    suspend fun getById(id: Int) = safeApiCall {
-        departmentHeadApi.getById(id)
+    suspend fun getById(id: Int): Result<DepartmentHead> {
+        val response = safeApiCall { departmentHeadApi.getById(id) }
+
+        response.data?.let { departmentHead ->
+            historyDataSource.add(
+                History(
+                    contentId = departmentHead.id,
+                    title = departmentHead.fioAbbreviated(),
+                    historyType = HistoryType.DEPARTMENT_HEAD
+                )
+            )
+        }
+
+        return response
     }
 }

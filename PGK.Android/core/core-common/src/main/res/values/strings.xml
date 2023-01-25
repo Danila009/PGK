@@ -25,6 +25,10 @@
     <string name="group">Група</string>
     <string name="speciality">Спецальность</string>
     <string name="subject">Предмет</string>
+    <string name="welcome_night">Добрый ночи</string>
+    <string name="welcome_day">Добрый день</string>
+    <string name="welcome_evening">Добрый вечер</string>
+    <string name="welcome_morning">Доброе утро</string>
     <string name="admin">Админ</string>
     <string name="director">Директор</string>
     <string name="today">Сегодня</string>

@@ -10,10 +10,15 @@ import ru.pgk63.core_common.api.director.model.Director
 import ru.pgk63.core_common.api.director.paging.DirectorPageSourse
 import ru.pgk63.core_common.api.user.model.UserRegistrationBody
 import ru.pgk63.core_common.common.response.ApiResponse
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import javax.inject.Inject
 
 class DirectorRepository @Inject constructor(
-    private val directorApi: DirectorApi
+    private val directorApi: DirectorApi,
+    private val historyDataSource: HistoryDataSource
 ): ApiResponse() {
 
     fun getAll(
@@ -29,8 +34,20 @@ class DirectorRepository @Inject constructor(
         }.flow
     }
 
-    suspend fun getById(id: Int) = safeApiCall {
-        directorApi.getById(id)
+    suspend fun getById(id: Int): Result<Director> {
+        val response = safeApiCall { directorApi.getById(id) }
+
+        response.data?.let { director ->
+            historyDataSource.add(
+                History(
+                    contentId = director.id,
+                    title = director.fioAbbreviated(),
+                    historyType = HistoryType.DIRECTOR
+                )
+            )
+        }
+
+        return response
     }
 
     suspend fun registration(body: UserRegistrationBody) = safeApiCall {

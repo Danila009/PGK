@@ -11,10 +11,15 @@ import ru.pgk63.core_common.api.subject.model.Subject
 import ru.pgk63.core_common.api.subject.model.UpdateSubjectBody
 import ru.pgk63.core_common.api.subject.paging.SubjectPagingSource
 import ru.pgk63.core_common.common.response.ApiResponse
+import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import javax.inject.Inject
 
 class SubjectRepository @Inject constructor(
-    private val subjectApi: SubjectApi
+    private val subjectApi: SubjectApi,
+    private val historyDataSource: HistoryDataSource
 ): ApiResponse() {
 
     fun getAll(
@@ -30,7 +35,21 @@ class SubjectRepository @Inject constructor(
         }.flow
     }
 
-    suspend fun getById(id: Int) = safeApiCall { subjectApi.getById(id) }
+    suspend fun getById(id: Int): Result<Subject> {
+        val response = safeApiCall { subjectApi.getById(id) }
+
+        response.data?.let { subject ->
+            historyDataSource.add(
+                History(
+                    contentId = subject.id,
+                    title = subject.subjectTitle,
+                    historyType = HistoryType.SUBJECT
+                )
+            )
+        }
+
+        return response
+    }
 
     suspend fun create(body: CreateSubjectBody) = safeApiCall { subjectApi.create(body) }
 

@@ -7,6 +7,7 @@
     <string name="group_choose">Выберите группу</string>
     <string name="group_create">Создать группу</string>
     <string name="journal">Журнал</string>
+    <string name="history">Вы недавно смотрели</string>
     <string name="journal_create">Создать журнал</string>
     <string name="journal_subject_create">Добавить предмет к журналу</string>
     <string name="journals">Журналы</string>

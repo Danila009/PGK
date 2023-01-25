@@ -1,7 +1,7 @@
 package ru.pgk63.core_common.common.response
 
+import android.accounts.NetworkErrorException
 import retrofit2.Response
-import java.net.ProtocolException
 
 abstract class ApiResponse {
     suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): Result<T> {
@@ -13,8 +13,8 @@ abstract class ApiResponse {
             }
 
             return Result.Error("${response.code()} ${response.message()}")
-        } catch (e: ProtocolException) {
-            return Result.Error("Ошибка, возможно вам нужно заново авторезироваться это можно сделать в настройках приложения")
+        } catch (e: NetworkErrorException) {
+            return Result.Error("Проверте соеденение с интернетом")
         } catch (e: Exception) {
             return Result.Error(e.message.toString())
         }

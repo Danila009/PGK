@@ -12,10 +12,14 @@ import ru.pgk63.core_common.api.department.model.UpdateDepartmentBody
 import ru.pgk63.core_common.api.department.paging.DepartmentPagingSource
 import ru.pgk63.core_common.common.response.ApiResponse
 import ru.pgk63.core_common.common.response.Result
+import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
+import ru.pgk63.core_database.room.database.history.model.History
+import ru.pgk63.core_database.room.database.history.model.HistoryType
 import javax.inject.Inject
 
 class DepartmentRepository @Inject constructor(
-    private val departmentApi: DepartmentApi
+    private val departmentApi: DepartmentApi,
+    private val historyDataSource: HistoryDataSource
 ): ApiResponse() {
 
     fun getAll(
@@ -29,7 +33,21 @@ class DepartmentRepository @Inject constructor(
         }.flow
     }
 
-    suspend fun getById(id:Int): Result<Department> = safeApiCall { departmentApi.getById(id) }
+    suspend fun getById(id:Int): Result<Department> {
+        val response = safeApiCall { departmentApi.getById(id) }
+
+        response.data?.let { department ->
+            historyDataSource.add(
+                History(
+                    contentId = department.id,
+                    title = department.name,
+                    historyType = HistoryType.DEPARTMENT
+                )
+            )
+        }
+
+        return response
+    }
 
     suspend fun create(body: CreateDepartmentBody) = safeApiCall { departmentApi.create(body) }
 
