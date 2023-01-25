@@ -53,7 +53,8 @@ internal fun GroupDetailsRoute(
     onRegistrationHeadman: (groupId: Int,deputy: Boolean) -> Unit,
     onRegistrationStudentScreen: (groupId: Int) -> Unit,
     onJournalScreen: (journalId: Int) -> Unit,
-    onCreateJournalScreen: (groupId: Int) -> Unit
+    onCreateJournalScreen: (groupId: Int) -> Unit,
+    onTeacherDetailScreen: (teacherId: Int) -> Unit
 ) {
     var groupResult by remember { mutableStateOf<Result<Group>>(Result.Loading()) }
 
@@ -86,6 +87,7 @@ internal fun GroupDetailsRoute(
         onRegistrationStudentScreen = onRegistrationStudentScreen,
         onJournalScreen = onJournalScreen,
         onCreateJournalScreen = onCreateJournalScreen,
+        onTeacherDetailScreen = onTeacherDetailScreen,
         onRegistrationHeadman = { deputy ->
             onRegistrationHeadman(groupId, deputy)
         },
@@ -108,7 +110,8 @@ private fun GroupDetailsScreen(
     onRegistrationStudentScreen: (groupId: Int) -> Unit,
     onJournalScreen: (journalId: Int) -> Unit,
     deleteGroup: () -> Unit,
-    onCreateJournalScreen: (groupId: Int) -> Unit
+    onCreateJournalScreen: (groupId: Int) -> Unit,
+    onTeacherDetailScreen: (teacherId: Int) -> Unit
 ) {
     val scrollBehavior = rememberToolbarScrollBehavior()
     var mainMenuVisible by remember { mutableStateOf(false) }
@@ -176,7 +179,10 @@ private fun GroupDetailsScreen(
                             Column {
                                 Spacer(modifier = Modifier.height(10.dp))
 
-                                ClassroomTeacherUi(classroomTeacher = groupResult.data!!.classroomTeacher)
+                                ClassroomTeacherUi(
+                                    classroomTeacher = groupResult.data!!.classroomTeacher,
+                                    onTeacherDetailScreen = onTeacherDetailScreen
+                                )
                             }
                         }
 
@@ -313,8 +319,12 @@ private fun MainMenu(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
+private fun ClassroomTeacherUi(
+    classroomTeacher: Teacher,
+    onTeacherDetailScreen: (teacherId: Int) -> Unit
+) {
 
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
@@ -325,7 +335,8 @@ private fun ClassroomTeacherUi(classroomTeacher: Teacher) {
                 .fillMaxWidth()
                 .padding(5.dp),
             backgroundColor = PgkTheme.colors.secondaryBackground,
-            shape = PgkTheme.shapes.cornersStyle
+            shape = PgkTheme.shapes.cornersStyle,
+            onClick = { onTeacherDetailScreen(classroomTeacher.id) }
         ) {
             Row(
                 modifier = Modifier

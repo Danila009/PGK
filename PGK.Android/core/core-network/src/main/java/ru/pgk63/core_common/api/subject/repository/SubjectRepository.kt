@@ -53,6 +53,10 @@ class SubjectRepository @Inject constructor(
 
     suspend fun create(body: CreateSubjectBody) = safeApiCall { subjectApi.create(body) }
 
+    suspend fun teacherAddSubject(teacherId: Int, subjectId: Int): Result<Unit?> {
+        return safeApiCall { subjectApi.teacherAddSubject(teacherId, subjectId) }
+    }
+
     suspend fun delete(id: Int) = safeApiCall { subjectApi.delete(id) }
 
     suspend fun update(id: Int,body: UpdateSubjectBody) = safeApiCall { subjectApi.update(id, body) }

@@ -58,5 +58,7 @@ class RaportichkaRepository @Inject constructor(
         body: RaportichkaUpdateRowBody
     ) = safeApiCall { raportichkaApi.updateRow(rowId, body) }
 
+    suspend fun updateConfirmation(rowId: Int) = safeApiCall { raportichkaApi.updateConfirmation(rowId) }
+
     suspend fun deleteRow(rowId:Int) = safeApiCall { raportichkaApi.deleteRow(rowId) }
 }

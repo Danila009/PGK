@@ -1,13 +1,7 @@
 package ru.pgk63.core_common.api.raportichka
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.pgk63.core_common.Constants.PAGE_SIZE
 import ru.pgk63.core_common.api.raportichka.model.RaportichkaAddRowBody
 import ru.pgk63.core_common.api.raportichka.model.RaportichkaResponse
@@ -41,6 +35,11 @@ interface RaportichkaApi {
     suspend fun updateRow(
         @Path("id") rowId:Int,
         @Body body: RaportichkaUpdateRowBody
+    ): Response<Unit?>
+
+    @PATCH("/pgk63/api/Raportichka/Row/2/Confirmation")
+    suspend fun updateConfirmation(
+        @Path("id") rowId:Int
     ): Response<Unit?>
 
     @DELETE("/pgk63/api/Raportichka/Row/{id}")

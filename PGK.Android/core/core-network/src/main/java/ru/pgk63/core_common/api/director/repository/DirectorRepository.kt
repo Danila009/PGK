@@ -53,4 +53,8 @@ class DirectorRepository @Inject constructor(
     suspend fun registration(body: UserRegistrationBody) = safeApiCall {
         directorApi.registration(body)
     }
+
+    suspend fun updateCurrent(id: Int) = safeApiCall {
+        directorApi.updateCurrent(id)
+    }
 }

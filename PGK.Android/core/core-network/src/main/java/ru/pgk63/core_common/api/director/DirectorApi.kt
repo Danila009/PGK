@@ -27,4 +27,9 @@ interface DirectorApi {
     suspend fun registration(
         @Body body: UserRegistrationBody
     ): Response<UserRegistrationResponse>
+
+    @PATCH("/pgk63/api/Director/{id}/Current")
+    suspend fun updateCurrent(
+        @Path("id") id: Int
+    ): Response<Unit?>
 }

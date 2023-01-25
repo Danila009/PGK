@@ -34,7 +34,8 @@ fun NavGraphBuilder.groupNavigation(
     onCreateGroupScreen: () -> Unit,
     onRegistrationStudentScreen: (groupId: Int) -> Unit,
     onJournalScreen: (journalId: Int) -> Unit,
-    onCreateJournalScreen: (groupId: Int) -> Unit
+    onCreateJournalScreen: (groupId: Int) -> Unit,
+    onTeacherDetailScreen: (teacherId: Int) -> Unit
 ) {
     composable(
         route = GroupListDestination.route
@@ -65,7 +66,8 @@ fun NavGraphBuilder.groupNavigation(
            onRegistrationHeadman = onRegistrationHeadman,
            onRegistrationStudentScreen = onRegistrationStudentScreen,
            onJournalScreen = onJournalScreen,
-           onCreateJournalScreen = onCreateJournalScreen
+           onCreateJournalScreen = onCreateJournalScreen,
+           onTeacherDetailScreen = onTeacherDetailScreen
        )
     }
 

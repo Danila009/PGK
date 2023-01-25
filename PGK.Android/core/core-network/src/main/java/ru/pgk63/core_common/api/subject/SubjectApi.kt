@@ -21,9 +21,15 @@ interface SubjectApi {
     @POST("/pgk63/api/Subject")
     suspend fun create(@Body body: CreateSubjectBody): Response<CreateSubjectResponse>
 
+    @POST("/pgk63/api/Teacher/{id}/Subject?")
+    suspend fun teacherAddSubject(
+        @Path("id") teacherId: Int,
+        @Query("subjectId") subjectId: Int
+    ): Response<Unit?>
+
     @PUT("/pgk63/api/Subject")
     suspend fun update(@Path("id") id: Int, @Body body: UpdateSubjectBody): Response<Unit?>
 
     @DELETE("/pgk63/api/Subject")
-    suspend fun delete(@Part("id") id: Int): Response<Unit?>
+    suspend fun delete(@Path("id") id: Int): Response<Unit?>
 }

@@ -14,8 +14,6 @@ import ru.pgk63.core_common.api.raportichka.repository.RaportichkaRepository
 import ru.pgk63.core_common.api.user.model.UserDetails
 import ru.pgk63.core_common.api.user.repository.UserRepository
 import ru.pgk63.core_common.common.response.Result
-import ru.pgk63.core_common.extension.getCurrentDateTime
-import ru.pgk63.core_common.extension.parseToNetworkFormat
 import ru.pgk63.core_database.room.database.history.dataSource.HistoryDataSource
 import ru.pgk63.core_database.room.database.history.model.History
 import ru.pgk63.core_database.user.UserDataSource
@@ -60,8 +58,7 @@ internal class MainViewModel @Inject constructor(
     fun getRaportichkaList(studentIds:List<Int>? = listOf()) {
         viewModelScope.launch {
             raportichkaRepository.getRaportichkaAll(
-                studentIds = studentIds,
-                onlyDate = getCurrentDateTime().parseToNetworkFormat()
+                studentIds = studentIds
             )
                 .cachedIn(viewModelScope).collect {
                     _responseRaportichkaList.value = it

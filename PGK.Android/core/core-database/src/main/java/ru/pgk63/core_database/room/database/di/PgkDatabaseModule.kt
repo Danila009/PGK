@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.pgk63.core_database.room.database.PgkDatabase
 import ru.pgk63.core_database.room.database.history.dao.HistoryDao
+import ru.pgk63.core_database.room.database.historySorting.dao.HistorySortingDao
 import javax.inject.Singleton
 
 @Module
@@ -26,4 +27,7 @@ internal class PgkDatabaseModule {
 
     @[Provides Singleton]
     fun providerHistoryDao(database: PgkDatabase): HistoryDao = database.historyDao()
+
+    @[Provides Singleton]
+    fun providerHistorySortingDao(database: PgkDatabase): HistorySortingDao = database.historySortingDao()
 }

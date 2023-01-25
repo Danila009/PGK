@@ -173,6 +173,9 @@ fun NavGraphBuilder.mainNavGraphBuilder(
                 "${CreateJournalDestination.route}?${CreateJournalDestination.groupId}=$groupId"
             )
         },
+        onTeacherDetailScreen = { teacherId ->
+            navController.navigate("${TeacherDetailsDestination.route}/$teacherId")
+        },
         onBackScreen = { navController.navigateUp() }
     )
 
