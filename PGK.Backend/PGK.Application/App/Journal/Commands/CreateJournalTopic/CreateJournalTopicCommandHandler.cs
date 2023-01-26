@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using PGK.Application.App.Journal.Queries.GetJournalTopicList;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
 using PGK.Domain.Journal;
@@ -10,7 +9,7 @@ using PGK.Domain.User.Teacher;
 namespace PGK.Application.App.Journal.Commands.CreateJournalTopic
 {
     internal class CreateJournalTopicCommandHandler
-        : IRequestHandler<CreateJournalTopicCommand, JournalTopicDto>
+        : IRequestHandler<CreateJournalTopicCommand>
     {
         private readonly IPGKDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -18,7 +17,7 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalTopic
         public CreateJournalTopicCommandHandler(IPGKDbContext dbContext,
             IMapper mapper) => (_dbContext, _mapper) = (dbContext, mapper);
 
-        public async Task<JournalTopicDto> Handle(CreateJournalTopicCommand request,
+        public async Task<Unit> Handle(CreateJournalTopicCommand request,
             CancellationToken cancellationToken)
         {
             var journalSubject = await _dbContext.JournalSubjects.FindAsync(request.JournalSubjectId);
@@ -52,10 +51,10 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalTopic
                 JournalSubject = journalSubject
             };
 
-            await _dbContext.JournalTopics.AddAsync(topic, cancellationToken);
+            await _dbContext.JournalTopics.AddAsync(topic);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return _mapper.Map<JournalTopicDto>(topic);
+            return Unit.Value;
         }
     }
 }

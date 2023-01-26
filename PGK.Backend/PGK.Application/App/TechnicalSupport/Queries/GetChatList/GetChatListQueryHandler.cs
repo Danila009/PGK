@@ -27,7 +27,7 @@ namespace PGK.Application.App.TechnicalSupport.Queries.GetChatList
                     .ThenInclude(u => u.User);
 
             var count = query.Count();
-            var chatList = await query.Skip(
+            List<Chat> chatList = await query.Skip(
                 (request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
 
             var chatDtoList = _mapper.Map<List<ChatDto>>(chatList);

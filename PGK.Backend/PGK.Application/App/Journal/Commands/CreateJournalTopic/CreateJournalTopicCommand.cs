@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using PGK.Application.App.Journal.Queries.GetJournalTopicList;
 using PGK.Domain.User;
 
 namespace PGK.Application.App.Journal.Commands.CreateJournalTopic
 {
-    public class CreateJournalTopicCommand : IRequest<JournalTopicDto>
+    public class CreateJournalTopicCommand : IRequest
     {
         public string Title { get; set; } = string.Empty;
         public string? HomeWork { get; set; }

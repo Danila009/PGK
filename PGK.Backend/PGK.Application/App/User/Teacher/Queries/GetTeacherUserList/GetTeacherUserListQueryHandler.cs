@@ -40,6 +40,8 @@ namespace PGK.Application.App.User.Teacher.Queries.GetTeacherUserList
             }
 
             var teachers = query
+                .OrderBy(u => u.FirstName)
+                .OrderBy(u => u.LastName)
                 .ProjectTo<TeacherUserDetails>(_mapper.ConfigurationProvider);
 
             var teachersPaged = await PagedList<TeacherUserDetails>.ToPagedList(teachers,

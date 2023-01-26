@@ -11,6 +11,7 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
         [Required] public string RefreshToken { get; set; } = string.Empty;
 
         [Required] public int UserId { get; set; }
+        public int? GroupId { get; set; }
         [Required] public string UserRole { get; set; } = string.Empty;
 
         [Required] public bool? DrarkMode { get; set; }

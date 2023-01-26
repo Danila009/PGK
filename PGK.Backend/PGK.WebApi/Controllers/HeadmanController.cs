@@ -158,7 +158,6 @@ namespace PGK.WebApi.Controllers
                 UserId = UserId,
                 Role = UserRole.Value,
                 NumberLesson = model.NumberLesson,
-                Confirmation = model.Confirmation,
                 Hours = model.Hours,
                 SubjectId = model.SubjectId,
                 TeacherId = model.TeacherId,

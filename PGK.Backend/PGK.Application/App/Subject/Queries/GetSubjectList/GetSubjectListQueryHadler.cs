@@ -34,6 +34,7 @@ namespace PGK.Application.App.Subject.Queries.GetSubjectList
             }
 
             var subjects = query
+                .OrderBy(u => u.SubjectTitle)
                 .ProjectTo<SubjectDto>(_mapper.ConfigurationProvider);
 
             var subjectsPaged = await PagedList<SubjectDto>.ToPagedList(subjects,

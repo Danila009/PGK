@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using PGK.Application.App.Journal.Queries.GetJournalSubjectColumnList;
 using PGK.Application.Common.Exceptions;
 using PGK.Application.Interfaces;
@@ -7,6 +8,7 @@ using PGK.Application.Services.FCMService;
 using PGK.Domain.Journal;
 using PGK.Domain.Notification;
 using PGK.Domain.User;
+using PGK.Domain.User.Student;
 using PGK.Domain.User.Teacher;
 
 namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectColumn
@@ -25,12 +27,50 @@ namespace PGK.Application.App.Journal.Commands.CreateJournalSubjectColumn
         public async Task<JournalSubjectColumnDto> Handle(CreateJournalSubjectColumnCommand request,
             CancellationToken cancellationToken)
         {
-            var journalSubjectRow = await _dbContext.JournalSubjectRows.FindAsync(request.JournalSubjectRowId);
+            JournalSubjectRow journalSubjectRow;
 
-            if(journalSubjectRow == null)
+            if (request.JournalSubjectRowId != null)
             {
-                throw new NotFoundException(nameof(JournalSubjectRow), request.JournalSubjectRowId);
+                var row = await _dbContext.JournalSubjectRows.FindAsync(request.JournalSubjectRowId);
+
+                if (row == null)
+                {
+                    throw new NotFoundException(nameof(JournalSubjectRow), request.JournalSubjectRowId);
+                }else
+                {
+                    journalSubjectRow = row;
+                }
             }
+            else
+            {
+                if(request.StudentId == null || request.JournalSubjectId == null)
+                {
+                    throw new ArgumentException();
+                }
+
+                var student = await _dbContext.StudentsUsers.FindAsync(request.StudentId);
+
+                if(student == null)
+                {
+                    throw new NotFoundException(nameof(StudentUser), request.StudentId);
+                }
+
+                var journalSubject = await _dbContext.JournalSubjects
+                    .Include(u => u.Teacher)
+                    .FirstOrDefaultAsync(u => u.Id == request.JournalSubjectId);
+
+                if (journalSubject == null)
+                {
+                    throw new NotFoundException(nameof(JournalSubject), request.JournalSubjectId);
+                }
+
+                journalSubjectRow = new JournalSubjectRow
+                {
+                    Student = student,
+                    JournalSubject = journalSubject,
+                };
+            }
+
 
             var column = new JournalSubjectColumn
             {

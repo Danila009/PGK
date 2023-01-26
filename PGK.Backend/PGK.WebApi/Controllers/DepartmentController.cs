@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PGK.Application.App.Department.Commands.CreateDepartment;
 using PGK.Application.App.Department.Commands.DeleteDepartment;
 using PGK.Application.App.Department.Commands.UpdateDepartment;
+using PGK.Application.App.Department.Commands.UpdateDepartmentHead;
 using PGK.Application.App.Department.Queries.GetDepartmentDetails;
 using PGK.Application.App.Department.Queries.GetDepartmentList;
 using PGK.WebApi.Models.Department;
@@ -124,6 +125,23 @@ namespace PGK.WebApi.Controllers
             var command = new DeleteDepartmentCommand
             {
                 Id = id
+            };
+
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        /// <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        [Authorize(Roles = "EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN")]
+        [HttpPatch("{departmentId}/DepartmentHead/{departmentHeadId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> UpdetaDepartmentHead(int departmentId, int departmentHeadId)
+        {
+            var command = new UpdateDepartmentHeadCommand
+            {
+                DepartmentId = departmentId,
+                DepartmentHeadId = departmentHeadId
             };
 
             await Mediator.Send(command);

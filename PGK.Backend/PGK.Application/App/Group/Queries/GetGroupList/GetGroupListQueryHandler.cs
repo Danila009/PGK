@@ -75,6 +75,7 @@ namespace PGK.Application.App.Group.Queries.GetGroupList
             }
 
             var groups = query
+                .OrderByDescending(u => u.Id)
                 .ProjectTo<GroupDetails>(_mapper.ConfigurationProvider);
 
 

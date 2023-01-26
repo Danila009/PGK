@@ -34,6 +34,7 @@ namespace PGK.Application.App.Speciality.Queries.GetSpecialityList
             }
 
             var specialties = query
+                .OrderBy(u => u.Name)
                 .ProjectTo<SpecialityDto>(_mapper.ConfigurationProvider);
 
             var specialityPaged = await PagedList<SpecialityDto>.ToPagedList(specialties,

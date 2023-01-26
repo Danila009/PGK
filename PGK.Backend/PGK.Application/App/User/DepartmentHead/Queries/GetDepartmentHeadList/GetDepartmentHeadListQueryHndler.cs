@@ -31,6 +31,8 @@ namespace PGK.Application.App.User.DepartmentHead.Queries.GetDepartmentHeadList
             }
 
             var departmentHead = query
+                 .OrderBy(u => u.FirstName)
+                .OrderBy(u => u.LastName)
                 .ProjectTo<DepartmentHeadDto>(_mapper.ConfigurationProvider);
 
 

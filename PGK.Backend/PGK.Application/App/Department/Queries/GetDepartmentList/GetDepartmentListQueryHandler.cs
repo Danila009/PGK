@@ -28,6 +28,7 @@ namespace PGK.Application.App.Department.Queries.GetDepartmentList
             }
 
             var departments = query
+                .OrderBy(u => u.Name)
                 .ProjectTo<DepartmentDto>(_mapper.ConfigurationProvider);
 
             var departmentPaged = await PagedList<DepartmentDto>.ToPagedList(departments,

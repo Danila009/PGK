@@ -53,6 +53,8 @@ namespace PGK.Application.App.User.Student.Queries.GetStudentUserList
             }
 
             var students = queries
+                 .OrderBy(u => u.FirstName)
+                .OrderBy(u => u.LastName)
                 .ProjectTo<StudentDto>(_mapper.ConfigurationProvider);
 
 

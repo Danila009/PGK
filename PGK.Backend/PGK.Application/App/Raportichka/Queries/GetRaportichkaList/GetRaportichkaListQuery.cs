@@ -12,6 +12,7 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
+        public List<int> RaportichkaId { get; set; } = new List<int>();
         public List<int> GroupIds { get; set; } = new List<int>();
         public List<int> SubjectIds { get; set; } = new List<int>();
         public List<int> ClassroomTeacherIds { get; set; } = new List<int>();

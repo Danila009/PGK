@@ -197,7 +197,7 @@ namespace PGK.WebApi.Controllers
         /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
         [Authorize(Roles = "TEACHER,ADMIN")]
         [HttpPost("Subject/{id}/Topic")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JournalTopicDto))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> CreateTopic(int id,CreateJournalTopicModel model)
         {
             var command = new CreateJournalTopicCommand
@@ -370,16 +370,17 @@ namespace PGK.WebApi.Controllers
         /// <response code="401">Пустой или неправильный токен</response>
         /// <response code="403">Авторизация роль TEACHER,ADMIN</response>
         [Authorize(Roles = "TEACHER,ADMIN")]
-        [HttpPost("Subject/Row/{id}/Column")]
+        [HttpPost("Subject/Row/Column")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JournalSubjectColumnDto))]
-        public async Task<ActionResult> CreateColumn(
-            int id,CreateJournalSubjectColumnModel model)
+        public async Task<ActionResult> CreateColumn( CreateJournalSubjectColumnModel model)
         {
             var command = new CreateJournalSubjectColumnCommand
             {
                 Evaluation = model.Evaluation,
                 Date = model.Date,
-                JournalSubjectRowId = id,
+                JournalSubjectRowId = model.JournalSubjectRowId,
+                StudentId = model.StudentId,
+                JournalSubjectId = model.JournalSubjectId,
                 UserId = UserId,
                 Role = UserRole.Value
             };

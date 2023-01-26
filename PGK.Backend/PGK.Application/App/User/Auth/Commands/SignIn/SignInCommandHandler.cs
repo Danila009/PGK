@@ -2,7 +2,9 @@
 using PGK.Application.Common;
 using PGK.Application.Interfaces;
 using PGK.Application.Security;
+using PGK.Application.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using PGK.Domain.User;
 
 namespace PGK.Application.App.User.Auth.Commands.SignIn
 {
@@ -69,10 +71,26 @@ namespace PGK.Application.App.User.Auth.Commands.SignIn
             user.RefreshToken = refreshToken;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
+            int? groupId = null;
+
+            if(user.Role == UserRole.STUDENT.ToString()
+                || user.Role == UserRole.HEADMAN.ToString() || user.Role == UserRole.DEPUTY_HEADMAN.ToString())
+            {
+                var student = await _dbContext.StudentsUsers
+                    .Include(u => u.Group)
+                    .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+                if(student != null && student.Group != null)
+                {
+                    groupId = student.Group.Id;
+                }
+            }
+
             return new SignInVm
             {
                 UserId = user.Id,
                 UserRole = user.Role,
+                GroupId = groupId,
                 DrarkMode = user.DrarkMode,
                 ThemeStyle = user.ThemeStyle,
                 ThemeFontStyle = user.ThemeFontStyle,

@@ -22,3 +22,15 @@ C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.cs
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\ref\PGK.Domain.dll
 C:\Users\danbe\Desktop\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.pdb
+E:\repos\PGK\PGK.Backend\PGK.Domain\bin\Debug\net6.0\PGK.Domain.deps.json
+E:\repos\PGK\PGK.Backend\PGK.Domain\bin\Debug\net6.0\PGK.Domain.dll
+E:\repos\PGK\PGK.Backend\PGK.Domain\bin\Debug\net6.0\PGK.Domain.pdb
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.csproj.AssemblyReference.cache
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.AssemblyInfoInputs.cache
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.AssemblyInfo.cs
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.csproj.CoreCompileInputs.cache
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.dll
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\refint\PGK.Domain.dll
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\PGK.Domain.pdb
+E:\repos\PGK\PGK.Backend\PGK.Domain\obj\Debug\net6.0\ref\PGK.Domain.dll

@@ -25,6 +25,7 @@ namespace PGK.Application.App.Group.Queries.GetGroupStudentList
                 .Where(u => u.Group.Id == request.GroupId);
 
             var students = query
+                .OrderByDescending(u => u.Id)
                 .ProjectTo<StudentDto>(_mapper.ConfigurationProvider);
 
 

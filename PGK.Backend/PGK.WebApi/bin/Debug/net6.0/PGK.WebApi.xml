@@ -140,6 +140,9 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
         </member>
+        <member name="M:PGK.WebApi.Controllers.DepartmentController.UpdetaDepartmentHead(System.Int32,System.Int32)">
+            <response code="403">Авторизация роль EDUCATIONAL_SECTOR,DEPARTMENT_HEAD,ADMIN</response>
+        </member>
         <member name="M:PGK.WebApi.Controllers.DepartmentHeadController.GetAll(PGK.Application.App.User.DepartmentHead.Queries.GetDepartmentHeadList.GetDepartmentHeadListQuery)">
             <summary>
             Получить список заведующих отделением
@@ -507,7 +510,7 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль TEACHER,ADMIN</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.JournalController.CreateColumn(System.Int32,PGK.WebApi.Models.Journal.CreateJournalSubjectColumnModel)">
+        <member name="M:PGK.WebApi.Controllers.JournalController.CreateColumn(PGK.WebApi.Models.Journal.CreateJournalSubjectColumnModel)">
             <summary>
             Создать колонку в журнале
             </summary>
@@ -528,7 +531,7 @@
             <response code="401">Пустой или неправильный токен</response>
             <response code="403">Авторизация роль TEACHER,ADMIN</response>
         </member>
-        <member name="M:PGK.WebApi.Controllers.RaportichkaController.GetAll(System.Nullable{System.Boolean},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+        <member name="M:PGK.WebApi.Controllers.RaportichkaController.GetAll(System.Nullable{System.Boolean},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
             <summary>
             Получить список рапортичик
             </summary>
@@ -536,6 +539,7 @@
             <param name="onlyDate">Только за эту дату</param>
             <param name="startDate">Минимальный дата</param>
             <param name="endDate">Максимальный дата</param>
+            <param name="raportichkaId"></param>
             <param name="groupIds">Список id групп разделенные запятой. Например groupIds=1,2,3</param>
             <param name="subjectIds">Список id предметов разделенные запятой. Например subjectIds=1,2,3</param>
             <param name="classroomTeacherIds">Список id классного руковаделя разделенные запятой. Например classroomTeacherIds=1,2,3</param>

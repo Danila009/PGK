@@ -91,7 +91,6 @@ namespace PGK.Application.App.Raportichka.Row.Commands.UpdateRow
             }
 
             row.NumberLesson = request.NumberLesson;
-            row.Confirmation = request.Confirmation;
             row.Hours = request.Hours;
             row.Subject = subject;
             row.Student = student;

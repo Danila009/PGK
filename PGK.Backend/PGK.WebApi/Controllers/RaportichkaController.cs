@@ -23,6 +23,7 @@ namespace PGK.WebApi.Controllers
         /// <param name="onlyDate">Только за эту дату</param>
         /// <param name="startDate">Минимальный дата</param>
         /// <param name="endDate">Максимальный дата</param>
+        /// <param name="raportichkaId"></param>
         /// <param name="groupIds">Список id групп разделенные запятой. Например groupIds=1,2,3</param>
         /// <param name="subjectIds">Список id предметов разделенные запятой. Например subjectIds=1,2,3</param>
         /// <param name="classroomTeacherIds">Список id классного руковаделя разделенные запятой. Например classroomTeacherIds=1,2,3</param>
@@ -39,6 +40,7 @@ namespace PGK.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RaportichkaListVm))]
         public async Task<ActionResult> GetAll(
             bool? confirmation,DateTime? onlyDate, DateTime? startDate, DateTime? endDate,
+            [FromQuery] List<int> raportichkaId,
             [FromQuery] List<int> groupIds, [FromQuery] List<int> subjectIds,
             [FromQuery] List<int> classroomTeacherIds, [FromQuery] List<int> numberLessons,
             [FromQuery] List<int> teacherIds, [FromQuery] List<int> studentIds,
@@ -52,6 +54,7 @@ namespace PGK.WebApi.Controllers
                 OnlyDate = onlyDate,
                 StartDate = startDate,
                 EndDate = endDate,
+                RaportichkaId = raportichkaId,
                 GroupIds = groupIds,
                 SubjectIds = subjectIds,
                 ClassroomTeacherIds = classroomTeacherIds,
@@ -179,7 +182,6 @@ namespace PGK.WebApi.Controllers
                 UserId = UserId,
                 Role = UserRole.Value,
                 NumberLesson = model.NumberLesson,
-                Confirmation = model.Confirmation,
                 Hours = model.Hours,
                 SubjectId = model.SubjectId,
                 StudentId = model.StudentId,

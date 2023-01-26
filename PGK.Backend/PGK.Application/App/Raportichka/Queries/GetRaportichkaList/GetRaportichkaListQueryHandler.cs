@@ -46,12 +46,17 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
 
             if (request.StartDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date.Date > request.StartDate.Value.Date);
+                query = query.Where(u => u.Date.Date >= request.StartDate.Value.Date);
             }
 
             if (request.EndDate != null && request.OnlyDate == null)
             {
-                query = query.Where(u => u.Date.Date < request.EndDate.Value.Date);
+                query = query.Where(u => u.Date.Date <= request.EndDate.Value.Date);
+            }
+
+            if(request.RaportichkaId != null && request.RaportichkaId.Count > 0)
+            {
+                query = query.Where(u => request.RaportichkaId.Contains(u.Id));
             }
 
             if(request.GroupIds != null && request.GroupIds.Count > 0)
@@ -85,6 +90,7 @@ namespace PGK.Application.App.Raportichka.Queries.GetRaportichkaList
             }
 
             var raportichka = query
+                .OrderByDescending(u => u.Date)
                 .ProjectTo<RaportichkaDto>(_mapper.ConfigurationProvider);
 
             var raportichkaPaged = await PagedList<RaportichkaDto>.ToPagedList(raportichka,

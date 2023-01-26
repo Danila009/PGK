@@ -54,6 +54,7 @@ namespace PGK.Application.App.Journal.Queries.GetJournalSubjectList
             }
 
             var journalSubject = query
+                .OrderByDescending(u => u.Id)
                 .ProjectTo<JournalSubjectDto>(_mapper.ConfigurationProvider);
 
             var journalPaged = await PagedList<JournalSubjectDto>.ToPagedList(journalSubject,

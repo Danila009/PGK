@@ -36,6 +36,8 @@ namespace PGK.Application.App.User.Director.Queries.GetDirectorList
             }
 
             var director = query
+                 .OrderBy(u => u.FirstName)
+                .OrderBy(u => u.LastName)
                 .ProjectTo<DirectorDto>(_mapper.ConfigurationProvider);
 
 

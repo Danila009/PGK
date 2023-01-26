@@ -1,21 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj": {}
+    "E:\\repos\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
+    "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
+        "projectUniqueName": "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
         "projectName": "PGK.Application",
-        "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
-        "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\obj\\",
+        "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj",
+        "packagesPath": "C:\\Users\\student\\.nuget\\packages\\",
+        "outputPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\student\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -28,8 +34,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
-                "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj"
+              "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
+                "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj"
               }
             }
           }
@@ -108,22 +114,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
+    "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
+        "projectUniqueName": "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
         "projectName": "PGK.Domain",
-        "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
-        "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Domain\\obj\\",
+        "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\PGK.Domain.csproj",
+        "packagesPath": "C:\\Users\\student\\.nuget\\packages\\",
+        "outputPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\student\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -162,22 +174,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj": {
+    "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
+        "projectUniqueName": "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
         "projectName": "PGK.Persistence",
-        "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
-        "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\obj\\",
+        "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj",
+        "packagesPath": "C:\\Users\\student\\.nuget\\packages\\",
+        "outputPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\student\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -190,8 +208,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
-                "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
+              "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
+                "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
               }
             }
           }
@@ -240,22 +258,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj": {
+    "E:\\repos\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
+        "projectUniqueName": "E:\\repos\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
         "projectName": "PGK.WebApi",
-        "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
-        "packagesPath": "C:\\Users\\danbe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.WebApi\\obj\\",
+        "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.WebApi\\PGK.WebApi.csproj",
+        "packagesPath": "C:\\Users\\student\\.nuget\\packages\\",
+        "outputPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.WebApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\danbe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\student\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -268,11 +292,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
-                "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
+              "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj": {
+                "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Application\\PGK.Application.csproj"
               },
-              "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj": {
-                "projectPath": "C:\\Users\\danbe\\Desktop\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj"
+              "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj": {
+                "projectPath": "E:\\repos\\PGK\\PGK.Backend\\PGK.Persistence\\PGK.Persistence.csproj"
               }
             }
           }
@@ -324,7 +348,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
