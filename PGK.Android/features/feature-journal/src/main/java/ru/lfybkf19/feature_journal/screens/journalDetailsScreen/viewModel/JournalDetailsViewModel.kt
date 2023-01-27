@@ -1,5 +1,6 @@
 package ru.lfybkf19.feature_journal.screens.journalDetailsScreen.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,12 +11,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.pgk63.core_common.api.journal.model.CreateJournalColumnBody
 import ru.pgk63.core_common.api.journal.model.JournalEvaluation
 import ru.pgk63.core_common.api.journal.model.JournalRow
 import ru.pgk63.core_common.api.journal.model.JournalSubject
 import ru.pgk63.core_common.api.journal.repository.JournalRepository
 import ru.pgk63.core_common.api.student.model.Student
 import ru.pgk63.core_common.api.student.repository.StudentRepository
+import ru.pgk63.core_common.common.response.Result
 import ru.pgk63.core_database.user.UserDataSource
 import ru.pgk63.core_database.user.model.UserLocalDatabase
 import javax.inject.Inject
@@ -38,6 +41,9 @@ internal class JournalDetailsViewModel @Inject constructor(
 
     private val _responseStudentList = MutableStateFlow<PagingData<Student>>(PagingData.empty())
     val responseStudentList = _responseStudentList.asStateFlow()
+
+    private val _responseJournalColumn = MutableStateFlow<Result<Unit?>?>(null)
+    val responseJournalColumn = _responseJournalColumn.asStateFlow()
 
     fun getJournalRow(
         journalSubjectId:Int? = null,
@@ -72,6 +78,28 @@ internal class JournalDetailsViewModel @Inject constructor(
             ).cachedIn(viewModelScope).collect {
                 _responseStudentList.value = it
             }
+        }
+    }
+
+    fun createColumn(body: CreateJournalColumnBody) {
+        viewModelScope.launch {
+            Log.e("createColumn", body.toString())
+            _responseJournalColumn.value = Result.Loading()
+            _responseJournalColumn.value = journalRepository.createColumn(body)
+        }
+    }
+
+    fun updateEvaluation(columnId: Int, evaluation: JournalEvaluation) {
+        viewModelScope.launch {
+            _responseJournalColumn.value = Result.Loading()
+            _responseJournalColumn.value = journalRepository.updateEvaluation(columnId, evaluation)
+        }
+    }
+
+    fun deleteColumn(id: Int) {
+        viewModelScope.launch {
+            _responseJournalColumn.value = Result.Loading()
+            _responseJournalColumn.value = journalRepository.deleteColumn(id)
         }
     }
 }

@@ -115,6 +115,7 @@ private fun ChatItemUi(
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
 
     Card(
+        modifier = Modifier.padding(5.dp),
         backgroundColor = Color.Transparent,
         onClick = onClick
     ) {
@@ -162,7 +163,7 @@ private fun ChatItemUi(
                 }
             }
 
-            Divider(color = PgkTheme.colors.secondaryBackground)
+//            Divider(color = PgkTheme.colors.secondaryBackground)
         }
     }
 }

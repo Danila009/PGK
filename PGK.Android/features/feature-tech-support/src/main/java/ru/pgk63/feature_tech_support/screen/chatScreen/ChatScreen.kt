@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,9 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.maxkeppeker.sheets.core.models.base.rememberSheetState
-import com.maxkeppeler.sheets.emoji.EmojiDialog
-import com.maxkeppeler.sheets.emoji.models.EmojiSelection
 import kotlinx.coroutines.flow.onEach
 import ru.pgk63.core_common.api.techSupport.model.*
 import ru.pgk63.core_common.common.response.Result
@@ -42,7 +38,6 @@ import ru.pgk63.feature_tech_support.screen.chatScreen.enums.AttachMenu
 import ru.pgk63.feature_tech_support.screen.chatScreen.enums.ChatMenu
 import ru.pgk63.feature_tech_support.screen.chatScreen.enums.MessageMenu
 import ru.pgk63.feature_tech_support.screen.chatScreen.viewModel.ChatViewModel
-import java.util.*
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -106,7 +101,7 @@ internal fun ChatRoute(
         onPunModeChange = { pinMode = it },
         onBackScreen = onBackScreen,
         sendMessage = {
-            viewModel.sendMessage(SendMessageBody(text = messageText))
+            viewModel.sendMessage(SendMessageBody(text = messageText, chatId = chatId))
 
             messageText = ""
         },
@@ -326,7 +321,6 @@ private fun BottomBarUi(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SentMessageTextField(
     messageText:String,
@@ -334,15 +328,6 @@ private fun SentMessageTextField(
     sendMessage: () -> Unit = {},
     openAttachMenu: (() -> Unit)? = null
 ) {
-    val emojiDialogState = rememberSheetState()
-
-    EmojiDialog(
-        state = emojiDialogState,
-        selection = EmojiSelection.Unicode { emoji ->
-            onMessageChange(messageText + emoji)
-        }
-    )
-
     TextField(
         value = messageText,
         onValueChange = onMessageChange,
@@ -357,7 +342,7 @@ private fun SentMessageTextField(
             focusedIndicatorColor = PgkTheme.colors.primaryBackground
         ),
         leadingIcon = {
-            IconButton(onClick = { emojiDialogState.show() }) {
+            IconButton(onClick = {  }) {
                 Icon(
                     imageVector = Icons.Default.EmojiEmotions,
                     contentDescription = null,
@@ -474,6 +459,7 @@ private fun Messages(
             MessageMenuUi(
                 visible = messageMenuVisible,
                 onVisibleChange = { messageMenuVisible = false },
+                editOrDeleteMessageVisibly = user.userId == message.user.id,
                 onClick = { messageMenu ->
                     when(messageMenu){
                         MessageMenu.COPY -> message.text?.let { context.copyToClipboard(it) }
@@ -571,6 +557,7 @@ private fun MessageUi(
 @Composable
 private fun MessageMenuUi(
     visible: Boolean,
+    editOrDeleteMessageVisibly: Boolean = false,
     onVisibleChange: () -> Unit,
     onClick: (MessageMenu) -> Unit
 ) {
@@ -580,36 +567,60 @@ private fun MessageMenuUi(
             onDismissRequest = onVisibleChange,
             buttons = {
                 MessageMenu.values().forEach { messageMenu ->
-                    DropdownMenuItem(
-                        modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
-                        onClick = {
-                            onClick(messageMenu)
-                            onVisibleChange()
+
+                    if(messageMenu == MessageMenu.DELETE || messageMenu == MessageMenu.EDIT) {
+                        if(editOrDeleteMessageVisibly) {
+                            MessageMenuItemUi(
+                                messageMenu = messageMenu,
+                                onVisibleChange = onVisibleChange,
+                                onClick = { onClick(messageMenu) }
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = messageMenu.icon,
-                            contentDescription = null,
-                            tint = if(messageMenu == MessageMenu.DELETE)
-                                PgkTheme.colors.errorColor
-                            else
-                                PgkTheme.colors.primaryText,
-                        )
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        Text(
-                            text = stringResource(id = messageMenu.nameId),
-                            color = if(messageMenu == MessageMenu.DELETE)
-                                PgkTheme.colors.errorColor
-                            else
-                                PgkTheme.colors.primaryText,
-                            style = PgkTheme.typography.caption,
-                            fontFamily = PgkTheme.fontFamily.fontFamily
+                    }else {
+                        MessageMenuItemUi(
+                            messageMenu = messageMenu,
+                            onVisibleChange = onVisibleChange,
+                            onClick = { onClick(messageMenu) }
                         )
                     }
                 }
             }
+        )
+    }
+}
+
+@Composable
+private fun MessageMenuItemUi(
+    messageMenu: MessageMenu,
+    onVisibleChange: () -> Unit,
+    onClick: () -> Unit
+) {
+    DropdownMenuItem(
+        modifier = Modifier.background(PgkTheme.colors.secondaryBackground),
+        onClick = {
+            onClick()
+            onVisibleChange()
+        }
+    ) {
+        Icon(
+            imageVector = messageMenu.icon,
+            contentDescription = null,
+            tint = if(messageMenu == MessageMenu.DELETE)
+                PgkTheme.colors.errorColor
+            else
+                PgkTheme.colors.primaryText,
+        )
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Text(
+            text = stringResource(id = messageMenu.nameId),
+            color = if(messageMenu == MessageMenu.DELETE)
+                PgkTheme.colors.errorColor
+            else
+                PgkTheme.colors.primaryText,
+            style = PgkTheme.typography.caption,
+            fontFamily = PgkTheme.fontFamily.fontFamily
         )
     }
 }

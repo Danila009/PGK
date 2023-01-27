@@ -1,5 +1,6 @@
 package ru.pgk63.core_common.api.techSupport.webSocket
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -68,6 +69,7 @@ class MessagesWebSocket (
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) = Unit
 
     override fun onMessage(webSocket: WebSocket, text: String) {
+
         messageResponse.value = Result.Success(text.decodeFromString())
 
         CoroutineScope(Dispatchers.Main).launch {

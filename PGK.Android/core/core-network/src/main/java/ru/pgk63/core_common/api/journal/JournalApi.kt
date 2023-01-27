@@ -88,6 +88,9 @@ interface JournalApi {
         @Query("pageSize") pageSize:Int = PAGE_SIZE
     ): JournalRowResponse
 
+    @POST("/pgk63/api/Journal/Subject/Row/Column")
+    suspend fun createColumn(@Body body: CreateJournalColumnBody): Response<Unit?>
+
     @PATCH("/pgk63/api/Journal/Subject/Row/Column/{id}/Evaluation")
     suspend fun updateEvaluation(
         @Path("id") columnId: Int,

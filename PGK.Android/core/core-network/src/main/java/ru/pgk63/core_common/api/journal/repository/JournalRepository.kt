@@ -94,6 +94,16 @@ class JournalRepository @Inject constructor(
         }.flow
     }
 
+    suspend fun createColumn(body: CreateJournalColumnBody) = safeApiCall {
+        journalApi.createColumn(body)
+    }
+
+    suspend fun updateEvaluation(columnId: Int, evaluation: JournalEvaluation) = safeApiCall {
+        journalApi.updateEvaluation(columnId, evaluation)
+    }
+
+    suspend fun deleteColumn(id: Int) = safeApiCall { journalApi.deleteColumn(id) }
+
     suspend fun createJournalTopic(
         journalSubjectId: Int,
         body: CreateJournalTopicBody

@@ -181,36 +181,34 @@ private fun JournalTopicTableScreen(
             }
         },
         content = { paddingValues ->
-            if (
-                topics.itemCount <= 0 && topics.loadState.refresh !is LoadState.Loading
+            BottomDrawer(
+                drawerState = bottomDrawerState,
+                drawerBackgroundColor = PgkTheme.colors.secondaryBackground,
+                drawerShape = PgkTheme.shapes.cornersStyle,
+                gesturesEnabled = bottomDrawerState.isOpen,
+                drawerContent = {
+                    BottomDrawerContent(
+                        type = journalTopicTableBottomDrawerType,
+                        createJournalTopic = createJournalTopic,
+                        deleteTopic = deleteTopic
+                    )
+                }
             ){
-                EmptyUi()
-            }else if(topics.loadState.refresh is LoadState.Error) {
-                ErrorUi()
-            }else{
-                BottomDrawer(
-                    drawerState = bottomDrawerState,
-                    drawerBackgroundColor = PgkTheme.colors.secondaryBackground,
-                    drawerShape = PgkTheme.shapes.cornersStyle,
-                    gesturesEnabled = bottomDrawerState.isOpen,
-                    drawerContent = {
-                        if(topics.itemCount > 0) {
-                            BottomDrawerContent(
-                                type = journalTopicTableBottomDrawerType,
-                                createJournalTopic = createJournalTopic,
-                                deleteTopic = deleteTopic
-                            )
-                        }else {
-                            EmptyUi()
-                        }
-                    }
+                if (
+                    topics.itemCount <= 0 && topics.loadState.refresh !is LoadState.Loading
                 ){
+                    EmptyUi()
+                }else if(topics.loadState.refresh is LoadState.Error) {
+                    ErrorUi()
+                }else if(topics.itemCount > 0){
                     TopicList(
                         topics = topics,
                         maxSubjectHours = maxSubjectHours,
                         paddingValues = paddingValues,
                         onJournalTopicTableBottomDrawerTypeChange = onJournalTopicTableBottomDrawerTypeChange
                     )
+                }else {
+                    EmptyUi()
                 }
             }
         }

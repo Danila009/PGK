@@ -444,10 +444,7 @@ private fun MainScreenSuccess(
     onSpecializationDetailsScreen: (specializationId: Int) -> Unit,
     onSubjectDetailsScreen: (subjectId: Int) -> Unit,
 ) {
-    if(
-        history.itemCount > 0 ||
-        (userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN)
-    ){
+    if(userRole == UserRole.STUDENT || userRole == UserRole.HEADMAN || userRole == UserRole.DEPUTY_HEADMAN){
         LazyColumn(
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxSize()
@@ -464,6 +461,7 @@ private fun MainScreenSuccess(
                     )
 
                     HistoryList(
+                        row = true,
                         history = history,
                         onClick = { historyItem ->
                             when(historyItem.historyType) {
@@ -491,6 +489,33 @@ private fun MainScreenSuccess(
                 }
             }
         }
+    }else if(history.itemCount > 0){
+        Column {
+            Text(
+                text = stringResource(id = R.string.history),
+                color = PgkTheme.colors.primaryText,
+                fontFamily = PgkTheme.fontFamily.fontFamily,
+                style = PgkTheme.typography.heading,
+                modifier = Modifier.padding(15.dp)
+            )
+
+            HistoryList(
+                row = false,
+                history = history,
+                onClick = { historyItem ->
+                    when(historyItem.historyType) {
+                        HistoryType.GROUP -> onGroupDetailsScreen(historyItem.contentId)
+                        HistoryType.DEPARTMENT -> onDepartmentDetailsScreen(historyItem.contentId)
+                        HistoryType.STUDENT -> onStudentDetailsScreen(historyItem.contentId)
+                        HistoryType.TEACHER -> onTeacherDetailsScreen(historyItem.contentId)
+                        HistoryType.SUBJECT -> onSubjectDetailsScreen(historyItem.contentId)
+                        HistoryType.SPECIALITY -> onSpecializationDetailsScreen(historyItem.contentId)
+                        HistoryType.DIRECTOR -> onDirectorDetailsScreen(historyItem.contentId)
+                        HistoryType.DEPARTMENT_HEAD -> onDepartmentHeadDetailsScreen(historyItem.contentId)
+                    }
+                }
+            )
+        }
     }else {
         EmptyUi()
     }
@@ -498,16 +523,32 @@ private fun MainScreenSuccess(
 
 @Composable
 private fun HistoryList(
+    row: Boolean,
     history: LazyPagingItems<History>,
     onClick: (History) -> Unit
 ) {
-    LazyRow {
-        items(history, key = { it.historyId }) { item ->
-            if(item != null){
-                HistoryItem(
-                    history = item,
-                    onClick = { onClick(item) }
-                )
+    if(row){
+        LazyRow {
+            items(history, key = { it.historyId }) { item ->
+                if(item != null){
+                    HistoryItem(
+                        history = item,
+                        onClick = { onClick(item) }
+                    )
+                }
+            }
+        }
+    }else {
+        LazyColumn {
+            items(history, key = { it.historyId }) { item ->
+                if(item != null){
+                    HistoryItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        modifierText = Modifier.fillMaxWidth(),
+                        history = item,
+                        onClick = { onClick(item) }
+                    )
+                }
             }
         }
     }
@@ -516,6 +557,8 @@ private fun HistoryList(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun HistoryItem(
+    modifier: Modifier = Modifier,
+    modifierText: Modifier = Modifier,
     history: History,
     onClick: () -> Unit
 ) {
@@ -523,7 +566,7 @@ private fun HistoryItem(
         backgroundColor = PgkTheme.colors.secondaryBackground,
         elevation = 12.dp,
         shape = PgkTheme.shapes.cornersStyle,
-        modifier = Modifier.padding(5.dp),
+        modifier = modifier.padding(5.dp),
         onClick = onClick
     ) {
         Column(
@@ -536,7 +579,8 @@ private fun HistoryItem(
                 color = PgkTheme.colors.primaryText,
                 style = PgkTheme.typography.body,
                 fontFamily = PgkTheme.fontFamily.fontFamily,
-                modifier = Modifier.padding(5.dp)
+                modifier = modifierText.padding(5.dp),
+                textAlign = TextAlign.Center
             )
 
             history.description?.let { description ->
@@ -545,7 +589,8 @@ private fun HistoryItem(
                     color = PgkTheme.colors.primaryText,
                     style = PgkTheme.typography.caption,
                     fontFamily = PgkTheme.fontFamily.fontFamily,
-                    modifier = Modifier.padding(5.dp)
+                    modifier = modifierText.padding(5.dp),
+                    textAlign = TextAlign.Center
                 )
             }
         }

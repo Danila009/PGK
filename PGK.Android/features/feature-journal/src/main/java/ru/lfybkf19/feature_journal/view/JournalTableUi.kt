@@ -14,6 +14,7 @@ import ru.pgk63.core_common.extension.parseToBaseDateFormat
 import ru.pgk63.core_ui.view.table.Table
 import ru.pgk63.core_ui.view.table.TableCell
 import ru.pgk63.core_ui.R
+import java.util.*
 
 @Composable
 internal fun BoxScope.JournalTableUi(
@@ -22,7 +23,13 @@ internal fun BoxScope.JournalTableUi(
     rows: List<JournalRow>,
     students: LazyPagingItems<Student>,
     onClickStudent: (Student) -> Unit,
-    onClickEvaluation: (JournalEvaluation?, columnId: Int?) -> Unit
+    onClickEvaluation: (
+        JournalEvaluation?,
+        columnId: Int?,
+        rowId: Int?,
+        student: Student,
+        date: Date?
+    ) -> Unit
 ) {
     val columns = rows.map { it.columns }.flatten()
     val dates = columns.map { it.date }.distinct().sortedBy { it }
@@ -31,7 +38,7 @@ internal fun BoxScope.JournalTableUi(
         modifier = modifier.matchParentSize(),
         rowModifier = Modifier.height(IntrinsicSize.Min),
         verticalLazyListState = verticalLazyListState,
-        columnCount = dates.size + 1,
+        columnCount = dates.size + 2,
         rowCount = students.itemCount + 1,
     ){ columnIndex, rowIndex ->
 
@@ -52,7 +59,7 @@ internal fun BoxScope.JournalTableUi(
             )
         }
 
-        if(columnIndex != 0 && rowIndex == 0){
+        if(columnIndex != 0 && rowIndex == 0 && columnIndex != dates.size + 1){
             val date = dates[columnIndex-1]
 
             TableCell(
@@ -61,7 +68,7 @@ internal fun BoxScope.JournalTableUi(
             )
         }
 
-        if(columnIndex != 0 && rowIndex != 0){
+        if(columnIndex != 0 && rowIndex != 0 && columnIndex != dates.size + 1){
             val date = dates[columnIndex-1]
             val student = students[rowIndex-1]
 
@@ -69,17 +76,47 @@ internal fun BoxScope.JournalTableUi(
 
             val column =  row?.columns?.firstOrNull { it.date == date }
 
-            if(column != null){
+            if(column != null && student != null){
                 TableCell(
                     text = column.evaluation.text,
                     modifier = Modifier.fillMaxSize(),
-                    onClick = {  onClickEvaluation(column.evaluation, column.id)}
+                    onClick = {  onClickEvaluation(
+                        column.evaluation,
+                        column.id,
+                        row.id,
+                        student,
+                        date
+                    )}
                 )
-            }else {
+            }else if (student != null) {
                 TableCell(
                     text = "-",
                     modifier = Modifier.fillMaxSize(),
-                    onClick = {  onClickEvaluation(null, null)}
+                    onClick = {  onClickEvaluation(
+                        column?.evaluation,
+                        column?.id,
+                        row?.id,
+                        student,
+                        date
+                    )}
+                )
+            }
+        }
+
+        if(rowIndex != 0 && columnIndex == dates.size + 1) {
+
+            val student = students[rowIndex-1]
+
+            if(student != null){
+                TableCell(
+                    text = "+",
+                    modifier = Modifier.fillMaxSize(),
+                    onClick = {
+                        onClickEvaluation(
+                            null, null,
+                            null, student, null
+                        )
+                    }
                 )
             }
         }

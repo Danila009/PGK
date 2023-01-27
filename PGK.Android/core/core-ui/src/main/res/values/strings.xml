@@ -7,6 +7,7 @@
     <string name="group_choose">Выберите группу</string>
     <string name="group_create">Создать группу</string>
     <string name="journal">Журнал</string>
+    <string name="create_journal_column">Добавить оценку</string>
     <string name="history">Вы недавно смотрели</string>
     <string name="journal_create">Создать журнал</string>
     <string name="journal_subject_create">Добавить предмет к журналу</string>
@@ -121,6 +122,7 @@
     <string name="add_department_head">Добавить заведущего отделением</string>
     <string name="add_teacher">Добавить преподавателя</string>
     <string name="update">Обновить</string>
+    <string name="updated">Обновления</string>
     <string name="hours">Часы</string>
     <string name="para">Пара</string>
     <string name="ok">Выбрать</string>

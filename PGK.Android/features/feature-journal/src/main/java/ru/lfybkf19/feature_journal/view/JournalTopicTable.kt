@@ -54,7 +54,7 @@ internal fun BoxScope.JournalTopicTable(
                 else
                     AbsoluteRoundedCornerShape(0.dp)
             )
-        }else {
+        }else if (rowIndex >= 1){
             val topic = topics[rowIndex-1]
 
             if(topic != null){
